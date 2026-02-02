@@ -8,5 +8,7 @@ app.get("/ping", (req, res) => {
 });
 
 app.listen(serverConfig.port, () => {
-  console.log(`Server listening on http://localhost:${serverConfig.port}`);
+  console.log(
+    `Server listening on http://localhost:${serverConfig.port.toFixed(0)}`,
+  );
 });
