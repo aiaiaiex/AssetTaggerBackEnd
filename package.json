@@ -5,7 +5,8 @@
   "main": "./src/app.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/app.js"
+    "start": "node ./dist/app.js",
+    "dev": "tsx --watch ./src/app.ts"
   },
   "repository": {
     "type": "git",
