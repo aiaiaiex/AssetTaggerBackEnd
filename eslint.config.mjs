@@ -8,6 +8,7 @@ export default defineConfig(
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   eslintConfigPrettier,
+  //
   {
     languageOptions: {
       parserOptions: {
@@ -15,6 +16,7 @@ export default defineConfig(
       },
     },
   },
+  //
   {
     ignores: ["eslint.config.mjs"],
   },
