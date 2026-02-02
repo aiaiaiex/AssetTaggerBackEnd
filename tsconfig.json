@@ -6,7 +6,6 @@
     "strict": true,
     // Modules
     "module": "es2020",
-    "moduleResolution": "node16",
     "rootDir": "./src",
     // Emit
     "outDir": "./dist",
