@@ -4,3 +4,4 @@ dist/
 
 # Environment Variables-Related
 .env.*
+!.env.example
