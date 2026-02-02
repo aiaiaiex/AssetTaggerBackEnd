@@ -5,7 +5,7 @@
     // Type Checking
     "strict": true,
     // Modules
-    "module": "es2020",
+    "module": "commonjs",
     "rootDir": "./src",
     // Emit
     "outDir": "./dist",
