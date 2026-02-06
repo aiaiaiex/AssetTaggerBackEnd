@@ -1,12 +1,20 @@
 import express from "express";
+import sql from "mssql";
 
 import serverConfig from "./config/serverConfig";
 import pool from "./database";
 
 const app = express();
 
-app.get("/ping", (req, res) => {
-  res.json({ msg: "pong!" });
+app.get("/ping", async (req, res) => {
+  const { recordset } = await req.app.locals.database.query(
+    "SELECT @@SERVERNAME AS 'serverName'",
+  );
+
+  res.json({
+    msg: "pong!",
+    recordSet: recordset,
+  });
 });
 
 pool
