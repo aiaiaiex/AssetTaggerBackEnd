@@ -20,7 +20,6 @@ app.get("/ping", async (req, res) => {
 
   const { recordset } =
     await req.app.locals.database.query<ConfigurationInformation>(
-      // "SELECT @@SERVERNAME AS 'ServerName'",
       "SELECT @@SERVERNAME AS 'ServerName'",
     );
 
