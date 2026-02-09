@@ -1,5 +1,4 @@
 import express from "express";
-import sql from "mssql";
 
 import serverConfig from "./config/serverConfig";
 import pool from "./database";
