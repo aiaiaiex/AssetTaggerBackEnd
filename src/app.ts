@@ -1,5 +1,4 @@
 import express from "express";
-
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
 
