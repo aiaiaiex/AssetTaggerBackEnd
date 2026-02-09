@@ -5,14 +5,18 @@ import pool from "./database";
 
 const app = express();
 
+interface ServerName {
+  serverName: string;
+}
+
 app.get("/ping", async (req, res) => {
-  const { recordset } = await req.app.locals.database.query(
-    "SELECT @@SERVERNAME AS 'serverName'",
-  );
+  const { recordset } = await req.app.locals.database.query<
+    ServerName | undefined
+  >("SELECT @@SERVERNAME AS 'serverName'");
 
   res.json({
     msg: "pong!",
-    recordSet: recordset,
+    serverName: recordset[0]?.serverName ?? "",
   });
 });
 
