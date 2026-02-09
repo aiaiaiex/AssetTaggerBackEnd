@@ -1,22 +1,44 @@
 import express from "express";
+import z from "zod";
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
+import {
+  ConfigurationInformation,
+  ConfigurationInformationSchema,
+} from "./models/ConfigurationFunction";
 
 const app = express();
 
-interface ServerName {
-  serverName: string;
-}
-
 app.get("/ping", async (req, res) => {
-  const { recordset } = await req.app.locals.database.query<
-    ServerName | undefined
-  >("SELECT @@SERVERNAME AS 'serverName'");
+  const jsonRes: {
+    message: string;
+    errorMessage?: string;
+    serverName?: z.infer<
+      typeof ConfigurationInformationSchema.shape.ServerName
+    >;
+  } = { message: "Back-end server is pingable." };
 
-  res.json({
-    msg: "pong!",
-    serverName: recordset[0]?.serverName ?? "",
-  });
+  const { recordset } =
+    await req.app.locals.database.query<ConfigurationInformation>(
+      // "SELECT @@SERVERNAME AS 'ServerName'",
+      "SELECT @@SERVERNAME AS 'ServerName'",
+    );
+
+  const result = ConfigurationInformationSchema.pick({ ServerName: true })
+    .array()
+    .length(1)
+    .safeParse(recordset);
+
+  if (!result.success) {
+    res.status(500);
+    jsonRes.message =
+      "Back-end server is pingable BUT Microsoft SQL Server name is NOT available!";
+    jsonRes.errorMessage = z.prettifyError(result.error);
+  } else {
+    jsonRes.serverName = result.data[0].ServerName;
+  }
+
+  res.json(jsonRes);
 });
 
 pool
