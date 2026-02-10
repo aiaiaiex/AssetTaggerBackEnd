@@ -6,12 +6,12 @@
 	],
 	"settings": {
 		"[javascript][typescript]": {
+			"editor.codeActionsOnSave": {
+				"source.addMissingImports.ts": "explicit",
+				"source.organizeImports": "explicit"
+			},
 			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.formatOnSave": true
-		},
-		"editor.codeActionsOnSave": {
-			"source.addMissingImports.ts": "explicit",
-			"source.organizeImports": "explicit"
 		}
 	},
 	"extensions": {
