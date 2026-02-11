@@ -7,7 +7,7 @@
 	"settings": {
 		"[javascript]": {
 			"editor.codeActionsOnSave": {
-				"source.organizeImports": "explicit"
+				"source.sortImports": "explicit"
 			},
 			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.formatOnSave": true
