@@ -1,5 +1,6 @@
 import express from "express";
 import z from "zod";
+
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
 import {
@@ -11,8 +12,8 @@ const app = express();
 
 app.get("/ping", async (req, res) => {
   const jsonRes: {
-    message: string;
     errorMessage?: string;
+    message: string;
     serverName?: z.infer<
       typeof ConfigurationInformationSchema.shape.ServerName
     >;
