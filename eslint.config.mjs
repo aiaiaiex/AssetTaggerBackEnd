@@ -20,6 +20,5 @@ export default defineConfig([
         tsconfigRootDir: import.meta.dirname,
       },
     },
-    ignores: ["eslint.config.mjs"],
   },
 ]);
