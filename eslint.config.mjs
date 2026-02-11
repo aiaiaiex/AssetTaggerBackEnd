@@ -4,14 +4,15 @@ import perfectionist from "eslint-plugin-perfectionist";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
-  perfectionist.configs["recommended-natural"],
-  eslintConfigPrettier,
-  //
+export default defineConfig([
   {
+    extends: [
+      eslint.configs.recommended,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+      perfectionist.configs["recommended-natural"],
+      eslintConfigPrettier,
+    ],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
@@ -19,9 +20,6 @@ export default defineConfig(
         tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
-  //
-  {
     ignores: ["eslint.config.mjs"],
   },
-);
+]);
