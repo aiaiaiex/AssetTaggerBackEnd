@@ -6,6 +6,7 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig([
   {
+    files: ["**/*.{ts}"],
     extends: [
       eslint.configs.recommended,
       tseslint.configs.strictTypeChecked,
