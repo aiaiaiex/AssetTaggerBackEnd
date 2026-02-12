@@ -5,20 +5,20 @@
 		}
 	],
 	"settings": {
+		"[javascript][typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.formatOnSave": true
+		},
 		"[javascript]": {
 			"editor.codeActionsOnSave": {
 				"source.sortImports": "explicit"
 			},
-			"editor.defaultFormatter": "esbenp.prettier-vscode",
-			"editor.formatOnSave": true
 		},
 		"[typescript]": {
 			"editor.codeActionsOnSave": {
 				"source.addMissingImports.ts": "explicit",
 				"source.fixAll.eslint": "explicit"
 			},
-			"editor.defaultFormatter": "esbenp.prettier-vscode",
-			"editor.formatOnSave": true
 		},
 		"files.readonlyInclude": {
 			"**/package-lock.json": true
