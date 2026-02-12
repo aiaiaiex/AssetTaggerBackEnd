@@ -2,12 +2,12 @@ import express from "express";
 
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
-import rootRoutes from "./routes/rootRoutes";
+import routes from "./routes/routes";
 
 const app = express();
 
 // Routes
-app.use("/", rootRoutes);
+app.use("/", routes);
 
 pool
   .connect()
