@@ -6,7 +6,6 @@ import routes from "./routes/routes";
 
 const app = express();
 
-// Routes
 app.use("/", routes);
 
 pool
