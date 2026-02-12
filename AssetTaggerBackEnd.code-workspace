@@ -1,33 +1,30 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-		"[javascript][json][jsonc][typescript]": {
-			"editor.defaultFormatter": "esbenp.prettier-vscode",
-			"editor.formatOnSave": true
-		},
-		"[javascript]": {
-			"editor.codeActionsOnSave": {
-				"source.sortImports": "explicit"
-			},
-		},
-		"[typescript]": {
-			"editor.codeActionsOnSave": {
-				"source.addMissingImports.ts": "explicit",
-				"source.fixAll.eslint": "explicit"
-			},
-		},
-		"files.readonlyInclude": {
-			"**/package-lock.json": true
-		}
-	},
-	"extensions": {
-		"recommendations": [
-			"dbaeumer.vscode-eslint",
-			"esbenp.prettier-vscode"
-		]
-	}
+  "folders": [
+    {
+      "path": ".",
+    },
+  ],
+  "settings": {
+    "[javascript][json][jsonc][typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true,
+    },
+    "[javascript]": {
+      "editor.codeActionsOnSave": {
+        "source.sortImports": "explicit",
+      },
+    },
+    "[typescript]": {
+      "editor.codeActionsOnSave": {
+        "source.addMissingImports.ts": "explicit",
+        "source.fixAll.eslint": "explicit",
+      },
+    },
+    "files.readonlyInclude": {
+      "**/package-lock.json": true,
+    },
+  },
+  "extensions": {
+    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+  },
 }
