@@ -6,7 +6,7 @@ import routes from "./routes/routes";
 
 const app = express();
 
-app.use("/", routes);
+app.use("/api", routes);
 
 pool
   .connect()
