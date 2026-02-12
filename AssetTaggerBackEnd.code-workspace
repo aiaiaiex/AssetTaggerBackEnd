@@ -5,7 +5,7 @@
 		}
 	],
 	"settings": {
-		"[javascript][typescript]": {
+		"[javascript][json][jsonc][typescript]": {
 			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.formatOnSave": true
 		},
