@@ -1,26 +1,20 @@
 import { Request, Response } from "express";
 import z from "zod";
 
-import {
-  ConfigurationInformation,
-  ConfigurationInformationSchema,
-} from "../models/ConfigurationFunction";
+import { DatabaseServer, DatabaseServerSchema } from "../models/DatabaseServer";
 
 export const ping = async (req: Request, res: Response) => {
   const jsonRes: {
     errorMessage?: string;
     message: string;
-    serverName?: z.infer<
-      typeof ConfigurationInformationSchema.shape.ServerName
-    >;
+    serverName?: z.infer<typeof DatabaseServerSchema.shape.ServerName>;
   } = { message: "Back-end server is pingable." };
 
-  const { recordset } =
-    await req.app.locals.database.query<ConfigurationInformation>(
-      "SELECT @@SERVERNAME AS 'ServerName'",
-    );
+  const { recordset } = await req.app.locals.database.query<DatabaseServer>(
+    "SELECT @@SERVERNAME AS 'ServerName'",
+  );
 
-  const result = ConfigurationInformationSchema.pick({ ServerName: true })
+  const result = DatabaseServerSchema.pick({ ServerName: true })
     .array()
     .length(1)
     .safeParse(recordset);
