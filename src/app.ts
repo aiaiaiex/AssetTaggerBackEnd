@@ -2,9 +2,14 @@ import express from "express";
 
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
+import acknowledgeFaviconRequest from "./middlewares/acknowledgeFaviconRequest";
+import logRequest from "./middlewares/logRequest";
+import logResponse from "./middlewares/logResponse";
 import routes from "./routes/routes";
 
 const app = express();
+
+app.use([logRequest, logResponse, acknowledgeFaviconRequest]);
 
 app.use("/api", routes);
 
