@@ -3,7 +3,7 @@ import z from "zod";
 
 import { DatabaseServer, DatabaseServerSchema } from "../models/DatabaseServer";
 
-export const ping = async (req: Request, res: Response) => {
+export const getRoot = async (req: Request, res: Response) => {
   const jsonRes: {
     errorMessage?: string;
     message: string;

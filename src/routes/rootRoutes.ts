@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import { ping } from "../controllers/rootController";
+import { getRoot } from "../controllers/rootController";
 
 const rootRoutes = Router();
 
-rootRoutes.get("/ping", ping);
+rootRoutes.get("/ping", getRoot);
 
 export default rootRoutes;
