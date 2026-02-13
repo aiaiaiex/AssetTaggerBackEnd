@@ -4,6 +4,6 @@ import { getRoot } from "../controllers/rootController";
 
 const rootRoutes = Router();
 
-rootRoutes.get("/ping", getRoot);
+rootRoutes.get("/", getRoot);
 
 export default rootRoutes;
