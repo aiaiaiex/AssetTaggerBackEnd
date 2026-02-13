@@ -1,14 +1,10 @@
 import { Request, Response } from "express";
-import z from "zod";
 
 import { DatabaseServer, DatabaseServerSchema } from "../models/DatabaseServer";
+import { Root } from "../models/Root";
 
 export const getRoot = async (req: Request, res: Response) => {
-  const jsonRes: {
-    errorMessage?: string;
-    message: string;
-    serverName?: z.infer<typeof DatabaseServerSchema.shape.ServerName>;
-  } = { message: "Back-end server is pingable." };
+  const jsonRes: Root = { databaseReachable: true };
 
   const { recordset } = await req.app.locals.database.query<DatabaseServer>(
     "SELECT @@SERVERNAME AS 'ServerName'",
@@ -21,11 +17,7 @@ export const getRoot = async (req: Request, res: Response) => {
 
   if (!result.success) {
     res.status(500);
-    jsonRes.message =
-      "Back-end server is pingable BUT Microsoft SQL Server name is NOT available!";
-    jsonRes.errorMessage = z.prettifyError(result.error);
-  } else {
-    jsonRes.serverName = result.data[0].ServerName;
+    jsonRes.databaseReachable = false;
   }
 
   res.json(jsonRes);
