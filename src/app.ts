@@ -5,12 +5,11 @@ import pool from "./database";
 import acknowledgeFaviconRequest from "./middlewares/acknowledgeFaviconRequest";
 import handleError from "./middlewares/handleError";
 import logRequest from "./middlewares/logRequest";
-import logResponse from "./middlewares/logResponse";
 import routes from "./routes/routes";
 
 const app = express();
 
-app.use([logRequest, logResponse, acknowledgeFaviconRequest]);
+app.use([logRequest, acknowledgeFaviconRequest]);
 
 app.use("/api", routes);
 
