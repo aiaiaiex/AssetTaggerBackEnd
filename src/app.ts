@@ -1,4 +1,4 @@
-import express from "express";
+import express, { json } from "express";
 
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
@@ -9,7 +9,7 @@ import routes from "./routes/routes";
 
 const app = express();
 
-app.use([logRequest, acknowledgeFaviconRequest]);
+app.use([logRequest, acknowledgeFaviconRequest, json()]);
 
 app.use("/api", routes);
 
