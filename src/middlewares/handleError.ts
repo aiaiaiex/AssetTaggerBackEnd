@@ -32,7 +32,7 @@ export class ExpressError extends Error {
 
 const handleError: ErrorRequestHandler = (
   err: Error | ExpressError,
-  req: Request,
+  _req: Request,
   res: Response,
   next: NextFunction,
 ) => {
