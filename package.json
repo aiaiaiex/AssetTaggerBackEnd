@@ -24,6 +24,7 @@
   "homepage": "https://github.com/aiaiaiex/AssetTaggerBackEnd#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mssql": "^12.2.0",
     "zod": "^4.3.6"
   },
