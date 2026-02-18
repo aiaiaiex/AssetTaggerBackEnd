@@ -1,0 +1,7 @@
+info:
+  name: /api/enduser
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit
