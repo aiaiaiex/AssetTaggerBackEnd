@@ -1,0 +1,4 @@
+name: environment
+variables:
+  - name: baseURL
+    value: http://{{process.env.SERVER_HOSTNAME}}:{{process.env.SERVER_PORT}}
