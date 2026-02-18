@@ -23,13 +23,17 @@ export const createEndUser = async (req: Request, res: Response) => {
     .request()
     .input("EndUserName", sql.NVarChar(50), EndUserName)
     .input("EndUserPassword", sql.NVarChar(255), EndUserPassword)
+    // .output("EndUserID", sql.UniqueIdentifier)  // TODO Find out why this doesn't work.
     .execute<EndUser>("usp_CreateEndUser");
 
-  const databaseRes = EndUserSchema.array().length(1).safeParse(recordset);
+  const databaseRes = EndUserSchema.pick({ EndUserID: true })
+    .array()
+    .length(1)
+    .safeParse(recordset);
 
   if (!databaseRes.success) {
     throw new ExpressError(z.prettifyError(databaseRes.error), 500);
   }
 
-  res.json(databaseRes);
+  res.json(databaseRes.data[0]);
 };
