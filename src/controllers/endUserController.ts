@@ -23,7 +23,7 @@ export const createEndUser = async (req: Request, res: Response) => {
     .request()
     .input("EndUserName", sql.NVarChar(50), EndUserName)
     .input("EndUserPassword", sql.NVarChar(255), EndUserPassword)
-    .execute<EndUser>("usp_RegisterEndUser");
+    .execute<EndUser>("usp_CreateEndUser");
 
   const databaseRes = EndUserSchema.array().length(1).safeParse(recordset);
 
