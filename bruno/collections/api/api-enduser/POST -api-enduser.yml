@@ -15,6 +15,15 @@ http:
       }
   auth: inherit
 
+runtime:
+  assertions:
+    - expression: res.body.EndUserID
+      operator: isDefined
+    - expression: res.body.EndUserID
+      operator: isString
+    - expression: res.body.EndUserID
+      operator: isNotEmpty
+
 settings:
   encodeUrl: true
   timeout: 0
