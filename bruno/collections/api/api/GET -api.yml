@@ -8,6 +8,12 @@ http:
   url: "{{baseURL}}/api"
   auth: inherit
 
+runtime:
+  assertions:
+    - expression: res.body.databaseReachable
+      operator: eq
+      value: "true"
+
 settings:
   encodeUrl: true
   timeout: 0
