@@ -1,16 +1,68 @@
-import { config } from "mssql";
+import z from "zod";
 
-const databaseConfig: config = {
-  database: process.env.DATABASE_NAME ?? "",
+const DatabaseConfigOptionsSchema = z.object({
+  encrypt: z
+    .string()
+    .transform((x) => {
+      const preprocessedX = x.trim().toLowerCase();
+      if (preprocessedX === "true" || preprocessedX.length === 0) {
+        return true;
+      } else if (preprocessedX === "false") {
+        return false;
+      } else {
+        return undefined;
+      }
+    })
+    .pipe(z.boolean()),
+  trustServerCertificate: z
+    .string()
+    .transform((x) => {
+      const preprocessedX = x.trim().toLowerCase();
+      if (preprocessedX === "true") {
+        return true;
+      } else if (preprocessedX === "false" || preprocessedX.length === 0) {
+        return false;
+      } else {
+        return undefined;
+      }
+    })
+    .pipe(z.boolean()),
+});
+
+const DatabaseConfigSchema = z.object({
+  database: z.string().min(1),
+  options: DatabaseConfigOptionsSchema,
+  password: z.string(),
+  // 0 <= port <= 65535
+  // See more:
+  // https://datatracker.ietf.org/doc/html/rfc6335#section-6
+  port: z
+    .string()
+    .transform((x) => {
+      return x.trim().length > 0 ? Number(x) : 1433;
+    })
+    .pipe(z.int().gte(0).lte(65535)),
+  server: z
+    .string()
+    .transform((x) => {
+      return x.length > 0 ? x : "localhost";
+    })
+    .pipe(z.string().min(1)),
+  user: z.string().min(1),
+});
+
+type DatabaseConfig = z.infer<typeof DatabaseConfigSchema>;
+
+const databaseConfig: DatabaseConfig = DatabaseConfigSchema.parse({
+  database: process.env.DATABASE_NAME,
   options: {
-    encrypt: process.env.DATABASE_ENCRYPT?.toLowerCase() === "true",
-    trustServerCertificate:
-      process.env.DATABASE_TRUST_SERVER_CERTIFICATE?.toLowerCase() === "true",
+    encrypt: process.env.DATABASE_ENCRYPT,
+    trustServerCertificate: process.env.DATABASE_TRUST_SERVER_CERTIFICATE,
   },
-  password: process.env.DATABASE_PASSWORD ?? "",
-  port: Number(process.env.DATABASE_PORT) || 1433,
-  server: process.env.DATABASE_SERVER_NAME ?? "localhost",
-  user: process.env.DATABASE_USER ?? "",
-};
+  password: process.env.DATABASE_PASSWORD,
+  port: process.env.DATABASE_PORT,
+  server: process.env.DATABASE_SERVER_NAME,
+  user: process.env.DATABASE_USER,
+});
 
 export default databaseConfig;
