@@ -8,14 +8,17 @@ http:
   url: "{{baseURL}}/api/enduser"
   body:
     type: json
-    data: |-
-      {
-        "EndUserName": "{{process.env.TEMPORARY_END_USER_NAME}}",
-        "EndUserPassword": "{{process.env.TEMPORARY_END_USER_PASSWORD}}"
-      }
+    data: ""
   auth: inherit
 
 runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        req.setBody({
+          EndUserName: bru.getProcessEnv("TEMPORARY_END_USER_NAME"),
+          EndUserPassword: bru.getProcessEnv("TEMPORARY_END_USER_PASSWORD")
+        });
   assertions:
     - expression: res.body.EndUserID
       operator: isDefined
