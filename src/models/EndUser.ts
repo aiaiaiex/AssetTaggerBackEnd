@@ -5,6 +5,7 @@ export const EndUserSchema = z.object({
   EndUserID: z.uuid(),
   EndUserName: z
     .string()
+    .min(1)
     .max(50)
     .lowercase()
     .refine((x) => {
