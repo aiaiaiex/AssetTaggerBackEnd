@@ -26,7 +26,6 @@ export const createEndUser = async (req: Request, res: Response) => {
     .input("EndUserPassword", sql.NVarChar(255), EndUserPassword)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    // .output("EndUserID", sql.UniqueIdentifier)  // TODO Find out why this doesn't work.
     .execute<EndUser>("usp_CreateEndUser");
 
   const databaseRes = EndUserSchema.omit({ EndUserPasswordHash: true })
