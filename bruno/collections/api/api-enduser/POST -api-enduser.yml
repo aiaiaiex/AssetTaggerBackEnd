@@ -31,6 +31,15 @@ runtime:
       operator: isString
     - expression: res.body.EndUserID
       operator: isNotEmpty
+    - expression: res.body.EndUserName
+      operator: eq
+      value: "{{process.env.TEMPORARY_END_USER_NAME}}"
+    - expression: res.body.EndUserRoleID
+      operator: eq
+      value: "{{temporaryEndUserRoleID}}"
+    - expression: res.body.EmployeeID
+      operator: eq
+      value: "{{temporaryEmployeeID}}"
 
 settings:
   encodeUrl: true
