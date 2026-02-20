@@ -24,6 +24,8 @@ runtime:
           EndUserRoleID: bru.getVar("temporaryEndUserRoleID"),
           EmployeeID: bru.getVar("temporaryEmployeeID")
         });
+    - type: after-response
+      code: bru.setVar("temporaryEndUserID", res("EndUserID"));
   assertions:
     - expression: res.body.EndUserID
       operator: isDefined
