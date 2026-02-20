@@ -4,7 +4,7 @@ import { DatabaseServer, DatabaseServerSchema } from "../models/DatabaseServer";
 import { Root } from "../models/Root";
 
 export const readRoot = async (req: Request, res: Response) => {
-  const jsonRes: Root = { databaseReachable: true };
+  const output: Root = { databaseReachable: true };
 
   const { recordset } = await req.app.locals.database.query<DatabaseServer>(
     "SELECT @@SERVERNAME AS 'ServerName'",
@@ -17,8 +17,8 @@ export const readRoot = async (req: Request, res: Response) => {
 
   if (!result.success) {
     res.status(500);
-    jsonRes.databaseReachable = false;
+    output.databaseReachable = false;
   }
 
-  res.json(jsonRes);
+  res.json(output);
 };
