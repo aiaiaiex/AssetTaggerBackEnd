@@ -17,7 +17,9 @@ runtime:
       code: |-
         req.setBody({
           EndUserName: bru.getProcessEnv("TEMPORARY_END_USER_NAME"),
-          EndUserPassword: bru.getProcessEnv("TEMPORARY_END_USER_PASSWORD")
+          EndUserPassword: bru.getProcessEnv("TEMPORARY_END_USER_PASSWORD"),
+          EndUserRoleID: bru.getProcessEnv("TEMPORARY_END_USER_ROLE_ID") || undefined,
+          EmployeeID: bru.getProcessEnv("TEMPORARY_END_USER_EMPLOYEE_ID") || undefined
         });
   assertions:
     - expression: res.body.EndUserID
