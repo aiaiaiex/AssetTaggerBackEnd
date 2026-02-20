@@ -29,26 +29,7 @@ export const createEndUser = async (req: Request, res: Response) => {
     // .output("EndUserID", sql.UniqueIdentifier)  // TODO Find out why this doesn't work.
     .execute<EndUser>("usp_CreateEndUser");
 
-  const databaseRes = EndUserSchema.omit({
-    EndUserPassword: true,
-    EndUserPasswordHash: true,
-  })
-    .extend({
-      EmployeeID: z
-        .uuid()
-        .nullable()
-        .transform((x) => {
-          return x ?? undefined;
-        })
-        .pipe(z.uuid().optional()),
-      EndUserRoleID: z
-        .uuid()
-        .nullable()
-        .transform((x) => {
-          return x ?? undefined;
-        })
-        .pipe(z.uuid().optional()),
-    })
+  const databaseRes = EndUserSchema.omit({ EndUserPasswordHash: true })
     .array()
     .length(1)
     .safeParse(recordset);
