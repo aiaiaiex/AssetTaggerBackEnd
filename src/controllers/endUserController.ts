@@ -17,16 +17,38 @@ export const createEndUser = async (req: Request, res: Response) => {
     throw new ExpressError(z.prettifyError(reqRes.error), 400);
   }
 
-  const { EndUserName, EndUserPassword } = reqRes.data;
+  const { EmployeeID, EndUserName, EndUserPassword, EndUserRoleID } =
+    reqRes.data;
 
   const { recordset } = await req.app.locals.database
     .request()
     .input("EndUserName", sql.NVarChar(50), EndUserName)
     .input("EndUserPassword", sql.NVarChar(255), EndUserPassword)
+    .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
+    .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     // .output("EndUserID", sql.UniqueIdentifier)  // TODO Find out why this doesn't work.
     .execute<EndUser>("usp_CreateEndUser");
 
-  const databaseRes = EndUserSchema.pick({ EndUserID: true })
+  const databaseRes = EndUserSchema.omit({
+    EndUserPassword: true,
+    EndUserPasswordHash: true,
+  })
+    .extend({
+      EmployeeID: z
+        .uuid()
+        .nullable()
+        .transform((x) => {
+          return x ?? undefined;
+        })
+        .pipe(z.uuid().optional()),
+      EndUserRoleID: z
+        .uuid()
+        .nullable()
+        .transform((x) => {
+          return x ?? undefined;
+        })
+        .pipe(z.uuid().optional()),
+    })
     .array()
     .length(1)
     .safeParse(recordset);
