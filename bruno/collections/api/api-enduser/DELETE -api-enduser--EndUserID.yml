@@ -1,0 +1,30 @@
+info:
+  name: DELETE /api/enduser/:EndUserID
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{baseURL}}/api/enduser/{{temporaryEndUserID}}"
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.body.EndUserID
+      operator: eq
+      value: "{{temporaryEndUserID}}"
+    - expression: res.body.EndUserName
+      operator: eq
+      value: "{{process.env.TEMPORARY_END_USER_NAME}}"
+    - expression: res.body.EndUserRoleID
+      operator: eq
+      value: "{{temporaryEndUserRoleID}}"
+    - expression: res.body.EmployeeID
+      operator: eq
+      value: "{{temporaryEmployeeID}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
