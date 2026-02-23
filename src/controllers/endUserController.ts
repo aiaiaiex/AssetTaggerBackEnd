@@ -39,3 +39,31 @@ export const createEndUser = async (req: Request, res: Response) => {
 
   res.json(output.data[0]);
 };
+
+export const deleteEndUser = async (req: Request, res: Response) => {
+  const input = EndUserSchema.pick({
+    EndUserID: true,
+  }).safeParse(req.params);
+
+  if (!input.success) {
+    throw new ExpressError(z.prettifyError(input.error), 400);
+  }
+
+  const { EndUserID } = input.data;
+
+  const { recordset } = await req.app.locals.database
+    .request()
+    .input("EndUserID", sql.UniqueIdentifier, EndUserID)
+    .execute<EndUser>("usp_DeleteEndUser");
+
+  const output = EndUserSchema.omit({ EndUserPasswordHash: true })
+    .array()
+    .max(1)
+    .safeParse(recordset);
+
+  if (!output.success) {
+    throw new ExpressError(z.prettifyError(output.error), 500);
+  }
+
+  res.json(output.data[0]);
+};
