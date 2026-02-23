@@ -41,7 +41,7 @@ const DatabaseConfigSchema = z.object({
     .transform((x) => {
       return x.trim().length > 0 ? Number(x) : 1433;
     })
-    .pipe(z.int().gte(0).lte(65535)),
+    .pipe(z.int().min(0).max(65535)),
   server: z
     .string()
     .transform((x) => {

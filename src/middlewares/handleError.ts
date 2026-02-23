@@ -1,7 +1,7 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 import z from "zod";
 
-const StatusCodeSchema = z.int().gte(400).lte(599);
+const StatusCodeSchema = z.int().min(400).max(599);
 
 type StatusCode = z.infer<typeof StatusCodeSchema>;
 
