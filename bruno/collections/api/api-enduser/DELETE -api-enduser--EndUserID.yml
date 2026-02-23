@@ -15,13 +15,13 @@ runtime:
       value: "{{temporaryEndUserID}}"
     - expression: res.body.EndUserName
       operator: eq
-      value: "{{process.env.TEMPORARY_END_USER_NAME}}"
+      value: "{{process.env.UPDATED_TEMPORARY_END_USER_NAME}}"
     - expression: res.body.EndUserRoleID
       operator: eq
-      value: "{{temporaryEndUserRoleID}}"
+      value: "{{updatedTemporaryEndUserRoleID}}"
     - expression: res.body.EmployeeID
       operator: eq
-      value: "{{temporaryEmployeeID}}"
+      value: "{{updatedTemporaryEmployeeID}}"
 
 settings:
   encodeUrl: true
