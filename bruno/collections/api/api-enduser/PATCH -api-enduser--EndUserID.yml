@@ -1,0 +1,57 @@
+info:
+  name: PATCH /api/enduser/:EndUserID
+  type: http
+  seq: 3
+
+http:
+  method: PATCH
+  url: "{{baseURL}}/api/enduser/{{temporaryEndUserID}}"
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        bru.setVar("updatedTemporaryEndUserRoleID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_ROLE_ID") || null);
+        bru.setVar("updatedTemporaryEndUserEmployeeID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_EMPLOYEE_ID") || null);
+        bru.setVar("nullifyEndUserRoleID", Number(bru.getProcessEnv("NULLIFY_END_USER_ROLE_ID")));
+        bru.setVar("nullifyEndUserEmployeeID", Number(bru.getProcessEnv("NULLIFY_END_USER_EMPLOYEE_ID")));
+
+        req.setBody({
+          EndUserName: bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_NAME"),
+          EndUserRoleID: bru.getVar("updatedTemporaryEndUserRoleID"),
+          EmployeeID: bru.getVar("updatedTemporaryEndUserEmployeeID"),
+          NullifyEndUserRoleID: bru.getVar("nullifyEndUserRoleID"),
+          NullifyEmployeeID: bru.getVar("nullifyEndUserEmployeeID")
+        });
+  assertions:
+    - expression: res.body.EndUserID
+      operator: eq
+      value: "{{temporaryEndUserID}}"
+    - expression: res.body.EndUserName
+      operator: eq
+      value: "{{process.env.UPDATED_TEMPORARY_END_USER_NAME}}"
+    - expression: res.body.EndUserRoleID
+      operator: eq
+      value: "{{updatedTemporaryEndUserRoleID}}"
+    - expression: res.body.EmployeeID
+      operator: eq
+      value: "{{updatedTemporaryEmployeeID}}"
+    - expression: res.body.OldEndUserName
+      operator: eq
+      value: "{{process.env.TEMPORARY_END_USER_NAME}}"
+    - expression: res.body.OldEndUserRoleID
+      operator: eq
+      value: "{{temporaryEndUserRoleID}}"
+    - expression: res.body.OldEmployeeID
+      operator: eq
+      value: "{{temporaryEmployeeID}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
