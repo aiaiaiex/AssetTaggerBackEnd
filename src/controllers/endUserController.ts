@@ -28,7 +28,10 @@ export const createEndUser = async (req: Request, res: Response) => {
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .execute<EndUser>("usp_CreateEndUser");
 
-  const output = EndUserSchema.omit({ EndUserPasswordHash: true })
+  const output = EndUserSchema.omit({
+    EndUserPassword: true,
+    EndUserPasswordHash: true,
+  })
     .array()
     .length(1)
     .safeParse(recordset);
@@ -133,7 +136,10 @@ export const updateEndUser = async (req: Request, res: Response) => {
     .input("NullifyEmployeeID", sql.Bit, NullifyEmployeeID)
     .execute<EndUser>("usp_UpdateEndUser");
 
-  const output = EndUserSchema.omit({ EndUserPasswordHash: true })
+  const output = EndUserSchema.omit({
+    EndUserPassword: true,
+    EndUserPasswordHash: true,
+  })
     .extend({
       OldEmployeeID: EndUserSchema.shape.EmployeeID,
       OldEndUserName: EndUserSchema.shape.EndUserName,
@@ -166,7 +172,10 @@ export const deleteEndUser = async (req: Request, res: Response) => {
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
     .execute<EndUser>("usp_DeleteEndUser");
 
-  const output = EndUserSchema.omit({ EndUserPasswordHash: true })
+  const output = EndUserSchema.omit({
+    EndUserPassword: true,
+    EndUserPasswordHash: true,
+  })
     .array()
     .max(1)
     .safeParse(recordset);
