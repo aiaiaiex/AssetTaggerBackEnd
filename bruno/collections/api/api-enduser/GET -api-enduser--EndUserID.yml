@@ -1,7 +1,7 @@
 info:
   name: GET /api/enduser/:EndUserID
   type: http
-  seq: 4
+  seq: 3
 
 http:
   method: GET
