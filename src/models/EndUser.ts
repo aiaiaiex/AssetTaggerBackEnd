@@ -1,8 +1,8 @@
 import z from "zod";
 
 export const EndUserSchema = z.object({
-  EmployeeID: z.uuid().nullable(),
-  EndUserID: z.uuid(),
+  EmployeeID: z.uuid({ version: "v4" }).nullable(),
+  EndUserID: z.uuid({ version: "v4" }),
   EndUserName: z
     .stringFormat("no-whitespace", /^[^\s]*$/, {
       error: "Has whitespace: expected string to NOT have whitespace",
@@ -12,7 +12,7 @@ export const EndUserSchema = z.object({
     .lowercase(),
   EndUserPassword: z.string().max(255).optional(), // Optional because it is not in the database.
   EndUserPasswordHash: z.string().length(32),
-  EndUserRoleID: z.uuid().nullable(),
+  EndUserRoleID: z.uuid({ version: "v4" }).nullable(),
 });
 
 export type EndUser = z.infer<typeof EndUserSchema>;
