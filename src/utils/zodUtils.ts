@@ -7,19 +7,17 @@ export function zodStringToNumber<
     number | undefined,
     z4.$ZodTypeInternals<unknown, number | undefined>
   >,
->(
-  zodSchema: T,
-  prefaultValue?: number,
-  emptyStringValue = NaN, // This is also returned when a string only has whitespace.
-) {
+>(zodSchema: T, prefaultValue?: number, emptyStringValue = NaN) {
   return z
-    .string()
+    .stringFormat("no-whitespace", /^[^\s]*$/, {
+      error: "Has whitespace: expected string to NOT have whitespace",
+    })
     .optional()
     .transform((x) => {
       if (typeof x === "string") {
-        // x.trim().length > 0 is called to prevent calling Number() with an empty string or a string with only whitespace which results to the number 0.
+        // x.length > 0 is checked to prevent calling Number() with an empty string (or a string with only whitespace which is impossible in this case) which results to the number 0.
         // Change emptyStringValue to 0 to revert back to Number()'s default behavior.
-        return x.trim().length > 0 ? Number(x) : emptyStringValue;
+        return x.length > 0 ? Number(x) : emptyStringValue;
       } else {
         return prefaultValue;
       }
