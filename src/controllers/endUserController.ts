@@ -112,22 +112,22 @@ export const readEndUsers = async (req: Request, res: Response) => {
     GetOnlyNullEndUserRoleID,
   } = input.data;
 
-  if (EndUserRoleID !== null && GetOnlyNullEndUserRoleID === 1) {
+  if (GetOnlyNullEndUserRoleID === 1 && EndUserRoleID !== null) {
     throw new ExpressError(
       "Cannot get rows with null EndUserRoleID when EndUserRoleID query is used!",
       400,
     );
-  } else if (EndUserRoleID !== null && GetOnlyNonNullEndUserRoleID === 1) {
+  } else if (GetOnlyNonNullEndUserRoleID === 1 && EndUserRoleID !== null) {
     throw new ExpressError(
       "Cannot get all rows with non-null EndUserRoleID when EndUserRoleID query is used!",
       400,
     );
-  } else if (EmployeeID !== null && GetOnlyNullEmployeeID === 1) {
+  } else if (GetOnlyNullEmployeeID === 1 && EmployeeID !== null) {
     throw new ExpressError(
       "Cannot get rows with null EmployeeID when EmployeeID query is used!",
       400,
     );
-  } else if (EmployeeID !== null && GetOnlyNonNullEmployeeID === 1) {
+  } else if (GetOnlyNonNullEmployeeID === 1 && EmployeeID !== null) {
     throw new ExpressError(
       "Cannot get all rows with non-null EmployeeID when EmployeeID query is used!",
       400,
