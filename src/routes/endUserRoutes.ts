@@ -4,6 +4,7 @@ import {
   createEndUser,
   deleteEndUser,
   readEndUser,
+  readEndUsers,
   updateEndUser,
 } from "../controllers/endUserController";
 
@@ -11,6 +12,7 @@ const endUserRoutes = Router();
 
 endUserRoutes.post("/", createEndUser);
 endUserRoutes.get("/:EndUserID", readEndUser);
+endUserRoutes.get("/", readEndUsers);
 endUserRoutes.patch("/:EndUserID", updateEndUser);
 endUserRoutes.delete("/:EndUserID", deleteEndUser);
 
