@@ -1,0 +1,30 @@
+info:
+  name: GET /api/enduser
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{baseURL}}/api/enduser"
+  auth: inherit
+
+runtime:
+  assertions:
+    - expression: res.body[0].EndUserID
+      operator: eq
+      value: "{{temporaryEndUserID}}"
+    - expression: res.body[0].EndUserName
+      operator: eq
+      value: "{{process.env.UPDATED_TEMPORARY_END_USER_NAME}}"
+    - expression: res.body[0].EndUserRoleID
+      operator: eq
+      value: "{{updatedTemporaryEndUserRoleID}}"
+    - expression: res.body[0].EmployeeID
+      operator: eq
+      value: "{{updatedTemporaryEndUserEmployeeID}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
