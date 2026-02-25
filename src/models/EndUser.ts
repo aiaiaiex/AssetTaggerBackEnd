@@ -4,13 +4,12 @@ export const EndUserSchema = z.object({
   EmployeeID: z.uuid().nullable(),
   EndUserID: z.uuid(),
   EndUserName: z
-    .string()
+    .stringFormat("no-whitespace", /^[^\s]*$/, {
+      error: "Has whitespace: expected string to NOT have whitespace",
+    })
     .min(1)
     .max(50)
-    .lowercase()
-    .refine((x) => {
-      return x.search(/\s/) === -1;
-    }, "Should not have whitespace!"),
+    .lowercase(),
   EndUserPassword: z.string().max(255).optional(), // Optional because it is not in the database.
   EndUserPasswordHash: z.string().length(32),
   EndUserRoleID: z.uuid().nullable(),
