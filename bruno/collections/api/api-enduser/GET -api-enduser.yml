@@ -1,7 +1,7 @@
 info:
   name: GET /api/enduser
   type: http
-  seq: 5
+  seq: 3
 
 http:
   method: GET
