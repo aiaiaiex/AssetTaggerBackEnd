@@ -11,8 +11,8 @@ import {
 const endUserRoutes = Router();
 
 endUserRoutes.post("/", createEndUser);
-endUserRoutes.get("/:EndUserID", readEndUser);
 endUserRoutes.get("/", readEndUsers);
+endUserRoutes.get("/:EndUserID", readEndUser);
 endUserRoutes.patch("/:EndUserID", updateEndUser);
 endUserRoutes.delete("/:EndUserID", deleteEndUser);
 
