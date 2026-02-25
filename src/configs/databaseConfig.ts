@@ -3,32 +3,16 @@ import z from "zod";
 import { zodStringToNumber } from "../utils/zodUtils";
 
 const DatabaseConfigOptionsSchema = z.object({
-  encrypt: z
-    .string()
-    .transform((x) => {
-      const preprocessedX = x.trim().toLowerCase();
-      if (preprocessedX === "true" || preprocessedX.length === 0) {
-        return true;
-      } else if (preprocessedX === "false") {
-        return false;
-      } else {
-        return undefined;
-      }
-    })
-    .pipe(z.boolean()),
-  trustServerCertificate: z
-    .string()
-    .transform((x) => {
-      const preprocessedX = x.trim().toLowerCase();
-      if (preprocessedX === "true") {
-        return true;
-      } else if (preprocessedX === "false" || preprocessedX.length === 0) {
-        return false;
-      } else {
-        return undefined;
-      }
-    })
-    .pipe(z.boolean()),
+  encrypt: z.stringbool({
+    case: "sensitive",
+    falsy: ["false"],
+    truthy: ["true", ""], // Empty strings default to true.
+  }),
+  trustServerCertificate: z.stringbool({
+    case: "sensitive",
+    falsy: ["false", ""], // Empty strings default to false.
+    truthy: ["true"],
+  }),
 });
 
 const DatabaseConfigSchema = z.object({
