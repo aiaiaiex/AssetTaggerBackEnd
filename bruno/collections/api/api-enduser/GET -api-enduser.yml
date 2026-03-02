@@ -18,7 +18,7 @@ runtime:
       value: "{{process.env.UPDATED_TEMPORARY_END_USER_NAME}}"
     - expression: res.body[0].EndUserRoleID
       operator: eq
-      value: "{{updatedTemporaryEndUserRoleID}}"
+      value: "{{updatedTemporaryEndUserEndUserRoleID}}"
     - expression: res.body[0].EmployeeID
       operator: eq
       value: "{{updatedTemporaryEndUserEmployeeID}}"

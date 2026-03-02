@@ -15,14 +15,14 @@ runtime:
   scripts:
     - type: before-request
       code: |-
-        bru.setVar("temporaryEndUserRoleID", bru.getProcessEnv("TEMPORARY_END_USER_ROLE_ID") || null);
-        bru.setVar("temporaryEmployeeID", bru.getProcessEnv("TEMPORARY_END_USER_EMPLOYEE_ID") || null);
+        bru.setVar("temporaryEndUserEndUserRoleID", bru.getProcessEnv("TEMPORARY_END_USER_END_USER_ROLE_ID") || null);
+        bru.setVar("temporaryEndUserEmployeeID", bru.getProcessEnv("TEMPORARY_END_USER_EMPLOYEE_ID") || null);
 
         req.setBody({
           EndUserName: bru.getProcessEnv("TEMPORARY_END_USER_NAME"),
           EndUserPassword: bru.getProcessEnv("TEMPORARY_END_USER_PASSWORD"),
-          EndUserRoleID: bru.getVar("temporaryEndUserRoleID"),
-          EmployeeID: bru.getVar("temporaryEmployeeID")
+          EndUserRoleID: bru.getVar("temporaryEndUserEndUserRoleID"),
+          EmployeeID: bru.getVar("temporaryEndUserEmployeeID")
         });
     - type: after-response
       code: bru.setVar("temporaryEndUserID", res("EndUserID"));
@@ -38,10 +38,10 @@ runtime:
       value: "{{process.env.TEMPORARY_END_USER_NAME}}"
     - expression: res.body.EndUserRoleID
       operator: eq
-      value: "{{temporaryEndUserRoleID}}"
+      value: "{{temporaryEndUserEndUserRoleID}}"
     - expression: res.body.EmployeeID
       operator: eq
-      value: "{{temporaryEmployeeID}}"
+      value: "{{temporaryEndUserEmployeeID}}"
 
 settings:
   encodeUrl: true
