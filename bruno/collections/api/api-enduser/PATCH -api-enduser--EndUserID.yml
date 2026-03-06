@@ -17,15 +17,11 @@ runtime:
       code: |-
         bru.setVar("updatedTemporaryEndUserEndUserRoleID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_END_USER_ROLE_ID") || null);
         bru.setVar("updatedTemporaryEndUserEmployeeID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_EMPLOYEE_ID") || null);
-        bru.setVar("nullifyEndUserRoleID", Number(bru.getProcessEnv("NULLIFY_END_USER_ROLE_ID")));
-        bru.setVar("nullifyEndUserEmployeeID", Number(bru.getProcessEnv("NULLIFY_END_USER_EMPLOYEE_ID")));
 
         req.setBody({
           EndUserName: bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_NAME"),
           EndUserRoleID: bru.getVar("updatedTemporaryEndUserEndUserRoleID"),
-          EmployeeID: bru.getVar("updatedTemporaryEndUserEmployeeID"),
-          NullifyEndUserRoleID: bru.getVar("nullifyEndUserRoleID"),
-          NullifyEmployeeID: bru.getVar("nullifyEndUserEmployeeID")
+          EmployeeID: bru.getVar("updatedTemporaryEndUserEmployeeID")
         });
   assertions:
     - expression: res.body.EndUserID
