@@ -4,11 +4,12 @@ import z from "zod";
 
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
+import { NonNullishConstantsSchema } from "../models/NonNullishConstants";
 import {
   NULLISH_UNIQUEIDENTIFIER,
   NullishConstantsSchema,
 } from "../models/NullishConstants";
-import { zodStringToNumber } from "../utils/zodUtils";
+import { zodParseNull } from "../utils/zodUtils";
 
 export const createEndUser = async (req: Request, res: Response) => {
   const input = EndUserSchema.omit({
@@ -86,19 +87,24 @@ export const readEndUsers = async (req: Request, res: Response) => {
     EndUserPasswordHash: true,
   })
     .extend({
-      // EndUserName and *ID queries can only become null when not used (i.e., undefined).
-      EmployeeID: EndUserSchema.shape.EmployeeID.prefault(null),
-      EndUserName: EndUserSchema.shape.EndUserName.nullable().prefault(null),
-      EndUserRoleID: EndUserSchema.shape.EndUserRoleID.prefault(null),
-      // Default to 1 (true) whet Get* queries are used with empty strings.
-      GetOnlyNonNullEmployeeID: zodStringToNumber(z.int().min(0).max(1), 0, 1),
-      GetOnlyNonNullEndUserRoleID: zodStringToNumber(
-        z.int().min(0).max(1),
-        0,
-        1,
+      EmployeeID: z
+        .xor([
+          zodParseNull(EndUserSchema.shape.EmployeeID),
+          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
+          NonNullishConstantsSchema.shape.NON_NULLISH_UNIQUEIDENTIFIER,
+        ])
+        .prefault(NULLISH_UNIQUEIDENTIFIER),
+      EndUserName: zodParseNull(
+        EndUserSchema.shape.EndUserName.nullable(),
+        null,
       ),
-      GetOnlyNullEmployeeID: zodStringToNumber(z.int().min(0).max(1), 0, 1),
-      GetOnlyNullEndUserRoleID: zodStringToNumber(z.int().min(0).max(1), 0, 1),
+      EndUserRoleID: z
+        .xor([
+          zodParseNull(EndUserSchema.shape.EndUserRoleID),
+          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
+          NonNullishConstantsSchema.shape.NON_NULLISH_UNIQUEIDENTIFIER,
+        ])
+        .prefault(NULLISH_UNIQUEIDENTIFIER),
     })
     .safeParse(req.query);
 
@@ -106,60 +112,13 @@ export const readEndUsers = async (req: Request, res: Response) => {
     throw new ExpressError(z.prettifyError(input.error), 400);
   }
 
-  const {
-    EmployeeID,
-    EndUserName,
-    EndUserRoleID,
-    GetOnlyNonNullEmployeeID,
-    GetOnlyNonNullEndUserRoleID,
-    GetOnlyNullEmployeeID,
-    GetOnlyNullEndUserRoleID,
-  } = input.data;
-
-  if (GetOnlyNullEndUserRoleID === 1 && EndUserRoleID !== null) {
-    throw new ExpressError(
-      "Cannot get rows with null EndUserRoleID when EndUserRoleID query is used!",
-      400,
-    );
-  } else if (GetOnlyNonNullEndUserRoleID === 1 && EndUserRoleID !== null) {
-    throw new ExpressError(
-      "Cannot get all rows with non-null EndUserRoleID when EndUserRoleID query is used!",
-      400,
-    );
-  } else if (GetOnlyNullEmployeeID === 1 && EmployeeID !== null) {
-    throw new ExpressError(
-      "Cannot get rows with null EmployeeID when EmployeeID query is used!",
-      400,
-    );
-  } else if (GetOnlyNonNullEmployeeID === 1 && EmployeeID !== null) {
-    throw new ExpressError(
-      "Cannot get all rows with non-null EmployeeID when EmployeeID query is used!",
-      400,
-    );
-  } else if (
-    GetOnlyNullEndUserRoleID === 1 &&
-    GetOnlyNonNullEndUserRoleID === 1
-  ) {
-    throw new ExpressError(
-      "GetOnlyNullEndUserRoleID and GetOnlyNonNullEndUserRoleID cannot be both 1!",
-      400,
-    );
-  } else if (GetOnlyNullEmployeeID === 1 && GetOnlyNonNullEmployeeID === 1) {
-    throw new ExpressError(
-      "GetOnlyNullEmployeeID and GetOnlyNonNullEmployeeID cannot be both 1!",
-      400,
-    );
-  }
+  const { EmployeeID, EndUserName, EndUserRoleID } = input.data;
 
   const { recordset } = await req.app.locals.database
     .request()
     .input("EndUserName", sql.NVarChar(50), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    .input("GetOnlyNullEndUserRoleID", sql.Bit, GetOnlyNullEndUserRoleID)
-    .input("GetOnlyNullEmployeeID", sql.Bit, GetOnlyNullEmployeeID)
-    .input("GetOnlyNonNullEndUserRoleID", sql.Bit, GetOnlyNonNullEndUserRoleID)
-    .input("GetOnlyNonNullEmployeeID", sql.Bit, GetOnlyNonNullEmployeeID)
     .execute<EndUser>("usp_ReadEndUser");
 
   const output = EndUserSchema.omit({
