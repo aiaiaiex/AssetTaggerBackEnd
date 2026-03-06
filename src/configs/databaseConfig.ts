@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { zodStringToNumber } from "../utils/zodUtils";
+import { zodParseNumber } from "../utils/zodUtils";
 
 const DatabaseConfigOptionsSchema = z.object({
   encrypt: z.stringbool({
@@ -22,7 +22,7 @@ const DatabaseConfigSchema = z.object({
   // 0 <= port <= 65535
   // See more:
   // https://datatracker.ietf.org/doc/html/rfc6335#section-6
-  port: zodStringToNumber(z.int().min(0).max(65535), undefined, 1433),
+  port: zodParseNumber(z.int().min(0).max(65535), undefined, 1433),
   server: z
     .string()
     .transform((x) => {

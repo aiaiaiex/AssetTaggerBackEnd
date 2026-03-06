@@ -31,7 +31,7 @@ export function zodParseNull<
     .pipe(zodSchema);
 }
 
-export function zodStringToNumber<
+export function zodParseNumber<
   T extends z4.$ZodType<null | number | string | undefined>,
 >(
   zodSchema: T,
