@@ -1,6 +1,36 @@
 import z from "zod";
 import * as z4 from "zod/v4/core";
 
+export function zodParseNull<
+  T extends z4.$ZodType<
+    unknown,
+    null | string | undefined,
+    z4.$ZodTypeInternals<unknown, null | string | undefined>
+  >,
+>(
+  zodSchema: T,
+  prefaultValue?: null | string,
+  emptyStringValue: null | string | undefined = "",
+) {
+  return z
+    .transform((x) => {
+      if (typeof x === "string") {
+        if (x === "null") {
+          return null;
+        } else if (x.length === 0) {
+          return emptyStringValue;
+        } else {
+          return x;
+        }
+      } else if (typeof x === "undefined") {
+        return prefaultValue;
+      } else {
+        return x;
+      }
+    })
+    .pipe(zodSchema);
+}
+
 export function zodStringToNumber<
   T extends z4.$ZodType<
     unknown,
