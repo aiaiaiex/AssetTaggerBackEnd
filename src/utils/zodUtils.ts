@@ -1,13 +1,7 @@
 import z from "zod";
 import * as z4 from "zod/v4/core";
 
-export function zodParseNull<
-  T extends z4.$ZodType<
-    unknown,
-    null | string | undefined,
-    z4.$ZodTypeInternals<unknown, null | string | undefined>
-  >,
->(
+export function zodParseNull<T extends z4.$ZodType<null | string | undefined>>(
   zodSchema: T,
   prefaultValue?: null | string,
   emptyStringValue: null | string | undefined = "",
