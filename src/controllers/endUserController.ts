@@ -4,6 +4,10 @@ import z from "zod";
 
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
+import {
+  NULLISH_UNIQUEIDENTIFIER,
+  NullishConstantsSchema,
+} from "../models/NullishConstants";
 import { zodStringToNumber } from "../utils/zodUtils";
 
 export const createEndUser = async (req: Request, res: Response) => {
@@ -189,9 +193,19 @@ export const updateEndUser = async (req: Request, res: Response) => {
     EndUserPasswordHash: true,
   })
     .extend({
-      EndUserName: EndUserSchema.shape.EndUserName.nullable(),
-      NullifyEmployeeID: z.int().min(0).max(1).prefault(0),
-      NullifyEndUserRoleID: z.int().min(0).max(1).prefault(0),
+      EmployeeID: z
+        .xor([
+          EndUserSchema.shape.EmployeeID,
+          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
+        ])
+        .prefault(NULLISH_UNIQUEIDENTIFIER),
+      EndUserName: EndUserSchema.shape.EndUserName.nullable().prefault(null),
+      EndUserRoleID: z
+        .xor([
+          EndUserSchema.shape.EndUserRoleID,
+          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
+        ])
+        .prefault(NULLISH_UNIQUEIDENTIFIER),
     })
     .safeParse(req.body);
 
@@ -199,29 +213,14 @@ export const updateEndUser = async (req: Request, res: Response) => {
     throw new ExpressError(z.prettifyError(bodyInput.error), 400);
   }
 
-  const {
-    EmployeeID,
-    EndUserName,
-    EndUserRoleID,
-    NullifyEmployeeID,
-    NullifyEndUserRoleID,
-  } = bodyInput.data;
+  const { EmployeeID, EndUserName, EndUserRoleID } = bodyInput.data;
 
   if (
-    !(
-      EndUserName ||
-      EndUserRoleID ||
-      EmployeeID ||
-      NullifyEndUserRoleID ||
-      NullifyEmployeeID
-    )
+    EndUserName === null &&
+    EndUserRoleID === NULLISH_UNIQUEIDENTIFIER &&
+    EmployeeID === NULLISH_UNIQUEIDENTIFIER
   ) {
-    throw new ExpressError("Cannot update without values!", 400);
-  } else if (
-    (NullifyEndUserRoleID && EndUserRoleID) ||
-    (NullifyEmployeeID && EmployeeID)
-  ) {
-    throw new ExpressError("Cannot nullify with a non-null value!", 400);
+    throw new ExpressError("Cannot update with only default values!", 400);
   }
 
   const { recordset } = await req.app.locals.database
@@ -230,8 +229,6 @@ export const updateEndUser = async (req: Request, res: Response) => {
     .input("EndUserName", sql.NVarChar(50), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    .input("NullifyEndUserRoleID", sql.Bit, NullifyEndUserRoleID)
-    .input("NullifyEmployeeID", sql.Bit, NullifyEmployeeID)
     .execute<EndUser>("usp_UpdateEndUser");
 
   const output = EndUserSchema.omit({
