@@ -15,11 +15,11 @@ runtime:
   scripts:
     - type: before-request
       code: |-
-        bru.setVar("updatedTemporaryEndUserEndUserRoleID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_END_USER_ROLE_ID") || null);
-        bru.setVar("updatedTemporaryEndUserEmployeeID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_EMPLOYEE_ID") || null);
+        bru.setVar("updatedTemporaryEndUserEndUserRoleID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_END_USER_ROLE_ID") || bru.getVar("temporaryEndUserEndUserRoleID"));
+        bru.setVar("updatedTemporaryEndUserEmployeeID", bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_EMPLOYEE_ID") || bru.getVar("temporaryEndUserEmployeeID"));
 
         req.setBody({
-          EndUserName: bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_NAME"),
+          EndUserName: bru.getProcessEnv("UPDATED_TEMPORARY_END_USER_NAME") || bru.getProcessEnv("TEMPORARY_END_USER_NAME"),
           EndUserRoleID: bru.getVar("updatedTemporaryEndUserEndUserRoleID"),
           EmployeeID: bru.getVar("updatedTemporaryEndUserEmployeeID")
         });
