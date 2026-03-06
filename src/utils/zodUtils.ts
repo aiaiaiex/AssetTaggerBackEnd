@@ -11,10 +11,8 @@ export function zodParseNull<T extends z4.$ZodType<null | string | undefined>>(
       if (typeof x === "string") {
         if (x === "null") {
           return null;
-        } else if (x.length === 0) {
-          return emptyStringValue;
         } else {
-          return x;
+          return x.length > 0 ? x : emptyStringValue;
         }
       } else if (typeof x === "undefined") {
         return prefaultValue;
