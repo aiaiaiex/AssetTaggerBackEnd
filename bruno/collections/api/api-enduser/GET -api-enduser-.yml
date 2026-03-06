@@ -18,22 +18,6 @@ http:
       value: ""
       type: query
       disabled: true
-    - name: GetOnlyNullEndUserRoleID
-      value: ""
-      type: query
-      disabled: true
-    - name: GetOnlyNullEmployeeID
-      value: ""
-      type: query
-      disabled: true
-    - name: GetOnlyNonNullEndUserRoleID
-      value: ""
-      type: query
-      disabled: true
-    - name: GetOnlyNonNullEmployeeID
-      value: ""
-      type: query
-      disabled: true
   auth: inherit
 
 runtime:
