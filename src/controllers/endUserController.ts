@@ -1,17 +1,23 @@
-import { Request, Response } from "express";
+import { Response } from "express";
+import { Request } from "express-jwt";
 import sql from "mssql";
 import z from "zod";
 
-import { NonNullishConstantsSchema } from "../constants/NonNullishConstants";
-import {
-  NULLISH_UNIQUEIDENTIFIER,
-  NullishConstantsSchema,
-} from "../constants/NullishConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { zodParseNull } from "../utils/zodUtils";
 
 export const createEndUser = async (req: Request, res: Response) => {
+  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
+    req.auth,
+  );
+
+  if (!cookieInput.success) {
+    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  }
+
+  const { EndUserID: CallingEndUserID } = cookieInput.data;
+
   const input = EndUserSchema.omit({
     EndUserID: true,
     EndUserPasswordHash: true,
@@ -28,8 +34,9 @@ export const createEndUser = async (req: Request, res: Response) => {
 
   const { recordset } = await req.app.locals.database
     .request()
-    .input("EndUserName", sql.NVarChar(50), EndUserName)
-    .input("EndUserPassword", sql.NVarChar(255), EndUserPassword)
+    .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
+    .input("EndUserName", sql.NVarChar(4000), EndUserName)
+    .input("EndUserPassword", sql.NVarChar(4000), EndUserPassword)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .execute<EndUser>("usp_CreateEndUser");
@@ -50,6 +57,16 @@ export const createEndUser = async (req: Request, res: Response) => {
 };
 
 export const readEndUser = async (req: Request, res: Response) => {
+  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
+    req.auth,
+  );
+
+  if (!cookieInput.success) {
+    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  }
+
+  const { EndUserID: CallingEndUserID } = cookieInput.data;
+
   const input = EndUserSchema.pick({
     EndUserID: true,
   }).safeParse(req.params);
@@ -62,6 +79,7 @@ export const readEndUser = async (req: Request, res: Response) => {
 
   const { recordset } = await req.app.locals.database
     .request()
+    .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
     .execute<EndUser>("usp_ReadEndUser");
 
@@ -81,30 +99,31 @@ export const readEndUser = async (req: Request, res: Response) => {
 };
 
 export const readEndUsers = async (req: Request, res: Response) => {
+  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
+    req.auth,
+  );
+
+  if (!cookieInput.success) {
+    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  }
+
+  const { EndUserID: CallingEndUserID } = cookieInput.data;
+
   const input = EndUserSchema.omit({
     EndUserID: true,
     EndUserPassword: true,
     EndUserPasswordHash: true,
   })
     .extend({
-      EmployeeID: z
-        .xor([
-          zodParseNull(EndUserSchema.shape.EmployeeID),
-          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
-          NonNullishConstantsSchema.shape.NON_NULLISH_UNIQUEIDENTIFIER,
-        ])
-        .prefault(NULLISH_UNIQUEIDENTIFIER),
+      EmployeeID: zodParseNull(EndUserSchema.shape.EmployeeID.nullable(), null),
       EndUserName: zodParseNull(
         EndUserSchema.shape.EndUserName.nullable(),
         null,
       ),
-      EndUserRoleID: z
-        .xor([
-          zodParseNull(EndUserSchema.shape.EndUserRoleID),
-          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
-          NonNullishConstantsSchema.shape.NON_NULLISH_UNIQUEIDENTIFIER,
-        ])
-        .prefault(NULLISH_UNIQUEIDENTIFIER),
+      EndUserRoleID: zodParseNull(
+        EndUserSchema.shape.EndUserRoleID.nullable(),
+        null,
+      ),
     })
     .safeParse(req.query);
 
@@ -116,7 +135,8 @@ export const readEndUsers = async (req: Request, res: Response) => {
 
   const { recordset } = await req.app.locals.database
     .request()
-    .input("EndUserName", sql.NVarChar(50), EndUserName)
+    .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
+    .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .execute<EndUser>("usp_ReadEndUser");
@@ -136,6 +156,16 @@ export const readEndUsers = async (req: Request, res: Response) => {
 };
 
 export const updateEndUser = async (req: Request, res: Response) => {
+  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
+    req.auth,
+  );
+
+  if (!cookieInput.success) {
+    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  }
+
+  const { EndUserID: CallingEndUserID } = cookieInput.data;
+
   const paramsInput = EndUserSchema.pick({
     EndUserID: true,
   }).safeParse(req.params);
@@ -152,19 +182,10 @@ export const updateEndUser = async (req: Request, res: Response) => {
     EndUserPasswordHash: true,
   })
     .extend({
-      EmployeeID: z
-        .xor([
-          EndUserSchema.shape.EmployeeID,
-          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
-        ])
-        .prefault(NULLISH_UNIQUEIDENTIFIER),
+      EmployeeID: EndUserSchema.shape.EmployeeID.nullable().prefault(null),
       EndUserName: EndUserSchema.shape.EndUserName.nullable().prefault(null),
-      EndUserRoleID: z
-        .xor([
-          EndUserSchema.shape.EndUserRoleID,
-          NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
-        ])
-        .prefault(NULLISH_UNIQUEIDENTIFIER),
+      EndUserRoleID:
+        EndUserSchema.shape.EndUserRoleID.nullable().prefault(null),
     })
     .safeParse(req.body);
 
@@ -174,18 +195,15 @@ export const updateEndUser = async (req: Request, res: Response) => {
 
   const { EmployeeID, EndUserName, EndUserRoleID } = bodyInput.data;
 
-  if (
-    EndUserName === null &&
-    EndUserRoleID === NULLISH_UNIQUEIDENTIFIER &&
-    EmployeeID === NULLISH_UNIQUEIDENTIFIER
-  ) {
+  if (EndUserName === null && EndUserRoleID === null && EmployeeID === null) {
     throw new ExpressError("Cannot update with only default values!", 400);
   }
 
   const { recordset } = await req.app.locals.database
     .request()
+    .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
-    .input("EndUserName", sql.NVarChar(50), EndUserName)
+    .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .execute<EndUser>("usp_UpdateEndUser");
@@ -211,6 +229,16 @@ export const updateEndUser = async (req: Request, res: Response) => {
 };
 
 export const deleteEndUser = async (req: Request, res: Response) => {
+  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
+    req.auth,
+  );
+
+  if (!cookieInput.success) {
+    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  }
+
+  const { EndUserID: CallingEndUserID } = cookieInput.data;
+
   const input = EndUserSchema.pick({
     EndUserID: true,
   }).safeParse(req.params);
@@ -223,6 +251,7 @@ export const deleteEndUser = async (req: Request, res: Response) => {
 
   const { recordset } = await req.app.locals.database
     .request()
+    .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
     .execute<EndUser>("usp_DeleteEndUser");
 
