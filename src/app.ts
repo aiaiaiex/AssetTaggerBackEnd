@@ -12,7 +12,22 @@ import routes from "./routes/routes";
 
 const app = express();
 
-app.use([logRequest, acknowledgeFaviconRequest, json(), cookieParser()]);
+app.use([
+  logRequest,
+  acknowledgeFaviconRequest,
+  json(),
+  cookieParser(),
+  expressjwt({
+    algorithms: ["HS256"],
+    getToken: (req: Request) => {
+      const cookies = req.cookies as { access_token: string };
+      return z.jwt({ alg: "HS256" }).parse(cookies.access_token);
+    },
+    secret: "secret",
+  }).unless({
+    path: [/^\/api$/, /^\/api\/authentication\/.*$/],
+  }),
+]);
 
 app.use("/api", routes);
 
