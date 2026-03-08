@@ -1,4 +1,7 @@
+import cookieParser from "cookie-parser";
 import express, { json } from "express";
+import { expressjwt, Request } from "express-jwt";
+import z from "zod";
 
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
@@ -9,7 +12,7 @@ import routes from "./routes/routes";
 
 const app = express();
 
-app.use([logRequest, acknowledgeFaviconRequest, json()]);
+app.use([logRequest, acknowledgeFaviconRequest, json(), cookieParser()]);
 
 app.use("/api", routes);
 
