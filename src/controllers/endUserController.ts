@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import sql from "mssql";
 import z from "zod";
 
-import { ExpressError } from "../middlewares/handleError";
-import { EndUser, EndUserSchema } from "../models/EndUser";
-import { NonNullishConstantsSchema } from "../models/NonNullishConstants";
+import { NonNullishConstantsSchema } from "../constants/NonNullishConstants";
 import {
   NULLISH_UNIQUEIDENTIFIER,
   NullishConstantsSchema,
-} from "../models/NullishConstants";
+} from "../constants/NullishConstants";
+import { ExpressError } from "../middlewares/handleError";
+import { EndUser, EndUserSchema } from "../models/EndUser";
 import { zodParseNull } from "../utils/zodUtils";
 
 export const createEndUser = async (req: Request, res: Response) => {
