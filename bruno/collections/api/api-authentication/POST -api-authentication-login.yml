@@ -1,0 +1,27 @@
+info:
+  name: POST /api/authentication/login
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/authentication/login"
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        req.setBody({
+          EndUserName: "admin",
+          EndUserPassword: "admin",
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
