@@ -8,15 +8,13 @@ import { EndUser, EndUserSchema } from "../models/EndUser";
 import { zodParseNull } from "../utils/zodUtils";
 
 export const createEndUser = async (req: Request, res: Response) => {
-  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
-    req.auth,
-  );
+  const payload = EndUserSchema.pick({ EndUserID: true }).safeParse(req.auth);
 
-  if (!cookieInput.success) {
-    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  if (!payload.success) {
+    throw new ExpressError(z.prettifyError(payload.error), 400);
   }
 
-  const { EndUserID: CallingEndUserID } = cookieInput.data;
+  const { EndUserID: CallingEndUserID } = payload.data;
 
   const input = EndUserSchema.omit({
     EndUserID: true,
@@ -57,15 +55,13 @@ export const createEndUser = async (req: Request, res: Response) => {
 };
 
 export const readEndUser = async (req: Request, res: Response) => {
-  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
-    req.auth,
-  );
+  const payload = EndUserSchema.pick({ EndUserID: true }).safeParse(req.auth);
 
-  if (!cookieInput.success) {
-    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  if (!payload.success) {
+    throw new ExpressError(z.prettifyError(payload.error), 400);
   }
 
-  const { EndUserID: CallingEndUserID } = cookieInput.data;
+  const { EndUserID: CallingEndUserID } = payload.data;
 
   const input = EndUserSchema.pick({
     EndUserID: true,
@@ -99,15 +95,13 @@ export const readEndUser = async (req: Request, res: Response) => {
 };
 
 export const readEndUsers = async (req: Request, res: Response) => {
-  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
-    req.auth,
-  );
+  const payload = EndUserSchema.pick({ EndUserID: true }).safeParse(req.auth);
 
-  if (!cookieInput.success) {
-    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  if (!payload.success) {
+    throw new ExpressError(z.prettifyError(payload.error), 400);
   }
 
-  const { EndUserID: CallingEndUserID } = cookieInput.data;
+  const { EndUserID: CallingEndUserID } = payload.data;
 
   const input = EndUserSchema.omit({
     EndUserID: true,
@@ -156,15 +150,13 @@ export const readEndUsers = async (req: Request, res: Response) => {
 };
 
 export const updateEndUser = async (req: Request, res: Response) => {
-  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
-    req.auth,
-  );
+  const payload = EndUserSchema.pick({ EndUserID: true }).safeParse(req.auth);
 
-  if (!cookieInput.success) {
-    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  if (!payload.success) {
+    throw new ExpressError(z.prettifyError(payload.error), 400);
   }
 
-  const { EndUserID: CallingEndUserID } = cookieInput.data;
+  const { EndUserID: CallingEndUserID } = payload.data;
 
   const paramsInput = EndUserSchema.pick({
     EndUserID: true,
@@ -229,15 +221,13 @@ export const updateEndUser = async (req: Request, res: Response) => {
 };
 
 export const deleteEndUser = async (req: Request, res: Response) => {
-  const cookieInput = EndUserSchema.pick({ EndUserID: true }).safeParse(
-    req.auth,
-  );
+  const payload = EndUserSchema.pick({ EndUserID: true }).safeParse(req.auth);
 
-  if (!cookieInput.success) {
-    throw new ExpressError(z.prettifyError(cookieInput.error), 400);
+  if (!payload.success) {
+    throw new ExpressError(z.prettifyError(payload.error), 400);
   }
 
-  const { EndUserID: CallingEndUserID } = cookieInput.data;
+  const { EndUserID: CallingEndUserID } = payload.data;
 
   const input = EndUserSchema.pick({
     EndUserID: true,
