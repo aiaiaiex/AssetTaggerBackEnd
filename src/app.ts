@@ -3,6 +3,7 @@ import express, { json } from "express";
 import { expressjwt, Request } from "express-jwt";
 import z from "zod";
 
+import authenticationConfig from "./configs/authenticationConfig";
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
 import acknowledgeFaviconRequest from "./middlewares/acknowledgeFaviconRequest";
@@ -18,12 +19,12 @@ app.use([
   json(),
   cookieParser(),
   expressjwt({
-    algorithms: ["HS256"],
+    algorithms: [authenticationConfig.algorithms],
     getToken: (req: Request) => {
       const cookies = req.cookies as { access_token: string };
 
       const cookieInput = z
-        .jwt({ alg: "HS256" })
+        .jwt({ alg: authenticationConfig.algorithms })
         .safeParse(cookies.access_token);
 
       if (!cookieInput.success) {
@@ -32,7 +33,7 @@ app.use([
 
       return cookieInput.data;
     },
-    secret: "secret",
+    secret: authenticationConfig.secret,
   }).unless({
     path: [
       /^\/api$/,
