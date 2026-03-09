@@ -8,17 +8,12 @@ http:
   url: "{{baseURL}}/api/authentication/login"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "EndUserName": "{{process.env.ADMIN_END_USER_NAME}}",
+        "EndUserPassword": "{{process.env.ADMIN_END_USER_PASSWORD}}"
+      }
   auth: inherit
-
-runtime:
-  scripts:
-    - type: before-request
-      code: |-
-        req.setBody({
-          EndUserName: "admin",
-          EndUserPassword: "admin",
-        });
 
 settings:
   encodeUrl: true
