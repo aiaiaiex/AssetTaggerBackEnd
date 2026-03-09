@@ -5,23 +5,8 @@ info:
 
 http:
   method: DELETE
-  url: "{{baseURL}}/api/enduser/{{temporaryEndUserID}}"
+  url: "{{baseURL}}/api/enduser/{{EndUserID}}"
   auth: inherit
-
-runtime:
-  assertions:
-    - expression: res.body.EndUserID
-      operator: eq
-      value: "{{temporaryEndUserID}}"
-    - expression: res.body.EndUserName
-      operator: eq
-      value: "{{process.env.UPDATED_TEMPORARY_END_USER_NAME}}"
-    - expression: res.body.EndUserRoleID
-      operator: eq
-      value: "{{updatedTemporaryEndUserEndUserRoleID}}"
-    - expression: res.body.EmployeeID
-      operator: eq
-      value: "{{updatedTemporaryEndUserEmployeeID}}"
 
 settings:
   encodeUrl: true

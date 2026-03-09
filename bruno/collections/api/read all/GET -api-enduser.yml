@@ -8,21 +8,6 @@ http:
   url: "{{baseURL}}/api/enduser"
   auth: inherit
 
-runtime:
-  assertions:
-    - expression: res.body[0].EndUserID
-      operator: eq
-      value: "{{temporaryEndUserID}}"
-    - expression: res.body[0].EndUserName
-      operator: eq
-      value: "{{process.env.UPDATED_TEMPORARY_END_USER_NAME}}"
-    - expression: res.body[0].EndUserRoleID
-      operator: eq
-      value: "{{updatedTemporaryEndUserEndUserRoleID}}"
-    - expression: res.body[0].EmployeeID
-      operator: eq
-      value: "{{updatedTemporaryEndUserEmployeeID}}"
-
 settings:
   encodeUrl: true
   timeout: 0

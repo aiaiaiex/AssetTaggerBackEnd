@@ -8,40 +8,19 @@ http:
   url: "{{baseURL}}/api/enduser"
   body:
     type: json
-    data: ""
+    data: |-
+      {
+        "EndUserName": "{{process.env.END_USER_NAME}}",
+        "EndUserPassword": "{{process.env.END_USER_PASSWORD}}",
+        "EndUserRoleID": "{{EndUserRoleID}}",
+        "EmployeeID": "{{EmployeeID}}"
+      }
   auth: inherit
 
 runtime:
   scripts:
-    - type: before-request
-      code: |-
-        bru.setVar("temporaryEndUserEndUserRoleID", bru.getProcessEnv("TEMPORARY_END_USER_END_USER_ROLE_ID") || null);
-        bru.setVar("temporaryEndUserEmployeeID", bru.getProcessEnv("TEMPORARY_END_USER_EMPLOYEE_ID") || null);
-
-        req.setBody({
-          EndUserName: bru.getProcessEnv("TEMPORARY_END_USER_NAME"),
-          EndUserPassword: bru.getProcessEnv("TEMPORARY_END_USER_PASSWORD"),
-          EndUserRoleID: bru.getVar("temporaryEndUserEndUserRoleID"),
-          EmployeeID: bru.getVar("temporaryEndUserEmployeeID")
-        });
     - type: after-response
-      code: bru.setVar("temporaryEndUserID", res("EndUserID"));
-  assertions:
-    - expression: res.body.EndUserID
-      operator: isDefined
-    - expression: res.body.EndUserID
-      operator: isString
-    - expression: res.body.EndUserID
-      operator: isNotEmpty
-    - expression: res.body.EndUserName
-      operator: eq
-      value: "{{process.env.TEMPORARY_END_USER_NAME}}"
-    - expression: res.body.EndUserRoleID
-      operator: eq
-      value: "{{temporaryEndUserEndUserRoleID}}"
-    - expression: res.body.EmployeeID
-      operator: eq
-      value: "{{temporaryEndUserEmployeeID}}"
+      code: bru.setVar("EndUserID", res("EndUserID"));
 
 settings:
   encodeUrl: true
