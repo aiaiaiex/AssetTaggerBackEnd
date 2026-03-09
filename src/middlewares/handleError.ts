@@ -49,6 +49,10 @@ const handleError: ErrorRequestHandler = (
     res.status(err.statusCode ?? 500).json({
       message: err.message,
     });
+  } else if (err.name === "UnauthorizedError") {
+    res.status(401).json({
+      message: "Invalid token!",
+    });
   } else {
     res.status(500).json({
       message: err.message,
