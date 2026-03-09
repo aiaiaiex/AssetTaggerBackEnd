@@ -34,7 +34,11 @@ app.use([
     },
     secret: "secret",
   }).unless({
-    path: [/^\/api$/, /^\/api\/authentication\/.*$/],
+    path: [
+      /^\/api$/,
+      /^\/api\/authentication\/.*$/,
+      /^(\/.+)*(\/favicon\.ico)$/,
+    ],
   }),
 ]);
 
