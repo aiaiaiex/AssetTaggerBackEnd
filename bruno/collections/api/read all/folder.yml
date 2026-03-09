@@ -1,7 +1,7 @@
 info:
-  name: /api/authentication
+  name: read all
   type: folder
-  seq: 2
+  seq: 6
 
 request:
   auth: inherit

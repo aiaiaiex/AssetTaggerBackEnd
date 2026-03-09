@@ -1,7 +1,7 @@
 info:
   name: PATCH /api/enduser/:EndUserID
   type: http
-  seq: 2
+  seq: 1
 
 http:
   method: PATCH

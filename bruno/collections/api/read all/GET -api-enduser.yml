@@ -1,25 +1,25 @@
 info:
-  name: DELETE /api/enduser/:EndUserID
+  name: GET /api/enduser
   type: http
-  seq: 6
+  seq: 1
 
 http:
-  method: DELETE
-  url: "{{baseURL}}/api/enduser/{{temporaryEndUserID}}"
+  method: GET
+  url: "{{baseURL}}/api/enduser"
   auth: inherit
 
 runtime:
   assertions:
-    - expression: res.body.EndUserID
+    - expression: res.body[0].EndUserID
       operator: eq
       value: "{{temporaryEndUserID}}"
-    - expression: res.body.EndUserName
+    - expression: res.body[0].EndUserName
       operator: eq
       value: "{{process.env.UPDATED_TEMPORARY_END_USER_NAME}}"
-    - expression: res.body.EndUserRoleID
+    - expression: res.body[0].EndUserRoleID
       operator: eq
       value: "{{updatedTemporaryEndUserEndUserRoleID}}"
-    - expression: res.body.EmployeeID
+    - expression: res.body[0].EmployeeID
       operator: eq
       value: "{{updatedTemporaryEndUserEmployeeID}}"
 

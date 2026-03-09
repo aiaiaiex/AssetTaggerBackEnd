@@ -1,10 +1,10 @@
 info:
-  name: GET /api/enduser/:EndUserID
+  name: DELETE /api/enduser/:EndUserID
   type: http
-  seq: 5
+  seq: 4
 
 http:
-  method: GET
+  method: DELETE
   url: "{{baseURL}}/api/enduser/{{temporaryEndUserID}}"
   auth: inherit
 
