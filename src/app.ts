@@ -6,7 +6,7 @@ import z from "zod";
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
 import acknowledgeFaviconRequest from "./middlewares/acknowledgeFaviconRequest";
-import handleError from "./middlewares/handleError";
+import handleError, { ExpressError } from "./middlewares/handleError";
 import logRequest from "./middlewares/logRequest";
 import routes from "./routes/routes";
 
@@ -21,7 +21,16 @@ app.use([
     algorithms: ["HS256"],
     getToken: (req: Request) => {
       const cookies = req.cookies as { access_token: string };
-      return z.jwt({ alg: "HS256" }).parse(cookies.access_token);
+
+      const cookieInput = z
+        .jwt({ alg: "HS256" })
+        .safeParse(cookies.access_token);
+
+      if (!cookieInput.success) {
+        throw new ExpressError("No token!", 400);
+      }
+
+      return cookieInput.data;
     },
     secret: "secret",
   }).unless({
