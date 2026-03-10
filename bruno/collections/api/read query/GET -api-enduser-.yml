@@ -26,6 +26,14 @@ http:
       value: ""
       type: query
       disabled: true
+    - name: RowsToSkip
+      value: ""
+      type: query
+      disabled: true
+    - name: RowsToReturn
+      value: ""
+      type: query
+      disabled: true
   auth: inherit
 
 settings:
