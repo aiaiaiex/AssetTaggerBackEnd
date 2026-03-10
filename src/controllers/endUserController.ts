@@ -207,7 +207,7 @@ export const updateEndUser = async (req: Request, res: Response) => {
     EndUserPassword: true,
     EndUserPasswordHash: true,
   })
-    .extend({
+    .safeExtend({
       OldEmployeeID: EndUserSchema.shape.EmployeeID,
       OldEndUserName: EndUserSchema.shape.EndUserName,
       OldEndUserRoleID: EndUserSchema.shape.EndUserRoleID,
