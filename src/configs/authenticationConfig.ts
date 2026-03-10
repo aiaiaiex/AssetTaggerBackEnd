@@ -16,16 +16,14 @@ const CookieOptionsConfigSchema = z.object({
       return x * 60 * 60 * 1000; // Empty strings default to 1.
     })
     .pipe(z.int()),
-  sameSite: z
-    .xor([
-      z.stringbool({
-        case: "sensitive",
-        falsy: ["false"],
-        truthy: ["true", ""], // Empty strings default to true.
-      }),
-      z.enum(["lax", "strict", "none"]),
-    ])
-    .optional(),
+  sameSite: z.xor([
+    z.stringbool({
+      case: "sensitive",
+      falsy: ["false"],
+      truthy: ["true", ""], // Empty strings default to true.
+    }),
+    z.enum(["lax", "strict", "none"]),
+  ]),
   secure: z.stringbool({
     case: "sensitive",
     falsy: ["false", ""], // Empty strings default to false.
