@@ -1,6 +1,16 @@
 import z from "zod";
 import * as z4 from "zod/v4/core";
 
+export const zodCombineUnionErrorMessages = (iss: {
+  errors: z.core.$ZodIssue[][];
+  message?: string;
+}): string => {
+  return (
+    iss.message ??
+    iss.errors.map((error) => `[${error[0].message}]`).join(" OR ")
+  );
+};
+
 export function zodParseNull<T extends z4.$ZodType<null | string | undefined>>(
   zodSchema: T,
   prefaultValue?: null | string,
