@@ -5,7 +5,11 @@ import z from "zod";
 
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
-import { zodParseNull, zodParseNumber } from "../utils/zodUtils";
+import {
+  zodCombineUnionErrorMessages,
+  zodParseNull,
+  zodParseNumber,
+} from "../utils/zodUtils";
 
 export const createEndUser = async (req: Request, res: Response) => {
   const payload = EndUserSchema.pick({ EndUserID: true }).safeParse(req.auth);
@@ -123,26 +127,40 @@ export const readEndUsers = async (req: Request, res: Response) => {
     })
     .safeExtend({
       FromEndUserRegisterDate: zodParseNull(
-        z.xor([z.iso.datetime(), z.iso.date()]).nullable(),
+        z
+          .xor([z.iso.datetime(), z.iso.date()], {
+            error: zodCombineUnionErrorMessages,
+          })
+          .nullable(),
         null,
       ),
       // The maximum integer is 2,147,483,647 because it is the upper limit of INT in T-SQL.
       // See more:
       // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
       RowsToReturn: z
-        .xor([
-          zodParseNumber(z.int().min(1).max(2147483647)),
-          zodParseNull(z.null()),
-        ])
+        .xor(
+          [
+            zodParseNumber(z.int().min(1).max(2147483647)),
+            zodParseNull(z.null()),
+          ],
+          { error: zodCombineUnionErrorMessages },
+        )
         .prefault(null),
       RowsToSkip: z
-        .xor([
-          zodParseNumber(z.int().min(0).max(2147483647)),
-          zodParseNull(z.null()),
-        ])
+        .xor(
+          [
+            zodParseNumber(z.int().min(0).max(2147483647)),
+            zodParseNull(z.null()),
+          ],
+          { error: zodCombineUnionErrorMessages },
+        )
         .prefault(null),
       ToEndUserRegisterDate: zodParseNull(
-        z.xor([z.iso.datetime(), z.iso.date()]).nullable(),
+        z
+          .xor([z.iso.datetime(), z.iso.date()], {
+            error: zodCombineUnionErrorMessages,
+          })
+          .nullable(),
         null,
       ),
     })

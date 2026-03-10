@@ -1,6 +1,9 @@
 import z from "zod";
 
-import { zodParseNumber } from "../utils/zodUtils";
+import {
+  zodCombineUnionErrorMessages,
+  zodParseNumber,
+} from "../utils/zodUtils";
 
 // See more:
 // https://expressjs.com/en/5x/api.html#res.cookie
@@ -16,14 +19,17 @@ const CookieOptionsConfigSchema = z.object({
       return x * 60 * 60 * 1000; // Empty strings default to 1.
     })
     .pipe(z.int()),
-  sameSite: z.xor([
-    z.stringbool({
-      case: "sensitive",
-      falsy: ["false"],
-      truthy: ["true", ""], // Empty strings default to true.
-    }),
-    z.enum(["lax", "strict", "none"]),
-  ]),
+  sameSite: z.xor(
+    [
+      z.stringbool({
+        case: "sensitive",
+        falsy: ["false"],
+        truthy: ["true", ""], // Empty strings default to true.
+      }),
+      z.enum(["lax", "strict", "none"]),
+    ],
+    { error: zodCombineUnionErrorMessages },
+  ),
   secure: z.stringbool({
     case: "sensitive",
     falsy: ["false", ""], // Empty strings default to false.
