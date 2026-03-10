@@ -18,6 +18,14 @@ http:
       value: ""
       type: query
       disabled: true
+    - name: FromEndUserRegisterDate
+      value: ""
+      type: query
+      disabled: true
+    - name: ToEndUserRegisterDate
+      value: ""
+      type: query
+      disabled: true
   auth: inherit
 
 settings:
