@@ -11,6 +11,7 @@ export const EndUserSchema = z.object({
     .max(4000),
   EndUserPassword: z.string().max(4000).optional(), // Optional because it is not in the database.
   EndUserPasswordHash: z.hash("sha512"),
+  EndUserRegisterDate: z.date(),
   EndUserRoleID: z.uuid({ version: "v4" }),
 });
 
