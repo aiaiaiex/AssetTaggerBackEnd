@@ -19,6 +19,7 @@ export const createEndUser = async (req: Request, res: Response) => {
   const input = EndUserSchema.omit({
     EndUserID: true,
     EndUserPasswordHash: true,
+    EndUserRegisterDate: true,
   })
     .required({ EndUserPassword: true })
     .safeParse(req.body);
@@ -107,6 +108,7 @@ export const readEndUsers = async (req: Request, res: Response) => {
     EndUserID: true,
     EndUserPassword: true,
     EndUserPasswordHash: true,
+    EndUserRegisterDate: true,
   })
     .extend({
       EmployeeID: zodParseNull(EndUserSchema.shape.EmployeeID.nullable(), null),
@@ -172,6 +174,7 @@ export const updateEndUser = async (req: Request, res: Response) => {
     EndUserID: true,
     EndUserPassword: true,
     EndUserPasswordHash: true,
+    EndUserRegisterDate: true,
   })
     .extend({
       EmployeeID: EndUserSchema.shape.EmployeeID.nullable().prefault(null),
