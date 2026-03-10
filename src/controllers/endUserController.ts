@@ -121,13 +121,40 @@ export const readEndUsers = async (req: Request, res: Response) => {
         null,
       ),
     })
+    .safeExtend({
+      FromEndUserRegisterDate: zodParseNull(
+        z.xor([z.iso.datetime(), z.iso.date()]).nullable(),
+        null,
+      ),
+      ToEndUserRegisterDate: zodParseNull(
+        z.xor([z.iso.datetime(), z.iso.date()]).nullable(),
+        null,
+      ),
+    })
     .safeParse(req.query);
 
   if (!input.success) {
     throw new ExpressError(z.prettifyError(input.error), 400);
   }
 
-  const { EmployeeID, EndUserName, EndUserRoleID } = input.data;
+  const {
+    EmployeeID,
+    EndUserName,
+    EndUserRoleID,
+    FromEndUserRegisterDate,
+    ToEndUserRegisterDate,
+  } = input.data;
+
+  if (
+    FromEndUserRegisterDate !== null &&
+    ToEndUserRegisterDate !== null &&
+    new Date(FromEndUserRegisterDate) > new Date(ToEndUserRegisterDate)
+  ) {
+    throw new ExpressError(
+      "FromEndUserRegisterDate cannot be later than ToEndUserRegisterDate!",
+      400,
+    );
+  }
 
   const { recordset } = await req.app.locals.database
     .request()
@@ -135,6 +162,8 @@ export const readEndUsers = async (req: Request, res: Response) => {
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
+    .input("FromEndUserRegisterDate", sql.DateTime, FromEndUserRegisterDate)
+    .input("ToEndUserRegisterDate", sql.DateTime, ToEndUserRegisterDate)
     .execute<EndUser>("usp_ReadEndUser");
 
   const output = EndUserSchema.omit({
