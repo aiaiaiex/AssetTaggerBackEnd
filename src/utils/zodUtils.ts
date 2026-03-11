@@ -6,8 +6,9 @@ export const zodCombineUnionErrorMessages = (iss: {
   message?: string;
 }): string => {
   return (
-    iss.message ??
-    iss.errors.map((error) => `[${error[0].message}]`).join(" OR ")
+    (iss.message ??
+      iss.errors.map((error) => `[${error[0].message}]`).join(" OR ")) ||
+    "Invalid input: multiple options match"
   );
 };
 
