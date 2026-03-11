@@ -11,9 +11,7 @@ export const zodCombineUnionErrorMessages = (iss: {
   );
 };
 
-export const zodParseNull = (
-  emptyStringValue: unknown = "",
-): z4.$ZodType<null> => {
+export const zodParseNull = (emptyStringValue: unknown = "") => {
   return z
     .transform((x) => {
       if (typeof x === "string") {
