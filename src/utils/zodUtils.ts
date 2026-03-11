@@ -11,11 +11,9 @@ export const zodCombineUnionErrorMessages = (iss: {
   );
 };
 
-export function zodParseNull<T extends z4.$ZodType<null | string | undefined>>(
-  zodSchema: T,
-  prefaultValue?: null | string,
-  emptyStringValue: null | string | undefined = "",
-) {
+export const zodParseNull = (
+  emptyStringValue: unknown = "",
+): z4.$ZodType<null> => {
   return z
     .transform((x) => {
       if (typeof x === "string") {
@@ -24,14 +22,12 @@ export function zodParseNull<T extends z4.$ZodType<null | string | undefined>>(
         } else {
           return x.length > 0 ? x : emptyStringValue;
         }
-      } else if (typeof x === "undefined") {
-        return prefaultValue;
       } else {
         return x;
       }
     })
-    .pipe(zodSchema);
-}
+    .pipe(z.null());
+};
 
 export function zodParseNumber<
   T extends z4.$ZodType<null | number | string | undefined>,
