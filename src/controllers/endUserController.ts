@@ -98,54 +98,47 @@ export const readEndUsers = async (req: Request, res: Response) => {
     EndUserRegisterDate: true,
   })
     .extend({
-      EmployeeID: zodParseNull(EndUserSchema.shape.EmployeeID.nullable(), null),
-      EndUserName: zodParseNull(
-        EndUserSchema.shape.EndUserName.nullable(),
-        null,
-      ),
-      EndUserRoleID: zodParseNull(
-        EndUserSchema.shape.EndUserRoleID.nullable(),
-        null,
-      ),
+      EmployeeID: z
+        .xor([zodParseNull(), EndUserSchema.shape.EmployeeID], {
+          error: zodCombineUnionErrorMessages,
+        })
+        .prefault(null),
+      EndUserName: z
+        .xor([zodParseNull(), EndUserSchema.shape.EndUserName], {
+          error: zodCombineUnionErrorMessages,
+        })
+        .prefault(null),
+      EndUserRoleID: z
+        .xor([zodParseNull(), EndUserSchema.shape.EndUserRoleID], {
+          error: zodCombineUnionErrorMessages,
+        })
+        .prefault(null),
     })
     .safeExtend({
-      FromEndUserRegisterDate: zodParseNull(
-        z
-          .xor([z.iso.datetime(), z.iso.date()], {
-            error: zodCombineUnionErrorMessages,
-          })
-          .nullable(),
-        null,
-      ),
+      FromEndUserRegisterDate: z
+        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
+          error: zodCombineUnionErrorMessages,
+        })
+        .prefault(null),
+
       // The maximum integer is 2,147,483,647 because it is the upper limit of INT in T-SQL.
       // See more:
       // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
       RowsToReturn: z
-        .xor(
-          [
-            zodParseNumber(z.int().min(1).max(2147483647)),
-            zodParseNull(z.null()),
-          ],
-          { error: zodCombineUnionErrorMessages },
-        )
+        .xor([zodParseNumber(z.int().min(1).max(2147483647)), zodParseNull()], {
+          error: zodCombineUnionErrorMessages,
+        })
         .prefault(null),
       RowsToSkip: z
-        .xor(
-          [
-            zodParseNumber(z.int().min(0).max(2147483647)),
-            zodParseNull(z.null()),
-          ],
-          { error: zodCombineUnionErrorMessages },
-        )
+        .xor([zodParseNumber(z.int().min(0).max(2147483647)), zodParseNull()], {
+          error: zodCombineUnionErrorMessages,
+        })
         .prefault(null),
-      ToEndUserRegisterDate: zodParseNull(
-        z
-          .xor([z.iso.datetime(), z.iso.date()], {
-            error: zodCombineUnionErrorMessages,
-          })
-          .nullable(),
-        null,
-      ),
+      ToEndUserRegisterDate: z
+        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
+          error: zodCombineUnionErrorMessages,
+        })
+        .prefault(null),
     })
     .safeParse(req.query);
 
