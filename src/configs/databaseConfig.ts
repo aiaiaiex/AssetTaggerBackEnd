@@ -26,7 +26,7 @@ const DatabaseConfigSchema = z.object({
   server: z
     .string()
     .transform((x) => {
-      return x.length > 0 ? x : "localhost";
+      return x.length > 0 ? x : "localhost"; // Empty strings default to localhost.
     })
     .pipe(z.string().min(1)),
   user: z.string().min(1),
