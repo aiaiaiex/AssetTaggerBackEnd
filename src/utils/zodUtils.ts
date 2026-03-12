@@ -14,15 +14,15 @@ export const zodCombineUnionErrorMessages = (iss: {
 
 export const zodParseNull = (emptyStringValue: unknown = "") => {
   return z
-    .transform((x) => {
-      if (typeof x === "string") {
-        if (x === "null") {
+    .transform((input) => {
+      if (typeof input === "string") {
+        if (input === "null") {
           return null;
         } else {
-          return x.length > 0 ? x : emptyStringValue;
+          return input.length > 0 ? input : emptyStringValue;
         }
       } else {
-        return x;
+        return input;
       }
     })
     .pipe(z.null());
@@ -33,14 +33,14 @@ export function zodParseNumber<T extends z4.$ZodType<number>>(
   emptyStringValue: unknown = NaN,
 ) {
   return z
-    .transform((x) => {
+    .transform((input) => {
       // Do not try to convert strings with whitespace into numbers.
-      if (typeof x === "string" && x.search(/\s/) === -1) {
-        // x.length > 0 is checked to prevent calling Number() with an empty string (or a string with only whitespace which is impossible in this case) which results to the number 0.
+      if (typeof input === "string" && input.search(/\s/) === -1) {
+        // input.length > 0 is checked to prevent calling Number() with an empty string (or a string with only whitespace which is impossible in this case) which results to the number 0.
         // Change emptyStringValue to 0 to revert back to Number()'s default behavior.
-        return x.length > 0 ? Number(x) : emptyStringValue;
+        return input.length > 0 ? Number(input) : emptyStringValue;
       } else {
-        return x;
+        return input;
       }
     })
     .pipe(zodSchema);

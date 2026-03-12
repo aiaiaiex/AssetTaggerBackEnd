@@ -14,9 +14,9 @@ const CookieOptionsConfigSchema = z.object({
     truthy: ["true", ""], // Empty strings default to true.
   }),
   maxAge: zodParseNumber(z.int().min(1), 1)
-    .transform((x) => {
-      // x (hours) * 60 minutes * 60 seconds * 1000 milliseconds.
-      return x * 60 * 60 * 1000; // Empty strings default to 1 hour.
+    .transform((input) => {
+      // input (hours) * 60 minutes * 60 seconds * 1000 milliseconds.
+      return input * 60 * 60 * 1000; // Empty strings default to 1 hour.
     })
     .pipe(z.int()),
   sameSite: z.xor(
@@ -40,14 +40,14 @@ const CookieOptionsConfigSchema = z.object({
 const AuthenticationConfigSchema = z.object({
   algorithms: z
     .string()
-    .transform((x) => {
-      return x.length > 0 ? x : "HS512"; // Empty strings default to HS512.
+    .transform((input) => {
+      return input.length > 0 ? input : "HS512"; // Empty strings default to HS512.
     })
     .pipe(z.enum(["HS256", "HS384", "HS512"])),
   cookieOptions: CookieOptionsConfigSchema,
-  expiresIn: zodParseNumber(z.int().min(1), 1).transform((x) => {
-    // x (hours) * 60 minutes * 60 seconds.
-    return x * 60 * 60; // Empty strings default to 1 hour.
+  expiresIn: zodParseNumber(z.int().min(1), 1).transform((input) => {
+    // input (hours) * 60 minutes * 60 seconds.
+    return input * 60 * 60; // Empty strings default to 1 hour.
   }),
   salt: z.string(),
   secret: z.string().min(1),
