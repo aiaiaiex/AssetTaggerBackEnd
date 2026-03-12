@@ -1,6 +1,8 @@
 import z from "zod";
 import * as z4 from "zod/v4/core";
 
+import { WHITESPACE } from "../constants/RegExpConstants";
+
 export const zodCombineUnionErrorMessages = (iss: {
   errors: z.core.$ZodIssue[][];
   message?: string;
@@ -35,7 +37,7 @@ export function zodParseNumber<T extends z4.$ZodType<number>>(
   return z
     .transform((input) => {
       // Do not try to convert strings with whitespace into numbers.
-      if (typeof input === "string" && !/\s/.test(input)) {
+      if (typeof input === "string" && !WHITESPACE.test(input)) {
         // input.length > 0 is checked to prevent calling Number() with an empty string (or a string with only whitespace which is impossible in this case) which results to the number 0.
         // Change emptyStringValue to 0 to revert back to Number()'s default behavior.
         return input.length > 0 ? Number(input) : emptyStringValue;
