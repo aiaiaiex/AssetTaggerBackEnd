@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { zodParseNumber } from "../utils/zodUtils";
+import { zodParseNumber, zodSubstituteEmptyString } from "../utils/zodUtils";
 
 const DatabaseConfigOptionsSchema = z.object({
   encrypt: z.stringbool({
@@ -23,12 +23,7 @@ const DatabaseConfigSchema = z.object({
   // See more:
   // https://datatracker.ietf.org/doc/html/rfc6335#section-6
   port: zodParseNumber(z.int().min(0).max(65535), 1433),
-  server: z
-    .string()
-    .transform((input) => {
-      return input.length > 0 ? input : "localhost"; // Empty strings default to localhost.
-    })
-    .pipe(z.string().min(1)),
+  server: zodSubstituteEmptyString(z.string().min(1), "localhost"),
   user: z.string().min(1),
 });
 

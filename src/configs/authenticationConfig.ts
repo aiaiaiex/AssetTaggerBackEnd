@@ -3,6 +3,7 @@ import z from "zod";
 import {
   zodCombineUnionErrorMessages,
   zodParseNumber,
+  zodSubstituteEmptyString,
 } from "../utils/zodUtils";
 
 // See more:
@@ -38,18 +39,14 @@ const CookieOptionsConfigSchema = z.object({
 });
 
 const AuthenticationConfigSchema = z.object({
-  algorithms: z
-    .string()
-    .transform((input) => {
-      return input.length > 0 ? input : "HS512"; // Empty strings default to HS512.
-    })
-    .pipe(z.enum(["HS256", "HS384", "HS512"])),
-  cookieAccessTokenName: z
-    .string()
-    .transform((input) => {
-      return input.length > 0 ? input : "assetTaggerAccessToken";
-    })
-    .pipe(z.string().min(1)),
+  algorithms: zodSubstituteEmptyString(
+    z.enum(["HS256", "HS384", "HS512"]),
+    "HS512",
+  ),
+  cookieAccessTokenName: zodSubstituteEmptyString(
+    z.string().min(1),
+    "assetTaggerAccessToken",
+  ),
   cookieOptions: CookieOptionsConfigSchema,
   expiresIn: zodParseNumber(z.int().min(1), 1).transform((input) => {
     // input (hours) * 60 minutes * 60 seconds.
