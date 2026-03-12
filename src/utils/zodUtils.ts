@@ -1,7 +1,7 @@
 import z from "zod";
 import * as z4 from "zod/v4/core";
 
-import { WHITESPACE } from "../constants/RegExpConstants";
+import { NO_WHITESPACE, WHITESPACE } from "../constants/RegExpConstants";
 
 export const zodCombineUnionErrorMessages = (iss: {
   errors: z.core.$ZodIssue[][];
@@ -47,3 +47,7 @@ export function zodParseNumber<T extends z4.$ZodType<number>>(
     })
     .pipe(zodSchema);
 }
+
+export const zodNoWhitespace = z.stringFormat("no-whitespace", NO_WHITESPACE, {
+  error: "Invalid input: string must not have whitespace",
+});

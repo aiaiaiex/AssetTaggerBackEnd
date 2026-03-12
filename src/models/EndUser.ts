@@ -1,14 +1,11 @@
 import z from "zod";
 
-import { NO_WHITESPACE } from "../constants/RegExpConstants";
+import { zodNoWhitespace } from "../utils/zodUtils";
 
 export const EndUserSchema = z.object({
   EmployeeID: z.uuid({ version: "v4" }),
   EndUserID: z.uuid({ version: "v4" }),
-  EndUserName: z
-    .stringFormat("no-whitespace", NO_WHITESPACE, {
-      error: "Invalid input: string must not have whitespace",
-    })
+  EndUserName: zodNoWhitespace
     .min(1)
     .max(4000)
     // Create an 'inverse' validation (i.e., validation fails when input matches schema).
