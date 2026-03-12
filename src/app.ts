@@ -21,7 +21,8 @@ app.use([
   expressjwt({
     algorithms: [authenticationConfig.algorithms],
     getToken: (req: Request) => {
-      const accesToken: unknown = req.cookies.access_token;
+      const accesToken: unknown =
+        req.cookies[authenticationConfig.cookieAccessTokenName];
 
       const parsedAccessToken = z
         .jwt({ alg: authenticationConfig.algorithms })

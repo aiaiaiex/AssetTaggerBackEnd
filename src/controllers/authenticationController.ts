@@ -53,7 +53,11 @@ export const logInEndUser = async (req: Request, res: Response) => {
     },
   );
 
-  res.cookie("access_token", token, authenticationConfig.cookieOptions);
+  res.cookie(
+    authenticationConfig.cookieAccessTokenName,
+    token,
+    authenticationConfig.cookieOptions,
+  );
 
   res.status(200).end();
 };
