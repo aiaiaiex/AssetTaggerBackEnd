@@ -1,7 +1,11 @@
 import z from "zod";
 import * as z4 from "zod/v4/core";
 
-import { NO_WHITESPACE, WHITESPACE } from "../constants/RegExpConstants";
+import {
+  NO_LEADING_AND_TRAILING_WHITESPACE,
+  NO_WHITESPACE,
+  WHITESPACE,
+} from "../constants/RegExpConstants";
 
 export const zodCombineUnionErrorMessages = (iss: {
   errors: z.core.$ZodIssue[][];
@@ -51,3 +55,12 @@ export function zodParseNumber<T extends z4.$ZodType<number>>(
 export const zodNoWhitespace = z.stringFormat("no-whitespace", NO_WHITESPACE, {
   error: "Invalid input: string must not have whitespace",
 });
+
+export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
+  "no-leading-and-trailing-whitespace",
+  NO_LEADING_AND_TRAILING_WHITESPACE,
+  {
+    error:
+      "Invalid input: string must not have leading and trailing whitespace",
+  },
+);
