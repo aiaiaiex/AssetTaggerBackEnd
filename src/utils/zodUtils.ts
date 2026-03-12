@@ -8,7 +8,7 @@ export const zodCombineUnionErrorMessages = (iss: {
   return (
     (iss.message ??
       iss.errors.map((error) => `[${error[0].message}]`).join(" OR ")) ||
-    "Invalid input: multiple options match"
+    "Invalid input: matches multiple schemas in exclusive union"
   );
 };
 
