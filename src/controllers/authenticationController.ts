@@ -8,18 +8,18 @@ import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 
 export const logInEndUser = async (req: Request, res: Response) => {
-  const input = EndUserSchema.pick({
+  const parsedBody = EndUserSchema.pick({
     EndUserName: true,
     EndUserPassword: true,
   })
     .required({ EndUserPassword: true })
     .safeParse(req.body);
 
-  if (!input.success) {
-    throw new ExpressError(z.prettifyError(input.error), 400);
+  if (!parsedBody.success) {
+    throw new ExpressError(z.prettifyError(parsedBody.error), 400);
   }
 
-  const { EndUserName, EndUserPassword } = input.data;
+  const { EndUserName, EndUserPassword } = parsedBody.data;
 
   const { recordset } = await req.app.locals.database
     .request()
@@ -31,18 +31,18 @@ export const logInEndUser = async (req: Request, res: Response) => {
     )
     .execute<EndUser>("usp_LoginEndUser");
 
-  const output = EndUserSchema.pick({
+  const parsedRecordset = EndUserSchema.pick({
     EndUserID: true,
   })
     .array()
     .length(1)
     .safeParse(recordset);
 
-  if (!output.success) {
-    throw new ExpressError(z.prettifyError(output.error), 401);
+  if (!parsedRecordset.success) {
+    throw new ExpressError(z.prettifyError(parsedRecordset.error), 401);
   }
 
-  const { EndUserID } = output.data[0];
+  const { EndUserID } = parsedRecordset.data[0];
 
   const token = jwt.sign(
     { EndUserID: EndUserID },

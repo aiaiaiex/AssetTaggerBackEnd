@@ -21,17 +21,17 @@ app.use([
   expressjwt({
     algorithms: [authenticationConfig.algorithms],
     getToken: (req: Request) => {
-      const cookies = req.cookies as { access_token: string };
+      const accesToken: unknown = req.cookies.access_token;
 
-      const cookieInput = z
+      const parsedAccessToken = z
         .jwt({ alg: authenticationConfig.algorithms })
-        .safeParse(cookies.access_token);
+        .safeParse(accesToken);
 
-      if (!cookieInput.success) {
+      if (!parsedAccessToken.success) {
         throw new ExpressError("No token!", 400);
       }
 
-      return cookieInput.data;
+      return parsedAccessToken.data;
     },
     secret: authenticationConfig.secret,
   }).unless({

@@ -18,10 +18,10 @@ export class ExpressError extends Error {
 
     this.name = "ExpressError";
 
-    const result = StatusCodeSchema.optional().safeParse(statusCode);
+    const parsedStatusCode = StatusCodeSchema.optional().safeParse(statusCode);
 
-    if (result.success) {
-      this.statusCode = result.data;
+    if (parsedStatusCode.success) {
+      this.statusCode = parsedStatusCode.data;
     }
 
     this.statusMessage = statusMessage;

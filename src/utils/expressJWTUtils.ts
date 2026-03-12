@@ -7,11 +7,11 @@ import { EndUserSchema } from "../models/EndUser";
 export const expressJWTGetEndUserID = (
   auth?: JwtPayload,
 ): z.infer<typeof EndUserSchema.shape.EndUserID> => {
-  const payload = EndUserSchema.pick({ EndUserID: true }).safeParse(auth);
+  const parsedPayload = EndUserSchema.pick({ EndUserID: true }).safeParse(auth);
 
-  if (!payload.success) {
-    throw new ExpressError(z.prettifyError(payload.error), 400);
+  if (!parsedPayload.success) {
+    throw new ExpressError(z.prettifyError(parsedPayload.error), 400);
   }
 
-  return payload.data.EndUserID;
+  return parsedPayload.data.EndUserID;
 };

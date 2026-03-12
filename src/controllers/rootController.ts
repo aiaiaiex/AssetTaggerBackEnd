@@ -10,12 +10,12 @@ export const readRoot = async (req: Request, res: Response) => {
     "SELECT @@SERVERNAME AS 'ServerName'",
   );
 
-  const result = DatabaseServerSchema.pick({ ServerName: true })
+  const parsedRecordset = DatabaseServerSchema.pick({ ServerName: true })
     .array()
     .length(1)
     .safeParse(recordset);
 
-  if (!result.success) {
+  if (!parsedRecordset.success) {
     res.status(500);
     output.databaseReachable = false;
   }
