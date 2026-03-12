@@ -5,7 +5,7 @@ export const EndUserSchema = z.object({
   EndUserID: z.uuid({ version: "v4" }),
   EndUserName: z
     .stringFormat("no-whitespace", /^[^\s]*$/, {
-      error: "Has whitespace: expected string to not have whitespace",
+      error: "Invalid input: string must not have whitespace",
     })
     .min(1)
     .max(4000)
