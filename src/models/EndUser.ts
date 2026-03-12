@@ -19,7 +19,8 @@ export const EndUserSchema = z.object({
         ctx.issues.push({
           code: "custom",
           input: input,
-          message: "Invalid input: in excluded literals ('', '!', 'NULL')",
+          message:
+            "Invalid input: in excluded case-insensitive literals ('', '!', 'NULL')",
         });
         return z.NEVER;
       }
