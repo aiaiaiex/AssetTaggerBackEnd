@@ -63,3 +63,19 @@ export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
       "Invalid input: string must not have leading and trailing whitespace",
   },
 );
+
+// This passes emptyStringSubstitute to zodSchema when input is an empty string, which is similar to Zod's .prefault(value) method which passes value to the schema when input is undefined.
+export function zodSubstituteEmptyString<T extends z4.$ZodType<string>>(
+  zodSchema: T,
+  emptyStringSubstitute: string,
+) {
+  return z
+    .transform((input) => {
+      if (typeof input === "string" && input.length === 0) {
+        return emptyStringSubstitute;
+      } else {
+        return input;
+      }
+    })
+    .pipe(zodSchema);
+}
