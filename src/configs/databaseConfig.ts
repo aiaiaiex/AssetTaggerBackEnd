@@ -25,8 +25,8 @@ const DatabaseConfigSchema = z.object({
   port: zodParseNumber(z.int().min(0).max(65535), 1433),
   server: z
     .string()
-    .transform((x) => {
-      return x.length > 0 ? x : "localhost"; // Empty strings default to localhost.
+    .transform((input) => {
+      return input.length > 0 ? input : "localhost"; // Empty strings default to localhost.
     })
     .pipe(z.string().min(1)),
   user: z.string().min(1),
