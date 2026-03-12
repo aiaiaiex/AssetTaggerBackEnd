@@ -35,7 +35,7 @@ export function zodParseNumber<T extends z4.$ZodType<number>>(
   return z
     .transform((input) => {
       // Do not try to convert strings with whitespace into numbers.
-      if (typeof input === "string" && input.search(/\s/) === -1) {
+      if (typeof input === "string" && !/\s/.test(input)) {
         // input.length > 0 is checked to prevent calling Number() with an empty string (or a string with only whitespace which is impossible in this case) which results to the number 0.
         // Change emptyStringValue to 0 to revert back to Number()'s default behavior.
         return input.length > 0 ? Number(input) : emptyStringValue;
