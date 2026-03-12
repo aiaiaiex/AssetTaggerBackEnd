@@ -8,7 +8,24 @@ export const EndUserSchema = z.object({
       error: "Has whitespace: expected string to NOT have whitespace",
     })
     .min(1)
-    .max(4000),
+    .max(4000)
+    // Create an 'inverse' validation (i.e., validation fails when input matches schema).
+    .transform((input, ctx) => {
+      const parsedInput = z
+        .literal(["", "!", "NULL"])
+        .safeParse(input.toUpperCase());
+
+      if (parsedInput.success) {
+        ctx.issues.push({
+          code: "custom",
+          input: input,
+          message: "Invalid input: in excluded literals ('', '!', 'NULL')",
+        });
+        return z.NEVER;
+      }
+
+      return input;
+    }),
   EndUserPassword: z.string().max(4000).optional(), // Optional because it is not in the database.
   EndUserPasswordHash: z.hash("sha512"),
   EndUserRegisterDate: z.date(),
