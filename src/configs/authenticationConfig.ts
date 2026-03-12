@@ -44,6 +44,12 @@ const AuthenticationConfigSchema = z.object({
       return input.length > 0 ? input : "HS512"; // Empty strings default to HS512.
     })
     .pipe(z.enum(["HS256", "HS384", "HS512"])),
+  cookieAccessTokenName: z
+    .string()
+    .transform((input) => {
+      return input.length > 0 ? input : "assetTaggerAccessToken";
+    })
+    .pipe(z.string().min(1)),
   cookieOptions: CookieOptionsConfigSchema,
   expiresIn: zodParseNumber(z.int().min(1), 1).transform((input) => {
     // input (hours) * 60 minutes * 60 seconds.
@@ -58,6 +64,7 @@ type AuthenticationConfig = z.infer<typeof AuthenticationConfigSchema>;
 const authenticationConfig: AuthenticationConfig =
   AuthenticationConfigSchema.parse({
     algorithms: process.env.JWT_ALGORITHMS,
+    cookieAccessTokenName: process.env.COOKIE_ACCESS_TOKEN_NAME,
     cookieOptions: {
       httpOnly: process.env.COOKIE_HTTP_ONLY,
       maxAge: process.env.COOKIE_MAX_AGE,
