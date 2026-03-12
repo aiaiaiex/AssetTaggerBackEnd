@@ -12,7 +12,7 @@ export const EndUserSchema = z.object({
     // Create an 'inverse' validation (i.e., validation fails when input matches schema).
     .transform((input, ctx) => {
       const parsedInput = z
-        .literal(["", "!", "NULL"])
+        .enum(["", "!", "NULL"])
         .safeParse(input.toUpperCase());
 
       if (parsedInput.success) {
@@ -20,7 +20,7 @@ export const EndUserSchema = z.object({
           code: "custom",
           input: input,
           message:
-            "Invalid input: in excluded case-insensitive literals ('', '!', 'NULL')",
+            "Invalid input: in excluded case-insensitive strings ('', '!', 'NULL')",
         });
         return z.NEVER;
       }
