@@ -13,6 +13,8 @@ export const EndUserSchema = z.object({
     .transform((input, ctx) => {
       const parsedInput = z
         .enum(["", "!", "NULL"])
+        // Make it case-insensitive by converting input to uppercase.
+        // Make sure that all strings passed to enum() are uppercase!
         .safeParse(input.toUpperCase());
 
       if (parsedInput.success) {
