@@ -5,7 +5,7 @@ import z from "zod";
 
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
-import { expressJWTGetEndUserID } from "../utils/expressJWTUtils";
+import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 import {
   zodCombineUnionErrorMessages,
   zodParseNull,
@@ -13,7 +13,7 @@ import {
 } from "../utils/zodUtils";
 
 export const createEndUser = async (req: Request, res: Response) => {
-  const { CallingEndUserID } = expressJWTGetEndUserID(req.auth);
+  const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedBody = EndUserSchema.omit({
     EndUserID: true,
@@ -55,7 +55,7 @@ export const createEndUser = async (req: Request, res: Response) => {
 };
 
 export const readEndUser = async (req: Request, res: Response) => {
-  const { CallingEndUserID } = expressJWTGetEndUserID(req.auth);
+  const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedParams = EndUserSchema.pick({
     EndUserID: true,
@@ -89,7 +89,7 @@ export const readEndUser = async (req: Request, res: Response) => {
 };
 
 export const readEndUsers = async (req: Request, res: Response) => {
-  const { CallingEndUserID } = expressJWTGetEndUserID(req.auth);
+  const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedQuery = EndUserSchema.omit({
     EndUserID: true,
@@ -194,7 +194,7 @@ export const readEndUsers = async (req: Request, res: Response) => {
 };
 
 export const updateEndUser = async (req: Request, res: Response) => {
-  const { CallingEndUserID } = expressJWTGetEndUserID(req.auth);
+  const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedParams = EndUserSchema.pick({
     EndUserID: true,
@@ -260,7 +260,7 @@ export const updateEndUser = async (req: Request, res: Response) => {
 };
 
 export const deleteEndUser = async (req: Request, res: Response) => {
-  const { CallingEndUserID } = expressJWTGetEndUserID(req.auth);
+  const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedParams = EndUserSchema.pick({
     EndUserID: true,

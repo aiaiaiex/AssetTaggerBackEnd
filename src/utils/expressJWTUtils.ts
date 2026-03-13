@@ -4,7 +4,7 @@ import z from "zod";
 import { ExpressError } from "../middlewares/handleError";
 import { Authentication, AuthenticationSchema } from "../models/Authentication";
 
-export const expressJWTGetEndUserID = (auth?: JwtPayload): Authentication => {
+export const expressJWTGetPayload = (auth?: JwtPayload): Authentication => {
   const parsedPayload = AuthenticationSchema.safeParse(auth);
 
   if (!parsedPayload.success) {
