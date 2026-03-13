@@ -51,10 +51,6 @@ export function zodParseNumber<T extends z4.$ZodType<number>>(
     .pipe(zodSchema);
 }
 
-export const zodNoWhitespace = z.stringFormat("no-whitespace", NO_WHITESPACE, {
-  error: "Invalid input: string must not have whitespace",
-});
-
 export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
   "no-leading-and-trailing-whitespace",
   NO_LEADING_AND_TRAILING_WHITESPACE,

@@ -1,7 +1,10 @@
 import z from "zod";
 
-import { EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA } from "../constants/ZodConstants";
-import { zodExclude, zodNoWhitespace } from "../utils/zodUtils";
+import {
+  EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
+  zodNoWhitespace,
+} from "../constants/ZodConstants";
+import { zodExclude } from "../utils/zodUtils";
 
 export const EndUserSchema = z.object({
   EmployeeID: z.uuid({ version: "v4" }),
