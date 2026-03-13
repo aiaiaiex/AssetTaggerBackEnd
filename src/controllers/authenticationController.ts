@@ -30,7 +30,7 @@ export const logInEndUser = async (req: Request, res: Response) => {
       sql.NVarChar(4000),
       `${EndUserPassword}${authenticationConfig.salt}`,
     )
-    .execute<EndUser>("usp_LoginEndUser");
+    .execute<EndUser>("usp_LogInEndUser");
 
   const parsedRecordset = EndUserSchema.pick({
     EndUserID: true,
