@@ -5,6 +5,7 @@ import z from "zod";
 
 import authenticationConfig from "../configs/authenticationConfig";
 import { ExpressError } from "../middlewares/handleError";
+import { Authentication } from "../models/Authentication";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 
 export const logInEndUser = async (req: Request, res: Response) => {
@@ -44,14 +45,12 @@ export const logInEndUser = async (req: Request, res: Response) => {
 
   const { EndUserID } = parsedRecordset.data[0];
 
-  const token = jwt.sign(
-    { EndUserID: EndUserID },
-    authenticationConfig.secret,
-    {
-      algorithm: authenticationConfig.algorithms,
-      expiresIn: authenticationConfig.expiresIn,
-    },
-  );
+  const payload: Authentication = { CallingEndUserID: EndUserID };
+
+  const token = jwt.sign(payload, authenticationConfig.secret, {
+    algorithm: authenticationConfig.algorithms,
+    expiresIn: authenticationConfig.expiresIn,
+  });
 
   res.cookie(
     authenticationConfig.cookieAccessTokenName,
