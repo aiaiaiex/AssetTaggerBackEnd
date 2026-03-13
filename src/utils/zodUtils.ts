@@ -64,6 +64,35 @@ export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
   },
 );
 
+// This only successfully parses input when it matches zodSchema and not excludedZodSchema.
+export function zodExclude<T extends z.ZodType>(
+  zodSchema: T,
+  excludedZodSchema: z.ZodType<
+    z.infer<typeof zodSchema>,
+    z.infer<typeof zodSchema>
+  >,
+  errorMessage = "Invalid input: matches excludedZodSchema",
+) {
+  return zodSchema.transform((input, ctx) => {
+    const parsedInput = excludedZodSchema.safeParse(input);
+
+    if (parsedInput.success) {
+      ctx.issues.push({
+        code: "custom",
+        input: input,
+        message: errorMessage,
+      });
+
+      // Exit transform without impacting the inferred return type.
+      // See more:
+      // https://zod.dev/api?id=transforms
+      return z.NEVER;
+    }
+
+    return input;
+  });
+}
+
 // This passes emptyStringSubstitute to zodSchema when input is an empty string, which is similar to Zod's .prefault(value) method which passes value to the schema when input is undefined.
 export function zodSubstituteEmptyString<T extends z4.$ZodType<string>>(
   zodSchema: T,
