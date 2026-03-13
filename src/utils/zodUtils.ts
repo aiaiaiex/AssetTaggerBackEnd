@@ -64,7 +64,7 @@ export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
   },
 );
 
-// This only successfully parses input when it matches zodSchema and not excludedZodSchema.
+// The schema this returns only successfully parses its input when it matches zodSchema and not excludedZodSchema.
 export function zodExclude<T extends z.ZodType>(
   zodSchema: T,
   excludedZodSchema: z.ZodType<
