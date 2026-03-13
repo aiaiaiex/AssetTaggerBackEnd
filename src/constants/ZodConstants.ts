@@ -25,11 +25,16 @@ export const NO_WHITESPACE_SCHEMA = z
     title: "NO_WHITESPACE_SCHEMA",
   });
 
-export const NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA = z.stringFormat(
-  "no-leading-and-trailing-whitespace",
-  NO_LEADING_AND_TRAILING_WHITESPACE,
-  {
-    error:
-      "Invalid input: string must not have leading and trailing whitespace",
-  },
-);
+export const NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA = z
+  .stringFormat(
+    "no-leading-and-trailing-whitespace",
+    NO_LEADING_AND_TRAILING_WHITESPACE,
+    {
+      error:
+        "Invalid input: string must not have leading and trailing whitespace",
+    },
+  )
+  .meta({
+    description: "matches strings without leading and trailing whitespace",
+    title: "NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA",
+  });
