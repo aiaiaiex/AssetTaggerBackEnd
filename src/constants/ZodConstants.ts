@@ -15,9 +15,13 @@ export const EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA = z
     title: "EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA",
   });
 
-export const zodNoWhitespace = z.stringFormat("no-whitespace", NO_WHITESPACE, {
-  error: "Invalid input: string must not have whitespace",
-});
+export const NO_WHITESPACE_SCHEMA = z.stringFormat(
+  "no-whitespace",
+  NO_WHITESPACE,
+  {
+    error: "Invalid input: string must not have whitespace",
+  },
+);
 
 export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
   "no-leading-and-trailing-whitespace",
