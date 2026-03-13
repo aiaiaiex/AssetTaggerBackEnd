@@ -23,7 +23,7 @@ export const NO_WHITESPACE_SCHEMA = z.stringFormat(
   },
 );
 
-export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
+export const NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA = z.stringFormat(
   "no-leading-and-trailing-whitespace",
   NO_LEADING_AND_TRAILING_WHITESPACE,
   {
