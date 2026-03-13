@@ -1,6 +1,9 @@
 import z from "zod";
 
-import { NO_WHITESPACE } from "./RegExpConstants";
+import {
+  NO_LEADING_AND_TRAILING_WHITESPACE,
+  NO_WHITESPACE,
+} from "./RegExpConstants";
 
 export const EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA = z
   .string()
@@ -15,3 +18,12 @@ export const EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA = z
 export const zodNoWhitespace = z.stringFormat("no-whitespace", NO_WHITESPACE, {
   error: "Invalid input: string must not have whitespace",
 });
+
+export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
+  "no-leading-and-trailing-whitespace",
+  NO_LEADING_AND_TRAILING_WHITESPACE,
+  {
+    error:
+      "Invalid input: string must not have leading and trailing whitespace",
+  },
+);

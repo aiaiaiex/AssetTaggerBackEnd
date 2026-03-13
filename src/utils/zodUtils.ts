@@ -1,10 +1,7 @@
 import z from "zod";
 import * as z4 from "zod/v4/core";
 
-import {
-  NO_LEADING_AND_TRAILING_WHITESPACE,
-  NO_WHITESPACE,
-} from "../constants/RegExpConstants";
+import { NO_WHITESPACE } from "../constants/RegExpConstants";
 
 export const zodCombineUnionErrorMessages = (iss: {
   errors: z.core.$ZodIssue[][];
@@ -32,33 +29,6 @@ export const zodParseNull = (emptyStringValue: unknown = "") => {
     })
     .pipe(z.null());
 };
-
-export function zodParseNumber<T extends z4.$ZodType<number>>(
-  zodSchema: T,
-  emptyStringValue: unknown = NaN,
-) {
-  return z
-    .transform((input) => {
-      // Do not try to convert strings with whitespace into numbers.
-      if (typeof input === "string" && NO_WHITESPACE.test(input)) {
-        // input.length > 0 is checked to prevent calling Number() with an empty string (or a string with only whitespace which is impossible in this case) which results to the number 0.
-        // Change emptyStringValue to 0 to revert back to Number()'s default behavior.
-        return input.length > 0 ? Number(input) : emptyStringValue;
-      } else {
-        return input;
-      }
-    })
-    .pipe(zodSchema);
-}
-
-export const zodNoLeadingAndTrailingWhitespace = z.stringFormat(
-  "no-leading-and-trailing-whitespace",
-  NO_LEADING_AND_TRAILING_WHITESPACE,
-  {
-    error:
-      "Invalid input: string must not have leading and trailing whitespace",
-  },
-);
 
 // The schema this returns only successfully parses its input when it matches zodSchema and not excludedZodSchema.
 export function zodExclude<T extends z.ZodType>(
@@ -91,6 +61,24 @@ export function zodExclude<T extends z.ZodType>(
 
     return input;
   });
+}
+
+export function zodParseNumber<T extends z4.$ZodType<number>>(
+  zodSchema: T,
+  emptyStringValue: unknown = NaN,
+) {
+  return z
+    .transform((input) => {
+      // Do not try to convert strings with whitespace into numbers.
+      if (typeof input === "string" && NO_WHITESPACE.test(input)) {
+        // input.length > 0 is checked to prevent calling Number() with an empty string (or a string with only whitespace which is impossible in this case) which results to the number 0.
+        // Change emptyStringValue to 0 to revert back to Number()'s default behavior.
+        return input.length > 0 ? Number(input) : emptyStringValue;
+      } else {
+        return input;
+      }
+    })
+    .pipe(zodSchema);
 }
 
 // This passes emptyStringSubstitute to zodSchema when input is an empty string, which is similar to Zod's .prefault(value) method which passes value to the schema when input is undefined.
