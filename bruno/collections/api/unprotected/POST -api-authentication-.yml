@@ -1,11 +1,11 @@
 info:
-  name: POST /api/authentication/login
+  name: POST /api/authentication/
   type: http
   seq: 2
 
 http:
   method: POST
-  url: "{{baseURL}}/api/authentication/login"
+  url: "{{baseURL}}/api/authentication/"
   body:
     type: json
     data: |-
