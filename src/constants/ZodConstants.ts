@@ -16,13 +16,14 @@ export const EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA = z
     title: "EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA",
   });
 
-export const NO_WHITESPACE_SCHEMA = z.stringFormat(
-  "no-whitespace",
-  NO_WHITESPACE,
-  {
+export const NO_WHITESPACE_SCHEMA = z
+  .stringFormat("no-whitespace", NO_WHITESPACE, {
     error: "Invalid input: string must not have whitespace",
-  },
-);
+  })
+  .meta({
+    description: "matches strings without whitespace",
+    title: "NO_WHITESPACE_SCHEMA",
+  });
 
 export const NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA = z.stringFormat(
   "no-leading-and-trailing-whitespace",
