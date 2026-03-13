@@ -71,16 +71,20 @@ export function zodExclude<T extends z.ZodType>(
     z.infer<typeof zodSchema>,
     z.infer<typeof zodSchema>
   >,
-  errorMessage = "Invalid input: matches excludedZodSchema",
 ) {
   return zodSchema.transform((input, ctx) => {
     const parsedInput = excludedZodSchema.safeParse(input);
 
     if (parsedInput.success) {
+      const title = excludedZodSchema.meta()?.title ?? "excludedZodSchema";
+      const description = excludedZodSchema.meta()?.description ?? "";
+
       ctx.issues.push({
         code: "custom",
         input: input,
-        message: errorMessage,
+        message: `Invalid input: should not match ${title}${
+          description ? ` which ${description}` : ""
+        }`,
       });
 
       // Exit transform without impacting the inferred return type.
