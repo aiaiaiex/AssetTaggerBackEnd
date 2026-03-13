@@ -1,7 +1,7 @@
 info:
-  name: read parameter
+  name: delete
   type: folder
-  seq: 3
+  seq: 5
 
 request:
   auth: inherit
