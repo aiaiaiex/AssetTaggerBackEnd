@@ -8,7 +8,7 @@ import { ExpressError } from "../middlewares/handleError";
 import { Authentication } from "../models/Authentication";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 
-export const logInEndUser = async (req: Request, res: Response) => {
+export const createAuthentication = async (req: Request, res: Response) => {
   const parsedBody = EndUserSchema.pick({
     EndUserName: true,
     EndUserPassword: true,
@@ -30,7 +30,7 @@ export const logInEndUser = async (req: Request, res: Response) => {
       sql.NVarChar(4000),
       `${EndUserPassword}${authenticationConfig.salt}`,
     )
-    .execute<EndUser>("usp_LogInEndUser");
+    .execute<EndUser>("usp_CreateAuthentication");
 
   const parsedRecordset = EndUserSchema.pick({
     EndUserID: true,
