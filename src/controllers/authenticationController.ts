@@ -27,7 +27,7 @@ export const createAuthentication = async (req: Request, res: Response) => {
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input(
       "EndUserPassword",
-      sql.NVarChar(4000),
+      sql.NVarChar(sql.MAX),
       `${EndUserPassword}${authenticationConfig.salt}`,
     )
     .execute<EndUser>("usp_CreateAuthentication");

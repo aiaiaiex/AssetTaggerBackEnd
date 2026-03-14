@@ -34,7 +34,7 @@ export const createEndUser = async (req: Request, res: Response) => {
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
-    .input("EndUserPassword", sql.NVarChar(4000), EndUserPassword)
+    .input("EndUserPassword", sql.NVarChar(sql.MAX), EndUserPassword)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .execute<EndUser>("usp_CreateEndUser");
