@@ -6,11 +6,11 @@ const DatabaseConfigOptionsSchema = z.object({
   encrypt: z.stringbool({
     case: "sensitive",
     falsy: ["false"],
-    truthy: ["true", ""], // Empty strings default to true.
+    truthy: ["true", ""], // Empty string defaults to true.
   }),
   trustServerCertificate: z.stringbool({
     case: "sensitive",
-    falsy: ["false", ""], // Empty strings default to false.
+    falsy: ["false", ""], // Empty string defaults to false.
     truthy: ["true"],
   }),
 });
