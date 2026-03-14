@@ -1,5 +1,7 @@
 import z from "zod";
 
+import { NON_NULLISH_NVARCHAR } from "./NonNullishConstants";
+import { NULLISH_NVARCHAR } from "./NullishConstants";
 import {
   NO_LEADING_AND_TRAILING_WHITESPACE,
   NO_WHITESPACE,
@@ -9,7 +11,7 @@ import {
 export const EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA = z
   .string()
   .toUpperCase() // Make it case-insensitive by converting input to UPPERCASE.
-  .pipe(z.enum(["", "!", "NULL"])) // Make sure that all strings passed to enum() are UPPERCASE!
+  .pipe(z.enum([NULLISH_NVARCHAR, NON_NULLISH_NVARCHAR, "NULL"])) // Make sure that all strings passed to enum() are UPPERCASE!
   .meta({
     description:
       "matches the following case-insensitive strings ['', '!', 'NULL']",
