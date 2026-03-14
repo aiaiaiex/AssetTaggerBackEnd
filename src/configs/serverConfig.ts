@@ -6,7 +6,7 @@ const ServerConfigSchema = z.object({
   // 0 <= port <= 65535
   // See more:
   // https://datatracker.ietf.org/doc/html/rfc6335#section-6
-  port: zodParseNumber(z.int().min(0).max(65535), 3000),
+  port: zodParseNumber(z.int().min(0).max(65535), 3000), // Empty string defaults to 3000.
 });
 
 type ServerConfig = z.infer<typeof ServerConfigSchema>;
