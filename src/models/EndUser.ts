@@ -13,7 +13,7 @@ export const EndUserSchema = z.object({
     NO_WHITESPACE_SCHEMA.min(1).max(4000),
     EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   ),
-  EndUserPassword: z.string().max(4000).optional(), // Optional because it is not in the database.
+  EndUserPassword: z.string().optional(), // Optional because it is not in the database.
   EndUserPasswordHash: z.hash("sha512"),
   EndUserRegisterDate: z.date(),
   EndUserRoleID: z.uuid({ version: "v4" }),
