@@ -3,6 +3,7 @@ import { Request } from "express-jwt";
 import sql from "mssql";
 import z from "zod";
 
+import authenticationConfig from "../configs/authenticationConfig";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
@@ -34,7 +35,11 @@ export const createEndUser = async (req: Request, res: Response) => {
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
-    .input("EndUserPassword", sql.NVarChar(sql.MAX), EndUserPassword)
+    .input(
+      "EndUserPassword",
+      sql.NVarChar(sql.MAX),
+      `${EndUserPassword}${authenticationConfig.salt}`,
+    )
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .execute<EndUser>("usp_CreateEndUser");
