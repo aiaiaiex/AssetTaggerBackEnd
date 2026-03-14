@@ -40,7 +40,7 @@ export const createAuthentication = async (req: Request, res: Response) => {
     .safeParse(recordset);
 
   if (!parsedRecordset.success) {
-    throw new ExpressError(z.prettifyError(parsedRecordset.error), 401);
+    throw new ExpressError("Invalid credentials!", 401);
   }
 
   const { EndUserID } = parsedRecordset.data[0];
