@@ -14,7 +14,6 @@ export const EndUserSchema = z.object({
     EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   ),
   EndUserPassword: z.string().optional(), // Optional because it is not in the database.
-  EndUserPasswordHash: z.hash("sha512"),
   EndUserRegisterDate: z.date(),
   EndUserRoleID: z.uuid({ version: "v4" }),
 });
