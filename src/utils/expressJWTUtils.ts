@@ -33,6 +33,4 @@ export const expressJWTMiddleware = expressjwt({
     return parsedAccessToken.data;
   },
   secret: authenticationConfig.secret,
-}).unless({
-  path: [/^\/api$/, /^\/api\/authentication\/.*$/, /^(\/.+)*(\/favicon\.ico)$/],
 });

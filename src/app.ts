@@ -7,17 +7,10 @@ import acknowledgeFaviconRequest from "./middlewares/acknowledgeFaviconRequest";
 import handleError from "./middlewares/handleError";
 import logRequest from "./middlewares/logRequest";
 import routes from "./routes/routes";
-import { expressJWTMiddleware } from "./utils/expressJWTUtils";
 
 const app = express();
 
-app.use([
-  logRequest,
-  acknowledgeFaviconRequest,
-  json(),
-  cookieParser(),
-  expressJWTMiddleware,
-]);
+app.use([logRequest, acknowledgeFaviconRequest, json(), cookieParser()]);
 
 app.use("/api", routes);
 
