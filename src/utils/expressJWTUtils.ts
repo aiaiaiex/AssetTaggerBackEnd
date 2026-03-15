@@ -1,4 +1,5 @@
-import { expressjwt, Request } from "express-jwt";
+import { Request } from "express";
+import { expressjwt } from "express-jwt";
 import { JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import z from "zod";
