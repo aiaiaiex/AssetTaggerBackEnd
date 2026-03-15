@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Request as JWTRequest } from "express-jwt";
 import jwt from "jsonwebtoken";
 import sql from "mssql";
 import z from "zod";
@@ -7,6 +8,7 @@ import authenticationConfig from "../configs/authenticationConfig";
 import { ExpressError } from "../middlewares/handleError";
 import { Authentication } from "../models/Authentication";
 import { EndUser, EndUserSchema } from "../models/EndUser";
+import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 
 export const createAuthentication = async (req: Request, res: Response) => {
   const parsedBody = EndUserSchema.pick({
@@ -64,7 +66,23 @@ export const createAuthentication = async (req: Request, res: Response) => {
   res.status(200).end();
 };
 
-export const deleteAuthentication = async (_req: Request, res: Response) => {
+export const deleteAuthentication = async (req: JWTRequest, res: Response) => {
+  const { CallingEndUserID } = expressJWTGetPayload(req.auth);
+
+  const parsedParams = EndUserSchema.pick({
+    EndUserID: true,
+  }).safeParse(req.params);
+
+  if (!parsedParams.success) {
+    throw new ExpressError(z.prettifyError(parsedParams.error), 400);
+  }
+
+  const { EndUserID } = parsedParams.data;
+
+  if (CallingEndUserID !== EndUserID) {
+    throw new ExpressError("Unauthorized!", 401);
+  }
+
   res.clearCookie(
     authenticationConfig.cookieAccessTokenName,
     authenticationConfig.cookieOptions,

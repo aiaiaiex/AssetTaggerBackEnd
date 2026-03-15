@@ -1,11 +1,11 @@
 info:
-  name: DELETE /api/authentication
+  name: DELETE /api/authentication/:EndUserID
   type: http
   seq: 7
 
 http:
   method: DELETE
-  url: "{{baseURL}}/api/authentication"
+  url: "{{baseURL}}/api/authentication/{{CallingEndUserID}}"
   auth: inherit
 
 settings:

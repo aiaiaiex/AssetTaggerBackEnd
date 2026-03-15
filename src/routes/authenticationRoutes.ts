@@ -10,7 +10,7 @@ const authenticationRoutes = Router();
 
 authenticationRoutes.post("/", createAuthentication);
 authenticationRoutes.delete(
-  "/",
+  "/:EndUserID",
   expressJWTGetMiddleware(),
   deleteAuthentication,
 );
