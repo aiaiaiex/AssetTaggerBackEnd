@@ -52,6 +52,11 @@ const AuthenticationConfigSchema = z.object({
     // input (hours) * 60 minutes * 60 seconds.
     return input * 60 * 60; // Empty string defaults to 1 hour.
   }),
+  ipInPayload: z.stringbool({
+    case: "sensitive",
+    falsy: ["false", ""], // Empty string defaults to false.
+    truthy: ["true"],
+  }),
   salt: z.string(),
   secret: z.string().min(1),
 });
@@ -69,6 +74,7 @@ const authenticationConfig: AuthenticationConfig =
       secure: process.env.COOKIE_SECURE,
     },
     expiresIn: process.env.JWT_EXPIRES_IN,
+    ipInPayload: process.env.IP_IN_PAYLOAD,
     salt: process.env.PASSWORD_SALT,
     secret: process.env.JWT_SECRET,
   });
