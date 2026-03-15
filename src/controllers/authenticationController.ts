@@ -60,3 +60,12 @@ export const createAuthentication = async (req: Request, res: Response) => {
 
   res.status(200).end();
 };
+
+export const deleteAuthentication = async (_req: Request, res: Response) => {
+  res.clearCookie(
+    authenticationConfig.cookieAccessTokenName,
+    authenticationConfig.cookieOptions,
+  );
+
+  res.status(200).end();
+};

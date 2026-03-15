@@ -1,0 +1,15 @@
+info:
+  name: DELETE /api/authentication
+  type: http
+  seq: 7
+
+http:
+  method: DELETE
+  url: "{{baseURL}}/api/authentication"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
