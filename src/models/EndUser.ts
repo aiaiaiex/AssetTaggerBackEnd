@@ -10,7 +10,7 @@ export const EndUserSchema = z.object({
   EmployeeID: z.uuid({ version: "v4" }),
   EndUserID: z.uuid({ version: "v4" }),
   EndUserName: zodExclude(
-    NO_WHITESPACE_SCHEMA.min(1).max(4000),
+    NO_WHITESPACE_SCHEMA.min(1).max(850),
     EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   ),
   EndUserPassword: z.string().optional(), // Optional because it is not in the database.
