@@ -63,7 +63,7 @@ export const createAuthentication = async (req: Request, res: Response) => {
     authenticationConfig.cookieOptions,
   );
 
-  res.status(200).end();
+  res.json(payload);
 };
 
 export const deleteAuthentication = async (req: JWTRequest, res: Response) => {
