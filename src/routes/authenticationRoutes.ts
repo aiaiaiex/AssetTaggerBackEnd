@@ -4,11 +4,15 @@ import {
   createAuthentication,
   deleteAuthentication,
 } from "../controllers/authenticationController";
-import { expressJWTMiddleware } from "../utils/expressJWTUtils";
+import { expressJWTGetMiddleware } from "../utils/expressJWTUtils";
 
 const authenticationRoutes = Router();
 
 authenticationRoutes.post("/", createAuthentication);
-authenticationRoutes.delete("/", expressJWTMiddleware, deleteAuthentication);
+authenticationRoutes.delete(
+  "/",
+  expressJWTGetMiddleware(),
+  deleteAuthentication,
+);
 
 export default authenticationRoutes;
