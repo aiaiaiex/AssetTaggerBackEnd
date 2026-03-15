@@ -1,15 +1,13 @@
 import cookieParser from "cookie-parser";
 import express, { json } from "express";
-import { expressjwt, Request } from "express-jwt";
-import z from "zod";
 
-import authenticationConfig from "./configs/authenticationConfig";
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
 import acknowledgeFaviconRequest from "./middlewares/acknowledgeFaviconRequest";
-import handleError, { ExpressError } from "./middlewares/handleError";
+import handleError from "./middlewares/handleError";
 import logRequest from "./middlewares/logRequest";
 import routes from "./routes/routes";
+import { expressJWTMiddleware } from "./utils/expressJWTUtils";
 
 const app = express();
 
@@ -18,30 +16,7 @@ app.use([
   acknowledgeFaviconRequest,
   json(),
   cookieParser(),
-  expressjwt({
-    algorithms: [authenticationConfig.algorithms],
-    getToken: (req: Request) => {
-      const accesToken: unknown =
-        req.cookies[authenticationConfig.cookieAccessTokenName];
-
-      const parsedAccessToken = z
-        .jwt({ alg: authenticationConfig.algorithms })
-        .safeParse(accesToken);
-
-      if (!parsedAccessToken.success) {
-        throw new ExpressError("No token!", 400);
-      }
-
-      return parsedAccessToken.data;
-    },
-    secret: authenticationConfig.secret,
-  }).unless({
-    path: [
-      /^\/api$/,
-      /^\/api\/authentication\/.*$/,
-      /^(\/.+)*(\/favicon\.ico)$/,
-    ],
-  }),
+  expressJWTMiddleware,
 ]);
 
 app.use("/api", routes);
