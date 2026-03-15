@@ -9,16 +9,16 @@ import { ExpressError } from "../middlewares/handleError";
 import { Authentication, AuthenticationSchema } from "../models/Authentication";
 
 export function expressJWTGetPayload<T extends boolean = false>(
-  auth: JwtPayload | undefined,
+  payload: JwtPayload | undefined,
   optional?: T,
 ): T extends true ? Authentication | undefined : Authentication;
 export function expressJWTGetPayload(
-  auth: JwtPayload | undefined,
+  payload: JwtPayload | undefined,
   optional = false,
 ): Authentication | undefined {
   const parsedPayload = optional
-    ? AuthenticationSchema.optional().safeParse(auth)
-    : AuthenticationSchema.safeParse(auth);
+    ? AuthenticationSchema.optional().safeParse(payload)
+    : AuthenticationSchema.safeParse(payload);
 
   if (!parsedPayload.success) {
     throw new ExpressError(z.prettifyError(parsedPayload.error), 400);
