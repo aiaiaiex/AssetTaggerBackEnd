@@ -1,5 +1,6 @@
 import { expressjwt, Request } from "express-jwt";
 import { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import z from "zod";
 
 import authenticationConfig from "../configs/authenticationConfig";
@@ -49,6 +50,26 @@ export const expressJWTGetMiddleware = (optional = false) => {
             : "Provided token is not a JWT!",
           400,
         );
+      }
+
+      if (
+        authenticationConfig.ipInPayload &&
+        parsedAccessToken.data !== undefined
+      ) {
+        const payload = jwt.verify(
+          parsedAccessToken.data,
+          authenticationConfig.secret,
+          {
+            algorithms: [authenticationConfig.algorithms],
+            maxAge: authenticationConfig.expiresIn,
+          },
+        ) as JwtPayload;
+
+        const { CallingEndUserIP } = expressJWTGetPayload(payload);
+
+        if (CallingEndUserIP !== req.ip) {
+          throw new ExpressError("Invalid IP address!", 400);
+        }
       }
 
       return parsedAccessToken.data;
