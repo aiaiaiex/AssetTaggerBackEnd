@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { Request } from "express-jwt";
+import { Request as JWTRequest } from "express-jwt";
 import sql from "mssql";
 import z from "zod";
 
@@ -13,7 +13,7 @@ import {
   zodParseNumber,
 } from "../utils/zodUtils";
 
-export const createEndUser = async (req: Request, res: Response) => {
+export const createEndUser = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedBody = EndUserSchema.omit({
@@ -55,7 +55,7 @@ export const createEndUser = async (req: Request, res: Response) => {
   res.json(parsedRecordset.data[0]);
 };
 
-export const readEndUser = async (req: Request, res: Response) => {
+export const readEndUser = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedParams = EndUserSchema.pick({
@@ -86,7 +86,7 @@ export const readEndUser = async (req: Request, res: Response) => {
   res.json(parsedRecordset.data[0]);
 };
 
-export const readEndUsers = async (req: Request, res: Response) => {
+export const readEndUsers = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedQuery = EndUserSchema.omit({
@@ -187,7 +187,7 @@ export const readEndUsers = async (req: Request, res: Response) => {
   res.json(parsedRecordset.data);
 };
 
-export const updateEndUser = async (req: Request, res: Response) => {
+export const updateEndUser = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedParams = EndUserSchema.pick({
@@ -249,7 +249,7 @@ export const updateEndUser = async (req: Request, res: Response) => {
   res.json(parsedRecordset.data[0]);
 };
 
-export const deleteEndUser = async (req: Request, res: Response) => {
+export const deleteEndUser = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedParams = EndUserSchema.pick({
