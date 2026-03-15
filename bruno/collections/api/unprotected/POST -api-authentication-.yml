@@ -15,6 +15,11 @@ http:
       }
   auth: inherit
 
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("CallingEndUserID", res("CallingEndUserID"));
+
 settings:
   encodeUrl: true
   timeout: 0
