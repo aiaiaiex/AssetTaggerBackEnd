@@ -10,15 +10,17 @@ import { zodCombineUnionErrorMessages, zodExclude } from "../utils/zodUtils";
 import { EndUserSchema } from "./EndUser";
 
 export const LogSchema = z.object({
-  EndUserID: EndUserSchema.shape.EndUserID,
-  LogEndUserIP: z.xor([z.ipv4(), z.ipv6()]).nullable(),
-  LogID: z.xor(
+  EndUserID: z.xor(
     [
-      z.uuid({ version: "v4" }),
+      EndUserSchema.shape.EndUserID,
       NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
     ],
-    { error: zodCombineUnionErrorMessages },
+    {
+      error: zodCombineUnionErrorMessages,
+    },
   ),
+  LogEndUserIP: z.xor([z.ipv4(), z.ipv6()]).nullable(),
+  LogID: z.uuid({ version: "v4" }),
   LogStoredProcedureEnd: z.date(),
   LogStoredProcedureMilliseconds: z.int().min(0),
   LogStoredProcedureName: z.enum(storedProceduresConstants),
