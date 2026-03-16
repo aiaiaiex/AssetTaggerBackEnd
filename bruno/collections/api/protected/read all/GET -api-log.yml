@@ -1,11 +1,11 @@
 info:
-  name: GET /api/enduser/:EndUserID
+  name: GET /api/log
   type: http
   seq: 1
 
 http:
   method: GET
-  url: "{{baseURL}}/api/enduser/{{EndUserID}}"
+  url: "{{baseURL}}/api/log"
   auth: inherit
 
 settings:
