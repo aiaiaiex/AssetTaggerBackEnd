@@ -1,10 +1,11 @@
 import z from "zod";
 
 import { EndUserSchema } from "./EndUser";
+import { LogSchema } from "./Log";
 
 export const AuthenticationSchema = z.object({
   CallingEndUserID: EndUserSchema.shape.EndUserID,
-  CallingEndUserIP: z.xor([z.ipv4(), z.ipv6()]).optional(),
+  CallingEndUserIP: LogSchema.shape.LogEndUserIP,
 });
 
 export type Authentication = z.infer<typeof AuthenticationSchema>;

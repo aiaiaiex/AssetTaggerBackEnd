@@ -68,7 +68,7 @@ export const expressJWTGetMiddleware = (optional = false) => {
 
         const { CallingEndUserIP } = expressJWTGetPayload(payload);
 
-        if (CallingEndUserIP !== req.ip) {
+        if (CallingEndUserIP !== (req.ip ?? null)) {
           throw new ExpressError("Invalid IP address!", 400);
         }
       }

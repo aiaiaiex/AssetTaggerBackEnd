@@ -49,7 +49,9 @@ export const createAuthentication = async (req: Request, res: Response) => {
 
   const payload: Authentication = {
     CallingEndUserID: EndUserID,
-    CallingEndUserIP: authenticationConfig.ipInPayload ? req.ip : undefined,
+    CallingEndUserIP: authenticationConfig.ipInPayload
+      ? (req.ip ?? null)
+      : null,
   };
 
   const token = jwt.sign(payload, authenticationConfig.secret, {
