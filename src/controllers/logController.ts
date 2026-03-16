@@ -14,7 +14,6 @@ import {
   USP_READ_LOG,
 } from "../constants/StoredProceduresConstants";
 import { ExpressError } from "../middlewares/handleError";
-import { AuthenticationSchema } from "../models/Authentication";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 import {
@@ -25,7 +24,7 @@ import {
 
 export const usp_CreateLog = async (
   database: sql.ConnectionPool,
-  CallingEndUserID: z.infer<typeof AuthenticationSchema.shape.CallingEndUserID>,
+  CallingEndUserID: z.infer<typeof LogSchema.shape.EndUserID>,
   LogEndUserIP: z.infer<typeof LogSchema.shape.LogEndUserIP>,
   LogStoredProcedureStart: z.infer<
     typeof LogSchema.shape.LogStoredProcedureStart
