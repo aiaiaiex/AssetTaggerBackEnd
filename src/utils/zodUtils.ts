@@ -63,7 +63,7 @@ export function zodExclude<T extends z.ZodType>(
   });
 }
 
-export function zodParseNumber<T extends z4.$ZodType<number>>(
+export function zodParseNumber<T extends z4.$ZodType<bigint | number>>(
   zodSchema: T,
   emptyStringValue: unknown = NaN,
 ) {
