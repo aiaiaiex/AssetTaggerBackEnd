@@ -99,8 +99,12 @@ export const readLog = async (req: JWTRequest, res: Response) => {
 
       res.json(parsedRecordset.data[0]);
     })
-    .catch(() => {
+    .catch((error: unknown) => {
       storedProcedureSuccess = 0;
+
+      if (error instanceof Error) {
+        throw error;
+      }
     })
     .finally(async () => {
       await usp_CreateLog(
@@ -325,8 +329,12 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
 
       res.json(parsedRecordset.data);
     })
-    .catch(() => {
+    .catch((error: unknown) => {
       storedProcedureSuccess = 0;
+
+      if (error instanceof Error) {
+        throw error;
+      }
     })
     .finally(async () => {
       await usp_CreateLog(
@@ -385,8 +393,12 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
 
       res.json(parsedRecordset.data[0]);
     })
-    .catch(() => {
+    .catch((error: unknown) => {
       storedProcedureSuccess = 0;
+
+      if (error instanceof Error) {
+        throw error;
+      }
     })
     .finally(async () => {
       await usp_CreateLog(
