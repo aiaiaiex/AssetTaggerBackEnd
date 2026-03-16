@@ -5,6 +5,7 @@ import sql from "mssql";
 import z from "zod";
 
 import authenticationConfig from "../configs/authenticationConfig";
+import { USP_CREATE_AUTHENTICATION } from "../constants/StoredProceduresConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Authentication } from "../models/Authentication";
 import { EndUser, EndUserSchema } from "../models/EndUser";
@@ -32,7 +33,7 @@ export const createAuthentication = async (req: Request, res: Response) => {
       sql.NVarChar(sql.MAX),
       `${EndUserPassword}${authenticationConfig.salt}`,
     )
-    .execute<EndUser>("usp_CreateAuthentication");
+    .execute<EndUser>(USP_CREATE_AUTHENTICATION);
 
   const parsedRecordset = EndUserSchema.pick({
     EndUserID: true,

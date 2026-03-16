@@ -4,6 +4,12 @@ import sql from "mssql";
 import z from "zod";
 
 import authenticationConfig from "../configs/authenticationConfig";
+import {
+  USP_CREATE_ENDUSER,
+  USP_DELETE_ENDUSER,
+  USP_READ_ENDUSER,
+  USP_UPDATE_ENDUSER,
+} from "../constants/StoredProceduresConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
@@ -41,7 +47,7 @@ export const createEndUser = async (req: JWTRequest, res: Response) => {
     )
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    .execute<EndUser>("usp_CreateEndUser");
+    .execute<EndUser>(USP_CREATE_ENDUSER);
 
   const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
     .array()
@@ -72,7 +78,7 @@ export const readEndUser = async (req: JWTRequest, res: Response) => {
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
-    .execute<EndUser>("usp_ReadEndUser");
+    .execute<EndUser>(USP_READ_ENDUSER);
 
   const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
     .array()
@@ -174,7 +180,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     .input("ToEndUserRegisterDate", sql.DateTime, ToEndUserRegisterDate)
     .input("RowsToSkip", sql.Int, RowsToSkip)
     .input("RowsToReturn", sql.Int, RowsToReturn)
-    .execute<EndUser>("usp_ReadEndUser");
+    .execute<EndUser>(USP_READ_ENDUSER);
 
   const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
     .array()
@@ -230,7 +236,7 @@ export const updateEndUser = async (req: JWTRequest, res: Response) => {
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    .execute<EndUser>("usp_UpdateEndUser");
+    .execute<EndUser>(USP_UPDATE_ENDUSER);
 
   const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
     .safeExtend({
@@ -266,7 +272,7 @@ export const deleteEndUser = async (req: JWTRequest, res: Response) => {
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
-    .execute<EndUser>("usp_DeleteEndUser");
+    .execute<EndUser>(USP_DELETE_ENDUSER);
 
   const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
     .array()
