@@ -71,6 +71,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
   const { LogID } = parsedParams.data;
 
   const storedProcedureStart = new Date();
+  let storedProcedureEnd: Date;
   let storedProcedureSuccess = 1;
 
   await req.app.locals.database
@@ -79,6 +80,8 @@ export const readLog = async (req: JWTRequest, res: Response) => {
     .input("LogID", sql.UniqueIdentifier, LogID)
     .execute<Log>(USP_READ_LOG)
     .then(({ recordset }) => {
+      storedProcedureEnd = new Date();
+
       const parsedRecordset = LogSchema.extend({
         LogStoredProcedureSuccess: z
           .boolean()
@@ -106,7 +109,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
         CallingEndUserID,
         req.ip ?? null,
         storedProcedureStart,
-        new Date(),
+        storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_LOG,
         JSON.stringify(parsedParams.data),
@@ -268,6 +271,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
   }
 
   const storedProcedureStart = new Date();
+  let storedProcedureEnd: Date;
   let storedProcedureSuccess = 1;
 
   await req.app.locals.database
@@ -303,6 +307,8 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     .input("RowsToReturn", sql.Int, RowsToReturn)
     .execute<Log>(USP_READ_LOG)
     .then(({ recordset }) => {
+      storedProcedureEnd = new Date();
+
       const parsedRecordset = LogSchema.extend({
         LogStoredProcedureSuccess: z
           .boolean()
@@ -329,7 +335,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         CallingEndUserID,
         req.ip ?? null,
         storedProcedureStart,
-        new Date(),
+        storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_LOG,
         JSON.stringify(parsedQuery.data),
@@ -351,6 +357,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
   const { LogID } = parsedParams.data;
 
   const storedProcedureStart = new Date();
+  let storedProcedureEnd: Date;
   let storedProcedureSuccess = 1;
 
   await req.app.locals.database
@@ -359,6 +366,8 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
     .input("LogID", sql.UniqueIdentifier, LogID)
     .execute<Log>(USP_DELETE_LOG)
     .then(({ recordset }) => {
+      storedProcedureEnd = new Date();
+
       const parsedRecordset = LogSchema.extend({
         LogStoredProcedureSuccess: z
           .boolean()
@@ -386,7 +395,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
         CallingEndUserID,
         req.ip ?? null,
         storedProcedureStart,
-        new Date(),
+        storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_LOG,
         JSON.stringify(parsedParams.data),
