@@ -14,6 +14,7 @@ import {
   USP_READ_LOG,
 } from "../constants/StoredProceduresConstants";
 import {
+  BOOLEAN_TO_MSSQL_BIT_SCHEMA,
   MSSQL_BIGINT_SCHEMA,
   MSSQL_BIT_SCHEMA,
 } from "../constants/ZodConstants";
@@ -75,12 +76,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: z
-          .boolean()
-          .transform((input): number => {
-            return input ? 1 : 0;
-          })
-          .pipe(LogSchema.shape.LogStoredProcedureSuccess),
+        LogStoredProcedureSuccess: BOOLEAN_TO_MSSQL_BIT_SCHEMA,
       })
         .array()
         .max(1)
@@ -267,12 +263,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: z
-          .boolean()
-          .transform((input): number => {
-            return input ? 1 : 0;
-          })
-          .pipe(LogSchema.shape.LogStoredProcedureSuccess),
+        LogStoredProcedureSuccess: BOOLEAN_TO_MSSQL_BIT_SCHEMA,
       })
         .array()
         .safeParse(recordset);
@@ -331,12 +322,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: z
-          .boolean()
-          .transform((input): number => {
-            return input ? 1 : 0;
-          })
-          .pipe(LogSchema.shape.LogStoredProcedureSuccess),
+        LogStoredProcedureSuccess: BOOLEAN_TO_MSSQL_BIT_SCHEMA,
       })
         .array()
         .max(1)
