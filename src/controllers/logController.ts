@@ -16,11 +16,7 @@ import {
 import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
-import {
-  zodCombineUnionErrorMessages,
-  zodParseNull,
-  zodParseNumber,
-} from "../utils/zodUtils";
+import { zodParseNull, zodParseNumber, zodXOR } from "../utils/zodUtils";
 
 export const usp_CreateLog = async (
   database: sql.ConnectionPool,
@@ -133,101 +129,72 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     LogStoredProcedureStart: true,
   })
     .extend({
-      EndUserID: z
-        .xor([zodParseNull(), LogSchema.shape.EndUserID], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      LogEndUserIP: z
-        .xor(
-          [
-            zodParseNull(),
-            LogSchema.shape.LogEndUserIP.unwrap(),
-            NullishConstantsSchema.shape.NULLISH_NVARCHAR,
-            NonNullishConstantsSchema.shape.NON_NULLISH_NVARCHAR,
-          ],
-          {
-            error: zodCombineUnionErrorMessages,
-          },
-        )
-        .prefault(NULLISH_NVARCHAR),
-      LogStoredProcedureName: z
-        .xor([zodParseNull(), LogSchema.shape.LogStoredProcedureName], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      LogStoredProcedureParameters: z
-        .xor([zodParseNull(), LogSchema.shape.LogStoredProcedureParameters], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      LogStoredProcedureSuccess: z
-        .xor([zodParseNull(), LogSchema.shape.LogStoredProcedureSuccess], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
+      EndUserID: zodXOR([zodParseNull(), LogSchema.shape.EndUserID]).prefault(
+        null,
+      ),
+      LogEndUserIP: zodXOR([
+        zodParseNull(),
+        LogSchema.shape.LogEndUserIP.unwrap(),
+        NullishConstantsSchema.shape.NULLISH_NVARCHAR,
+        NonNullishConstantsSchema.shape.NON_NULLISH_NVARCHAR,
+      ]).prefault(NULLISH_NVARCHAR),
+      LogStoredProcedureName: zodXOR([
+        zodParseNull(),
+        LogSchema.shape.LogStoredProcedureName,
+      ]).prefault(null),
+      LogStoredProcedureParameters: zodXOR([
+        zodParseNull(),
+        LogSchema.shape.LogStoredProcedureParameters,
+      ]).prefault(null),
+      LogStoredProcedureSuccess: zodXOR([
+        zodParseNull(),
+        LogSchema.shape.LogStoredProcedureSuccess,
+      ]).prefault(null),
     })
     .safeExtend({
-      FromLogStoredProcedureEnd: z
-        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      FromLogStoredProcedureMilliseconds: z
-        .xor([zodParseNull(), LogSchema.shape.LogStoredProcedureMilliseconds], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      FromLogStoredProcedureStart: z
-        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      NewestRowsFirst: z
-        .xor([zodParseNull(), zodParseNumber(z.int().min(0).max(1))], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
+      FromLogStoredProcedureEnd: zodXOR([
+        zodParseNull(),
+        z.iso.datetime(),
+        z.iso.date(),
+      ]).prefault(null),
+      FromLogStoredProcedureMilliseconds: zodXOR([
+        zodParseNull(),
+        LogSchema.shape.LogStoredProcedureMilliseconds,
+      ]).prefault(null),
+      FromLogStoredProcedureStart: zodXOR([
+        zodParseNull(),
+        z.iso.datetime(),
+        z.iso.date(),
+      ]).prefault(null),
+      NewestRowsFirst: zodXOR([
+        zodParseNull(),
+        zodParseNumber(z.int().min(0).max(1)),
+      ]).prefault(null),
       // The maximum integer is 9,223,372,036,854,775,807 because it is the upper limit of BIGINT in T-SQL.
       // See more:
       // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
-      RowsToReturn: z
-        .xor(
-          [
-            zodParseNumber(z.bigint().min(1n).max(9223372036854775807n)),
-            zodParseNull(),
-          ],
-          {
-            error: zodCombineUnionErrorMessages,
-          },
-        )
-        .prefault(null),
-      RowsToSkip: z
-        .xor(
-          [
-            zodParseNumber(z.bigint().min(0n).max(9223372036854775807n)),
-            zodParseNull(),
-          ],
-          {
-            error: zodCombineUnionErrorMessages,
-          },
-        )
-        .prefault(null),
-      ToLogStoredProcedureEnd: z
-        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      ToLogStoredProcedureMilliseconds: z
-        .xor([zodParseNull(), LogSchema.shape.LogStoredProcedureMilliseconds], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      ToLogStoredProcedureStart: z
-        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
+      RowsToReturn: zodXOR([
+        zodParseNumber(z.bigint().min(1n).max(9223372036854775807n)),
+        zodParseNull(),
+      ]).prefault(null),
+      RowsToSkip: zodXOR([
+        zodParseNumber(z.bigint().min(0n).max(9223372036854775807n)),
+        zodParseNull(),
+      ]).prefault(null),
+      ToLogStoredProcedureEnd: zodXOR([
+        zodParseNull(),
+        z.iso.datetime(),
+        z.iso.date(),
+      ]).prefault(null),
+      ToLogStoredProcedureMilliseconds: zodXOR([
+        zodParseNull(),
+        LogSchema.shape.LogStoredProcedureMilliseconds,
+      ]).prefault(null),
+      ToLogStoredProcedureStart: zodXOR([
+        zodParseNull(),
+        z.iso.datetime(),
+        z.iso.date(),
+      ]).prefault(null),
     })
     .safeParse(req.query);
 

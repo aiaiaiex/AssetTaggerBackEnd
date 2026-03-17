@@ -13,11 +13,7 @@ import {
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
-import {
-  zodCombineUnionErrorMessages,
-  zodParseNull,
-  zodParseNumber,
-} from "../utils/zodUtils";
+import { zodParseNull, zodParseNumber, zodXOR } from "../utils/zodUtils";
 
 export const createEndUser = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
@@ -101,51 +97,45 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     EndUserRegisterDate: true,
   })
     .extend({
-      EmployeeID: z
-        .xor([zodParseNull(), EndUserSchema.shape.EmployeeID], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      EndUserName: z
-        .xor([zodParseNull(), EndUserSchema.shape.EndUserName], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      EndUserRoleID: z
-        .xor([zodParseNull(), EndUserSchema.shape.EndUserRoleID], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
+      EmployeeID: zodXOR([
+        zodParseNull(),
+        EndUserSchema.shape.EmployeeID,
+      ]).prefault(null),
+      EndUserName: zodXOR([
+        zodParseNull(),
+        EndUserSchema.shape.EndUserName,
+      ]).prefault(null),
+      EndUserRoleID: zodXOR([
+        zodParseNull(),
+        EndUserSchema.shape.EndUserRoleID,
+      ]).prefault(null),
     })
     .safeExtend({
-      FromEndUserRegisterDate: z
-        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      NewestRowsFirst: z
-        .xor([zodParseNull(), zodParseNumber(z.int().min(0).max(1))], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
+      FromEndUserRegisterDate: zodXOR([
+        zodParseNull(),
+        z.iso.datetime(),
+        z.iso.date(),
+      ]).prefault(null),
+      NewestRowsFirst: zodXOR([
+        zodParseNull(),
+        zodParseNumber(z.int().min(0).max(1)),
+      ]).prefault(null),
       // The maximum integer is 2,147,483,647 because it is the upper limit of INT in T-SQL.
       // See more:
       // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
-      RowsToReturn: z
-        .xor([zodParseNumber(z.int().min(1).max(2147483647)), zodParseNull()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      RowsToSkip: z
-        .xor([zodParseNumber(z.int().min(0).max(2147483647)), zodParseNull()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
-      ToEndUserRegisterDate: z
-        .xor([zodParseNull(), z.iso.datetime(), z.iso.date()], {
-          error: zodCombineUnionErrorMessages,
-        })
-        .prefault(null),
+      RowsToReturn: zodXOR([
+        zodParseNumber(z.int().min(1).max(2147483647)),
+        zodParseNull(),
+      ]).prefault(null),
+      RowsToSkip: zodXOR([
+        zodParseNumber(z.int().min(0).max(2147483647)),
+        zodParseNull(),
+      ]).prefault(null),
+      ToEndUserRegisterDate: zodXOR([
+        zodParseNull(),
+        z.iso.datetime(),
+        z.iso.date(),
+      ]).prefault(null),
     })
     .safeParse(req.query);
 

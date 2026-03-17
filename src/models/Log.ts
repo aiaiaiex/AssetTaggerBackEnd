@@ -6,20 +6,15 @@ import {
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA,
 } from "../constants/ZodConstants";
-import { zodCombineUnionErrorMessages, zodExclude } from "../utils/zodUtils";
+import { zodExclude, zodXOR } from "../utils/zodUtils";
 import { EndUserSchema } from "./EndUser";
 
 export const LogSchema = z.object({
-  EndUserID: z.xor(
-    [
-      EndUserSchema.shape.EndUserID,
-      NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
-    ],
-    {
-      error: zodCombineUnionErrorMessages,
-    },
-  ),
-  LogEndUserIP: z.xor([z.ipv4(), z.ipv6()]).nullable(),
+  EndUserID: zodXOR([
+    EndUserSchema.shape.EndUserID,
+    NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
+  ]),
+  LogEndUserIP: zodXOR([z.ipv4(), z.ipv6()]).nullable(),
   LogID: z.uuid({ version: "v4" }),
   LogStoredProcedureEnd: z.date(),
   LogStoredProcedureMilliseconds: z.int().min(0),

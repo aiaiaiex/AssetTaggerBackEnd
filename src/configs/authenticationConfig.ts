@@ -1,9 +1,9 @@
 import z from "zod";
 
 import {
-  zodCombineUnionErrorMessages,
   zodParseNumber,
   zodSubstituteEmptyString,
+  zodXOR,
 } from "../utils/zodUtils";
 
 // See more:
@@ -20,17 +20,14 @@ const CookieOptionsConfigSchema = z.object({
       return input * 60 * 60 * 1000; // Empty string defaults to 1 hour.
     })
     .pipe(z.int()),
-  sameSite: z.xor(
-    [
-      z.stringbool({
-        case: "sensitive",
-        falsy: ["false"],
-        truthy: ["true", ""], // Empty string defaults to true.
-      }),
-      z.enum(["lax", "strict", "none"]),
-    ],
-    { error: zodCombineUnionErrorMessages },
-  ),
+  sameSite: zodXOR([
+    z.stringbool({
+      case: "sensitive",
+      falsy: ["false"],
+      truthy: ["true", ""], // Empty string defaults to true.
+    }),
+    z.enum(["lax", "strict", "none"]),
+  ]),
   secure: z.stringbool({
     case: "sensitive",
     falsy: ["false", ""], // Empty string defaults to false.
