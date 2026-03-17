@@ -13,9 +13,13 @@ import {
 import { MSSQL_BIT_SCHEMA, MSSQL_INT_SCHEMA } from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
+import { Log } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
+import { objectOmitKeys } from "../utils/objectUtils";
 import { zodParseNumber, zodQuery } from "../utils/zodUtils";
+import { usp_CreateLog } from "./logController";
 
+const createEndUserRedactedKeys = new Set(["EndUserPassword"]);
 export const createEndUser = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
@@ -33,7 +37,11 @@ export const createEndUser = async (req: JWTRequest, res: Response) => {
   const { EmployeeID, EndUserName, EndUserPassword, EndUserRoleID } =
     parsedBody.data;
 
-  const { recordset } = await req.app.locals.database
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
+
+  await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
@@ -44,18 +52,41 @@ export const createEndUser = async (req: JWTRequest, res: Response) => {
     )
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    .execute<EndUser>(USP_CREATE_ENDUSER);
+    .execute<EndUser>(USP_CREATE_ENDUSER)
+    .then(({ recordset }) => {
+      const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
+        .array()
+        .length(1)
+        .safeParse(recordset);
 
-  const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
-    .array()
-    .length(1)
-    .safeParse(recordset);
+      if (!parsedRecordset.success) {
+        throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
+      }
 
-  if (!parsedRecordset.success) {
-    throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
-  }
+      res.json(parsedRecordset.data[0]);
+    })
+    .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
+      storedProcedureSuccess = 0;
 
-  res.json(parsedRecordset.data[0]);
+      if (error instanceof Error) {
+        throw error;
+      }
+    })
+    .finally(async () => {
+      await usp_CreateLog(
+        req.app.locals.database,
+        CallingEndUserID,
+        req.ip ?? null,
+        storedProcedureStart,
+        storedProcedureEnd,
+        storedProcedureSuccess,
+        USP_CREATE_ENDUSER,
+        JSON.stringify(
+          objectOmitKeys(parsedBody.data, createEndUserRedactedKeys),
+        ),
+      );
+    });
 };
 
 export const readEndUser = async (req: JWTRequest, res: Response) => {
@@ -71,22 +102,47 @@ export const readEndUser = async (req: JWTRequest, res: Response) => {
 
   const { EndUserID } = parsedParams.data;
 
-  const { recordset } = await req.app.locals.database
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
+
+  await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
-    .execute<EndUser>(USP_READ_ENDUSER);
+    .execute<EndUser>(USP_READ_ENDUSER)
+    .then(({ recordset }) => {
+      const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
+        .array()
+        .max(1)
+        .safeParse(recordset);
 
-  const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
-    .array()
-    .max(1)
-    .safeParse(recordset);
+      if (!parsedRecordset.success) {
+        throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
+      }
 
-  if (!parsedRecordset.success) {
-    throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
-  }
+      res.json(parsedRecordset.data[0]);
+    })
+    .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
+      storedProcedureSuccess = 0;
 
-  res.json(parsedRecordset.data[0]);
+      if (error instanceof Error) {
+        throw error;
+      }
+    })
+    .finally(async () => {
+      await usp_CreateLog(
+        req.app.locals.database,
+        CallingEndUserID,
+        req.ip ?? null,
+        storedProcedureStart,
+        storedProcedureEnd,
+        storedProcedureSuccess,
+        USP_READ_ENDUSER,
+        JSON.stringify(parsedParams.data),
+      );
+    });
 };
 
 export const readEndUsers = async (req: JWTRequest, res: Response) => {
@@ -151,7 +207,11 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     );
   }
 
-  const { recordset } = await req.app.locals.database
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
+
+  await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
@@ -162,17 +222,38 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     .input("RowsToSkip", sql.Int, RowsToSkip)
     .input("RowsToReturn", sql.Int, RowsToReturn)
     .input("NewestRowsFirst", sql.Bit, NewestRowsFirst)
-    .execute<EndUser>(USP_READ_ENDUSER);
+    .execute<EndUser>(USP_READ_ENDUSER)
+    .then(({ recordset }) => {
+      const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
+        .array()
+        .safeParse(recordset);
 
-  const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
-    .array()
-    .safeParse(recordset);
+      if (!parsedRecordset.success) {
+        throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
+      }
 
-  if (!parsedRecordset.success) {
-    throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
-  }
+      res.json(parsedRecordset.data);
+    })
+    .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
+      storedProcedureSuccess = 0;
 
-  res.json(parsedRecordset.data);
+      if (error instanceof Error) {
+        throw error;
+      }
+    })
+    .finally(async () => {
+      await usp_CreateLog(
+        req.app.locals.database,
+        CallingEndUserID,
+        req.ip ?? null,
+        storedProcedureStart,
+        storedProcedureEnd,
+        storedProcedureSuccess,
+        USP_READ_ENDUSER,
+        JSON.stringify(parsedQuery.data),
+      );
+    });
 };
 
 export const updateEndUser = async (req: JWTRequest, res: Response) => {
@@ -211,30 +292,55 @@ export const updateEndUser = async (req: JWTRequest, res: Response) => {
     throw new ExpressError("Cannot update with only default values!", 400);
   }
 
-  const { recordset } = await req.app.locals.database
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
+
+  await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    .execute<EndUser>(USP_UPDATE_ENDUSER);
+    .execute<EndUser>(USP_UPDATE_ENDUSER)
+    .then(({ recordset }) => {
+      const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
+        .safeExtend({
+          OldEmployeeID: EndUserSchema.shape.EmployeeID,
+          OldEndUserName: EndUserSchema.shape.EndUserName,
+          OldEndUserRoleID: EndUserSchema.shape.EndUserRoleID,
+        })
+        .array()
+        .max(1)
+        .safeParse(recordset);
 
-  const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
-    .safeExtend({
-      OldEmployeeID: EndUserSchema.shape.EmployeeID,
-      OldEndUserName: EndUserSchema.shape.EndUserName,
-      OldEndUserRoleID: EndUserSchema.shape.EndUserRoleID,
+      if (!parsedRecordset.success) {
+        throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
+      }
+
+      res.json(parsedRecordset.data[0]);
     })
-    .array()
-    .max(1)
-    .safeParse(recordset);
+    .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
+      storedProcedureSuccess = 0;
 
-  if (!parsedRecordset.success) {
-    throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
-  }
-
-  res.json(parsedRecordset.data[0]);
+      if (error instanceof Error) {
+        throw error;
+      }
+    })
+    .finally(async () => {
+      await usp_CreateLog(
+        req.app.locals.database,
+        CallingEndUserID,
+        req.ip ?? null,
+        storedProcedureStart,
+        storedProcedureEnd,
+        storedProcedureSuccess,
+        USP_UPDATE_ENDUSER,
+        JSON.stringify({ ...parsedParams.data, ...parsedBody.data }),
+      );
+    });
 };
 
 export const deleteEndUser = async (req: JWTRequest, res: Response) => {
@@ -250,20 +356,45 @@ export const deleteEndUser = async (req: JWTRequest, res: Response) => {
 
   const { EndUserID } = parsedParams.data;
 
-  const { recordset } = await req.app.locals.database
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
+
+  await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
-    .execute<EndUser>(USP_DELETE_ENDUSER);
+    .execute<EndUser>(USP_DELETE_ENDUSER)
+    .then(({ recordset }) => {
+      const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
+        .array()
+        .max(1)
+        .safeParse(recordset);
 
-  const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
-    .array()
-    .max(1)
-    .safeParse(recordset);
+      if (!parsedRecordset.success) {
+        throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
+      }
 
-  if (!parsedRecordset.success) {
-    throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
-  }
+      res.json(parsedRecordset.data[0]);
+    })
+    .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
+      storedProcedureSuccess = 0;
 
-  res.json(parsedRecordset.data[0]);
+      if (error instanceof Error) {
+        throw error;
+      }
+    })
+    .finally(async () => {
+      await usp_CreateLog(
+        req.app.locals.database,
+        CallingEndUserID,
+        req.ip ?? null,
+        storedProcedureStart,
+        storedProcedureEnd,
+        storedProcedureSuccess,
+        USP_DELETE_ENDUSER,
+        JSON.stringify(parsedParams.data),
+      );
+    });
 };
