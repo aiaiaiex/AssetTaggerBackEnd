@@ -25,23 +25,13 @@ import { zodParseBigInt, zodParseNumber, zodQuery } from "../utils/zodUtils";
 
 export const usp_CreateLog = async (
   database: sql.ConnectionPool,
-  CallingEndUserID: z.infer<typeof LogSchema.shape.EndUserID>,
-  LogEndUserIP: z.infer<typeof LogSchema.shape.LogEndUserIP>,
-  LogStoredProcedureStart: z.infer<
-    typeof LogSchema.shape.LogStoredProcedureStart
-  >,
-  LogStoredProcedureEnd: z.infer<
-    typeof LogSchema.shape.LogStoredProcedureEnd
-  > = new Date(),
-  LogStoredProcedureSuccess: z.infer<
-    typeof LogSchema.shape.LogStoredProcedureSuccess
-  >,
-  LogStoredProcedureName: z.infer<
-    typeof LogSchema.shape.LogStoredProcedureName
-  >,
-  LogStoredProcedureParameters: z.infer<
-    typeof LogSchema.shape.LogStoredProcedureParameters
-  >,
+  CallingEndUserID: Log["EndUserID"],
+  LogEndUserIP: Log["LogEndUserIP"],
+  LogStoredProcedureStart: Log["LogStoredProcedureStart"],
+  LogStoredProcedureEnd: Log["LogStoredProcedureEnd"] = new Date(),
+  LogStoredProcedureSuccess: Log["LogStoredProcedureSuccess"],
+  LogStoredProcedureName: Log["LogStoredProcedureName"],
+  LogStoredProcedureParameters: Log["LogStoredProcedureParameters"],
 ) => {
   await database
     .request()
@@ -72,9 +62,9 @@ export const readLog = async (req: JWTRequest, res: Response) => {
 
   const { LogID } = parsedParams.data;
 
-  const storedProcedureStart = new Date();
-  let storedProcedureEnd: Date | undefined;
-  let storedProcedureSuccess = 1;
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
 
   await req.app.locals.database
     .request()
@@ -236,9 +226,9 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     );
   }
 
-  const storedProcedureStart = new Date();
-  let storedProcedureEnd: Date | undefined;
-  let storedProcedureSuccess = 1;
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
 
   await req.app.locals.database
     .request()
@@ -328,9 +318,9 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
 
   const { LogID } = parsedParams.data;
 
-  const storedProcedureStart = new Date();
-  let storedProcedureEnd: Date | undefined;
-  let storedProcedureSuccess = 1;
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
 
   await req.app.locals.database
     .request()
