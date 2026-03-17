@@ -13,7 +13,7 @@ import {
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
-import { zodParseNull, zodParseNumber, zodXOR } from "../utils/zodUtils";
+import { zodParseNumber, zodQuery } from "../utils/zodUtils";
 
 export const createEndUser = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
@@ -97,42 +97,30 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     EndUserRegisterDate: true,
   })
     .extend({
-      EmployeeID: zodXOR([
-        zodParseNull(),
-        EndUserSchema.shape.EmployeeID,
-      ]).prefault(null),
-      EndUserName: zodXOR([
-        zodParseNull(),
-        EndUserSchema.shape.EndUserName,
-      ]).prefault(null),
-      EndUserRoleID: zodXOR([
-        zodParseNull(),
-        EndUserSchema.shape.EndUserRoleID,
-      ]).prefault(null),
+      EmployeeID: zodQuery([EndUserSchema.shape.EmployeeID]).prefault(null),
+      EndUserName: zodQuery([EndUserSchema.shape.EndUserName]).prefault(null),
+      EndUserRoleID: zodQuery([EndUserSchema.shape.EndUserRoleID]).prefault(
+        null,
+      ),
     })
     .safeExtend({
-      FromEndUserRegisterDate: zodXOR([
-        zodParseNull(),
+      FromEndUserRegisterDate: zodQuery([
         z.iso.datetime(),
         z.iso.date(),
       ]).prefault(null),
-      NewestRowsFirst: zodXOR([
-        zodParseNull(),
+      NewestRowsFirst: zodQuery([
         zodParseNumber(z.int().min(0).max(1)),
       ]).prefault(null),
       // The maximum integer is 2,147,483,647 because it is the upper limit of INT in T-SQL.
       // See more:
       // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
-      RowsToReturn: zodXOR([
+      RowsToReturn: zodQuery([
         zodParseNumber(z.int().min(1).max(2147483647)),
-        zodParseNull(),
       ]).prefault(null),
-      RowsToSkip: zodXOR([
+      RowsToSkip: zodQuery([
         zodParseNumber(z.int().min(0).max(2147483647)),
-        zodParseNull(),
       ]).prefault(null),
-      ToEndUserRegisterDate: zodXOR([
-        zodParseNull(),
+      ToEndUserRegisterDate: zodQuery([
         z.iso.datetime(),
         z.iso.date(),
       ]).prefault(null),
