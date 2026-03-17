@@ -81,6 +81,11 @@ export function zodParseNumber<T extends z4.$ZodType<bigint | number>>(
     .pipe(zodSchema);
 }
 
+// zodXOR() with zodParseNull().
+export function zodQuery<T extends z4.$ZodType>(zodSchemas: T[]) {
+  return zodXOR([zodParseNull(), ...zodSchemas]);
+}
+
 // This passes emptyStringSubstitute to zodSchema when input is an empty string, which is similar to Zod's .prefault(value) method which passes value to the schema when input is undefined.
 export function zodSubstituteEmptyString<T extends z4.$ZodType<string>>(
   zodSchema: T,
