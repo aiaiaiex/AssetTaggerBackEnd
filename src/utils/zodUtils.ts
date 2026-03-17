@@ -96,3 +96,8 @@ export function zodSubstituteEmptyString<T extends z4.$ZodType<string>>(
     })
     .pipe(zodSchema);
 }
+
+// z.xor() with zodCombineUnionErrorMessages.
+export function zodXOR<T extends z4.$ZodType>(zodSchemas: T[]) {
+  return z.xor(zodSchemas, { error: zodCombineUnionErrorMessages });
+}
