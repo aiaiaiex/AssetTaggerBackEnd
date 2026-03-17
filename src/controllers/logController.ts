@@ -413,7 +413,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
         storedProcedureStart,
         storedProcedureEnd,
         storedProcedureSuccess,
-        USP_READ_LOG,
+        USP_DELETE_LOG,
         JSON.stringify(parsedParams.data),
       );
     });
