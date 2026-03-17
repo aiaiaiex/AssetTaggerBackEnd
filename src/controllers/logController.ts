@@ -17,6 +17,7 @@ import { MSSQL_BIGINT_SCHEMA } from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
+import { bigIntReplacer } from "../utils/jsonUtils";
 import { zodParseBigInt, zodParseNumber, zodQuery } from "../utils/zodUtils";
 
 export const usp_CreateLog = async (
@@ -306,7 +307,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_LOG,
-        JSON.stringify(parsedQuery.data),
+        JSON.stringify(parsedQuery.data, bigIntReplacer),
       );
     });
 };
