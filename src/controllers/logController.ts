@@ -181,6 +181,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
   }
 
   const {
+    EndUserID,
     FromLogStoredProcedureEnd,
     FromLogStoredProcedureMilliseconds,
     FromLogStoredProcedureStart,
@@ -234,6 +235,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
   await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
+    .input("EndUserID", sql.UniqueIdentifier, EndUserID)
     .input("LogEndUserIP", sql.NVarChar(4000), LogEndUserIP)
     .input("LogStoredProcedureSuccess", sql.Bit, LogStoredProcedureSuccess)
     .input("LogStoredProcedureName", sql.NVarChar(4000), LogStoredProcedureName)
