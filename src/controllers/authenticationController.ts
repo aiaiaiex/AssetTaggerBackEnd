@@ -9,8 +9,12 @@ import { USP_CREATE_AUTHENTICATION } from "../constants/StoredProceduresConstant
 import { ExpressError } from "../middlewares/handleError";
 import { Authentication } from "../models/Authentication";
 import { EndUser, EndUserSchema } from "../models/EndUser";
+import { Log } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
+import { objectOmitKeys } from "../utils/objectUtils";
+import { usp_CreateLog } from "./logController";
 
+const createAuthenticationRedactedKeys = new Set(["EndUserPassword"]);
 export const createAuthentication = async (req: Request, res: Response) => {
   const parsedBody = EndUserSchema.pick({
     EndUserName: true,
@@ -25,7 +29,11 @@ export const createAuthentication = async (req: Request, res: Response) => {
 
   const { EndUserName, EndUserPassword } = parsedBody.data;
 
-  const { recordset } = await req.app.locals.database
+  const storedProcedureStart: Log["LogStoredProcedureStart"] = new Date();
+  let storedProcedureEnd: Log["LogStoredProcedureEnd"] | undefined;
+  let storedProcedureSuccess: Log["LogStoredProcedureSuccess"] = 1;
+
+  await req.app.locals.database
     .request()
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input(
@@ -33,40 +41,63 @@ export const createAuthentication = async (req: Request, res: Response) => {
       sql.NVarChar(sql.MAX),
       `${EndUserPassword}${authenticationConfig.salt}`,
     )
-    .execute<EndUser>(USP_CREATE_AUTHENTICATION);
+    .execute<EndUser>(USP_CREATE_AUTHENTICATION)
+    .then(({ recordset }) => {
+      const parsedRecordset = EndUserSchema.pick({
+        EndUserID: true,
+      })
+        .array()
+        .length(1)
+        .safeParse(recordset);
 
-  const parsedRecordset = EndUserSchema.pick({
-    EndUserID: true,
-  })
-    .array()
-    .length(1)
-    .safeParse(recordset);
+      if (!parsedRecordset.success) {
+        throw new ExpressError("Invalid credentials!", 401);
+      }
 
-  if (!parsedRecordset.success) {
-    throw new ExpressError("Invalid credentials!", 401);
-  }
+      const { EndUserID } = parsedRecordset.data[0];
 
-  const { EndUserID } = parsedRecordset.data[0];
+      const payload: Authentication = {
+        CallingEndUserID: EndUserID,
+        CallingEndUserIP: authenticationConfig.ipInPayload
+          ? (req.ip ?? null)
+          : null,
+      };
 
-  const payload: Authentication = {
-    CallingEndUserID: EndUserID,
-    CallingEndUserIP: authenticationConfig.ipInPayload
-      ? (req.ip ?? null)
-      : null,
-  };
+      const token = jwt.sign(payload, authenticationConfig.secret, {
+        algorithm: authenticationConfig.algorithms,
+        expiresIn: authenticationConfig.expiresIn,
+      });
 
-  const token = jwt.sign(payload, authenticationConfig.secret, {
-    algorithm: authenticationConfig.algorithms,
-    expiresIn: authenticationConfig.expiresIn,
-  });
+      res.cookie(
+        authenticationConfig.cookieAccessTokenName,
+        token,
+        authenticationConfig.cookieOptions,
+      );
 
-  res.cookie(
-    authenticationConfig.cookieAccessTokenName,
-    token,
-    authenticationConfig.cookieOptions,
-  );
+      res.json(payload);
+    })
+    .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
+      storedProcedureSuccess = 0;
 
-  res.json(payload);
+      if (error instanceof Error) {
+        throw error;
+      }
+    })
+    .finally(async () => {
+      await usp_CreateLog(
+        req.app.locals.database,
+        null,
+        req.ip ?? null,
+        storedProcedureStart,
+        storedProcedureEnd,
+        storedProcedureSuccess,
+        USP_CREATE_AUTHENTICATION,
+        JSON.stringify(
+          objectOmitKeys(parsedBody.data, createAuthenticationRedactedKeys),
+        ),
+      );
+    });
 };
 
 export const deleteAuthentication = async (req: JWTRequest, res: Response) => {
