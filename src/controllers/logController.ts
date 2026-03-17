@@ -13,6 +13,7 @@ import {
   USP_DELETE_LOG,
   USP_READ_LOG,
 } from "../constants/StoredProceduresConstants";
+import { MSSQL_BIGINT_SCHEMA } from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
@@ -160,14 +161,11 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
       NewestRowsFirst: zodQuery([
         zodParseNumber(z.int().min(0).max(1)),
       ]).prefault(null),
-      // The maximum integer is 9,223,372,036,854,775,807 because it is the upper limit of BIGINT in T-SQL.
-      // See more:
-      // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
       RowsToReturn: zodQuery([
-        zodParseNumber(z.bigint().min(1n).max(9223372036854775807n)),
+        zodParseNumber(MSSQL_BIGINT_SCHEMA.min(1n)),
       ]).prefault(null),
       RowsToSkip: zodQuery([
-        zodParseNumber(z.bigint().min(0n).max(9223372036854775807n)),
+        zodParseNumber(MSSQL_BIGINT_SCHEMA.min(0n)),
       ]).prefault(null),
       ToLogStoredProcedureEnd: zodQuery([
         z.iso.datetime(),

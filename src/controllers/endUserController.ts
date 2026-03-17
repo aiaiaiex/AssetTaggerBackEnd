@@ -10,6 +10,7 @@ import {
   USP_READ_ENDUSER,
   USP_UPDATE_ENDUSER,
 } from "../constants/StoredProceduresConstants";
+import { MSSQL_INT_SCHEMA } from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
@@ -111,15 +112,12 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
       NewestRowsFirst: zodQuery([
         zodParseNumber(z.int().min(0).max(1)),
       ]).prefault(null),
-      // The maximum integer is 2,147,483,647 because it is the upper limit of INT in T-SQL.
-      // See more:
-      // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
       RowsToReturn: zodQuery([
-        zodParseNumber(z.int().min(1).max(2147483647)),
+        zodParseNumber(MSSQL_INT_SCHEMA.min(1)),
       ]).prefault(null),
-      RowsToSkip: zodQuery([
-        zodParseNumber(z.int().min(0).max(2147483647)),
-      ]).prefault(null),
+      RowsToSkip: zodQuery([zodParseNumber(MSSQL_INT_SCHEMA.min(0))]).prefault(
+        null,
+      ),
       ToEndUserRegisterDate: zodQuery([
         z.iso.datetime(),
         z.iso.date(),
