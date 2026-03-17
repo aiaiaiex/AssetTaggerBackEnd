@@ -6,6 +6,7 @@ import z from "zod";
 import { NonNullishConstantsSchema } from "../constants/NonNullishConstants";
 import {
   NULLISH_NVARCHAR,
+  NULLISH_UNIQUEIDENTIFIER,
   NullishConstantsSchema,
 } from "../constants/NullishConstants";
 import {
@@ -120,7 +121,11 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     LogStoredProcedureStart: true,
   })
     .extend({
-      EndUserID: zodQuery([LogSchema.shape.EndUserID]).prefault(null),
+      EndUserID: zodQuery([
+        LogSchema.shape.EndUserID.unwrap(),
+        NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
+        NonNullishConstantsSchema.shape.NON_NULLISH_UNIQUEIDENTIFIER,
+      ]).prefault(NULLISH_UNIQUEIDENTIFIER),
       LogEndUserIP: zodQuery([
         LogSchema.shape.LogEndUserIP.unwrap(),
         NullishConstantsSchema.shape.NULLISH_NVARCHAR,

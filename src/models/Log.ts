@@ -1,6 +1,5 @@
 import z from "zod";
 
-import { NullishConstantsSchema } from "../constants/NullishConstants";
 import { storedProceduresConstants } from "../constants/StoredProceduresConstants";
 import {
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
@@ -12,10 +11,7 @@ import { zodExclude, zodXOR } from "../utils/zodUtils";
 import { EndUserSchema } from "./EndUser";
 
 export const LogSchema = z.object({
-  EndUserID: zodXOR([
-    EndUserSchema.shape.EndUserID,
-    NullishConstantsSchema.shape.NULLISH_UNIQUEIDENTIFIER,
-  ]),
+  EndUserID: EndUserSchema.shape.EndUserID.nullable(),
   LogEndUserIP: zodXOR([z.ipv4(), z.ipv6()]).nullable(),
   LogID: z.uuid({ version: "v4" }),
   LogStoredProcedureEnd: z.date(),
