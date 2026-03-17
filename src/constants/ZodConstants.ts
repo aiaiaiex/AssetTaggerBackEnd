@@ -53,3 +53,8 @@ export const MSSQL_BIGINT_SCHEMA = z
   .bigint()
   .min(-9223372036854775808n)
   .max(9223372036854775807n);
+
+// 0 or 1.
+// See more:
+// https://learn.microsoft.com/en-us/sql/t-sql/data-types/bit-transact-sql
+export const MSSQL_BIT_SCHEMA = z.literal([0, 1]);
