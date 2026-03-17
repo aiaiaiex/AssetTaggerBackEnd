@@ -17,7 +17,7 @@ import { MSSQL_BIGINT_SCHEMA } from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
-import { zodParseNumber, zodQuery } from "../utils/zodUtils";
+import { zodParseBigInt, zodParseNumber, zodQuery } from "../utils/zodUtils";
 
 export const usp_CreateLog = async (
   database: sql.ConnectionPool,
@@ -162,10 +162,10 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         zodParseNumber(z.int().min(0).max(1)),
       ]).prefault(null),
       RowsToReturn: zodQuery([
-        zodParseNumber(MSSQL_BIGINT_SCHEMA.min(1n)),
+        zodParseBigInt(MSSQL_BIGINT_SCHEMA.min(1n)),
       ]).prefault(null),
       RowsToSkip: zodQuery([
-        zodParseNumber(MSSQL_BIGINT_SCHEMA.min(0n)),
+        zodParseBigInt(MSSQL_BIGINT_SCHEMA.min(0n)),
       ]).prefault(null),
       ToLogStoredProcedureEnd: zodQuery([
         z.iso.datetime(),
