@@ -23,7 +23,12 @@ import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 import { bigIntReplacer } from "../utils/jsonUtils";
-import { zodParseBigInt, zodParseNumber, zodQuery } from "../utils/zodUtils";
+import {
+  zodParseBigInt,
+  zodParseNumber,
+  zodQuery,
+  zodXOR,
+} from "../utils/zodUtils";
 
 export const usp_CreateLog = async (
   database: sql.ConnectionPool,
@@ -153,9 +158,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         z.iso.datetime(),
         z.iso.date(),
       ]).prefault(null),
-      NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
-        null,
-      ),
+      NewestRowsFirst: zodXOR([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(1),
       RowsToReturn: zodQuery([
         zodParseBigInt(MSSQL_BIGINT_SCHEMA.min(1n)),
       ]).prefault(null),

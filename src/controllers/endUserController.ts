@@ -16,7 +16,7 @@ import { EndUser, EndUserSchema } from "../models/EndUser";
 import { Log } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 import { objectOmitKeys } from "../utils/objectUtils";
-import { zodParseNumber, zodQuery } from "../utils/zodUtils";
+import { zodParseNumber, zodQuery, zodXOR } from "../utils/zodUtils";
 import { usp_CreateLog } from "./logController";
 
 const createEndUserRedactedKeys = new Set(["EndUserPassword"]);
@@ -168,9 +168,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
         z.iso.datetime(),
         z.iso.date(),
       ]).prefault(null),
-      NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
-        null,
-      ),
+      NewestRowsFirst: zodXOR([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(1),
       RowsToReturn: zodQuery([
         zodParseNumber(MSSQL_INT_SCHEMA.min(1)),
       ]).prefault(null),
