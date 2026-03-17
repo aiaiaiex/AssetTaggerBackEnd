@@ -257,16 +257,16 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     .input("ToLogStoredProcedureEnd", sql.DateTime, ToLogStoredProcedureEnd)
     .input(
       "FromLogStoredProcedureMilliseconds",
-      sql.BigInt,
+      sql.Int,
       FromLogStoredProcedureMilliseconds,
     )
     .input(
       "ToLogStoredProcedureMilliseconds",
-      sql.BigInt,
+      sql.Int,
       ToLogStoredProcedureMilliseconds,
     )
-    .input("RowsToSkip", sql.Int, RowsToSkip)
-    .input("RowsToReturn", sql.Int, RowsToReturn)
+    .input("RowsToSkip", sql.BigInt, RowsToSkip)
+    .input("RowsToReturn", sql.BigInt, RowsToReturn)
     .input("NewestRowsFirst", sql.Bit, NewestRowsFirst)
     .execute<Log>(USP_READ_LOG)
     .then(({ recordset }) => {
