@@ -106,7 +106,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_LOG,
-        JSON.stringify(parsedParams.data),
+        JSON.stringify({ CallingEndUserID, ...parsedParams.data }),
       );
     });
 };
@@ -298,7 +298,10 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_LOG,
-        JSON.stringify(parsedQuery.data, bigIntReplacer),
+        JSON.stringify(
+          { CallingEndUserID, ...parsedQuery.data },
+          bigIntReplacer,
+        ),
       );
     });
 };
@@ -358,7 +361,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_DELETE_LOG,
-        JSON.stringify(parsedParams.data),
+        JSON.stringify({ CallingEndUserID, ...parsedParams.data }),
       );
     });
 };

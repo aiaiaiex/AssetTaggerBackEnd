@@ -83,7 +83,10 @@ export const createEndUser = async (req: JWTRequest, res: Response) => {
         storedProcedureSuccess,
         USP_CREATE_ENDUSER,
         JSON.stringify(
-          objectOmitKeys(parsedBody.data, createEndUserRedactedKeys),
+          objectOmitKeys(
+            { CallingEndUserID, ...parsedBody.data },
+            createEndUserRedactedKeys,
+          ),
         ),
       );
     });
@@ -140,7 +143,7 @@ export const readEndUser = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_ENDUSER,
-        JSON.stringify(parsedParams.data),
+        JSON.stringify({ CallingEndUserID, ...parsedParams.data }),
       );
     });
 };
@@ -251,7 +254,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_ENDUSER,
-        JSON.stringify(parsedQuery.data),
+        JSON.stringify({ CallingEndUserID, ...parsedQuery.data }),
       );
     });
 };
@@ -338,7 +341,11 @@ export const updateEndUser = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_UPDATE_ENDUSER,
-        JSON.stringify({ ...parsedParams.data, ...parsedBody.data }),
+        JSON.stringify({
+          CallingEndUserID,
+          ...parsedParams.data,
+          ...parsedBody.data,
+        }),
       );
     });
 };
@@ -394,7 +401,7 @@ export const deleteEndUser = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_DELETE_ENDUSER,
-        JSON.stringify(parsedParams.data),
+        JSON.stringify({ CallingEndUserID, ...parsedParams.data }),
       );
     });
 };
