@@ -5,6 +5,7 @@ import { storedProceduresConstants } from "../constants/StoredProceduresConstant
 import {
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   MSSQL_BIT_SCHEMA,
+  MSSQL_INT_SCHEMA,
   NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA,
 } from "../constants/ZodConstants";
 import { zodExclude, zodXOR } from "../utils/zodUtils";
@@ -18,7 +19,7 @@ export const LogSchema = z.object({
   LogEndUserIP: zodXOR([z.ipv4(), z.ipv6()]).nullable(),
   LogID: z.uuid({ version: "v4" }),
   LogStoredProcedureEnd: z.date(),
-  LogStoredProcedureMilliseconds: z.int().min(0),
+  LogStoredProcedureMilliseconds: MSSQL_INT_SCHEMA.min(0),
   LogStoredProcedureName: z.enum(storedProceduresConstants),
   LogStoredProcedureParameters: zodExclude(
     NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA.min(1),
