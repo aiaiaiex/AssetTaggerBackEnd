@@ -58,6 +58,10 @@ http:
       value: ""
       type: query
       disabled: true
+    - name: NewestRowsFirst
+      value: ""
+      type: query
+      disabled: true
   auth: inherit
 
 settings:

@@ -183,6 +183,11 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
           error: zodCombineUnionErrorMessages,
         })
         .prefault(null),
+      NewestRowsFirst: z
+        .xor([zodParseNull(), zodParseNumber(z.int().min(0).max(1))], {
+          error: zodCombineUnionErrorMessages,
+        })
+        .prefault(null),
       // The maximum integer is 9,223,372,036,854,775,807 because it is the upper limit of BIGINT in T-SQL.
       // See more:
       // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
@@ -238,6 +243,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     LogStoredProcedureName,
     LogStoredProcedureParameters,
     LogStoredProcedureSuccess,
+    NewestRowsFirst,
     RowsToReturn,
     RowsToSkip,
     ToLogStoredProcedureEnd,
@@ -311,6 +317,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     )
     .input("RowsToSkip", sql.Int, RowsToSkip)
     .input("RowsToReturn", sql.Int, RowsToReturn)
+    .input("NewestRowsFirst", sql.Bit, NewestRowsFirst)
     .execute<Log>(USP_READ_LOG)
     .then(({ recordset }) => {
       storedProcedureEnd = new Date();

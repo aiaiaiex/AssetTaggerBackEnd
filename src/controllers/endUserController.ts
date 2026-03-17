@@ -123,7 +123,11 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
           error: zodCombineUnionErrorMessages,
         })
         .prefault(null),
-
+      NewestRowsFirst: z
+        .xor([zodParseNull(), zodParseNumber(z.int().min(0).max(1))], {
+          error: zodCombineUnionErrorMessages,
+        })
+        .prefault(null),
       // The maximum integer is 2,147,483,647 because it is the upper limit of INT in T-SQL.
       // See more:
       // https://learn.microsoft.com/en-us/sql/t-sql/data-types/int-bigint-smallint-and-tinyint-transact-sql
@@ -154,6 +158,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     EndUserName,
     EndUserRoleID,
     FromEndUserRegisterDate,
+    NewestRowsFirst,
     RowsToReturn,
     RowsToSkip,
     ToEndUserRegisterDate,
@@ -180,6 +185,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     .input("ToEndUserRegisterDate", sql.DateTime, ToEndUserRegisterDate)
     .input("RowsToSkip", sql.Int, RowsToSkip)
     .input("RowsToReturn", sql.Int, RowsToReturn)
+    .input("NewestRowsFirst", sql.Bit, NewestRowsFirst)
     .execute<EndUser>(USP_READ_ENDUSER);
 
   const parsedRecordset = EndUserSchema.omit({ EndUserPassword: true })
