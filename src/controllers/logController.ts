@@ -29,7 +29,9 @@ export const usp_CreateLog = async (
   LogStoredProcedureStart: z.infer<
     typeof LogSchema.shape.LogStoredProcedureStart
   >,
-  LogStoredProcedureEnd: z.infer<typeof LogSchema.shape.LogStoredProcedureEnd>,
+  LogStoredProcedureEnd: z.infer<
+    typeof LogSchema.shape.LogStoredProcedureEnd
+  > = new Date(),
   LogStoredProcedureSuccess: z.infer<
     typeof LogSchema.shape.LogStoredProcedureSuccess
   >,
@@ -70,7 +72,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
   const { LogID } = parsedParams.data;
 
   const storedProcedureStart = new Date();
-  let storedProcedureEnd: Date;
+  let storedProcedureEnd: Date | undefined;
   let storedProcedureSuccess = 1;
 
   await req.app.locals.database
@@ -100,6 +102,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
       res.json(parsedRecordset.data[0]);
     })
     .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
       storedProcedureSuccess = 0;
 
       if (error instanceof Error) {
@@ -274,7 +277,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
   }
 
   const storedProcedureStart = new Date();
-  let storedProcedureEnd: Date;
+  let storedProcedureEnd: Date | undefined;
   let storedProcedureSuccess = 1;
 
   await req.app.locals.database
@@ -330,6 +333,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
       res.json(parsedRecordset.data);
     })
     .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
       storedProcedureSuccess = 0;
 
       if (error instanceof Error) {
@@ -364,7 +368,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
   const { LogID } = parsedParams.data;
 
   const storedProcedureStart = new Date();
-  let storedProcedureEnd: Date;
+  let storedProcedureEnd: Date | undefined;
   let storedProcedureSuccess = 1;
 
   await req.app.locals.database
@@ -394,6 +398,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
       res.json(parsedRecordset.data[0]);
     })
     .catch((error: unknown) => {
+      storedProcedureEnd = storedProcedureEnd ?? new Date();
       storedProcedureSuccess = 0;
 
       if (error instanceof Error) {
