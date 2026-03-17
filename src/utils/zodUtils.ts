@@ -63,6 +63,24 @@ export function zodExclude<T extends z.ZodType>(
   });
 }
 
+export function zodParseBigInt<T extends z4.$ZodType<bigint>>(
+  zodSchema: T,
+  emptyStringValue: unknown = NaN,
+) {
+  return z
+    .transform((input) => {
+      // Do not try to convert strings with whitespace into bigints.
+      if (typeof input === "string" && NO_WHITESPACE.test(input)) {
+        // input.length > 0 is checked to prevent calling BigInt() with an empty string (or a string with only whitespace which is impossible in this case) which results to the bigint 0n.
+        // Change emptyStringValue to 0n to revert back to BigInt()'s default behavior.
+        return input.length > 0 ? BigInt(input) : emptyStringValue;
+      } else {
+        return input;
+      }
+    })
+    .pipe(zodSchema);
+}
+
 export function zodParseNumber<T extends z4.$ZodType<number>>(
   zodSchema: T,
   emptyStringValue: unknown = NaN,
