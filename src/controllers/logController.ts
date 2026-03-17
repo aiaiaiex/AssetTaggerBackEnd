@@ -13,7 +13,10 @@ import {
   USP_DELETE_LOG,
   USP_READ_LOG,
 } from "../constants/StoredProceduresConstants";
-import { MSSQL_BIGINT_SCHEMA } from "../constants/ZodConstants";
+import {
+  MSSQL_BIGINT_SCHEMA,
+  MSSQL_BIT_SCHEMA,
+} from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
@@ -159,9 +162,9 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         z.iso.datetime(),
         z.iso.date(),
       ]).prefault(null),
-      NewestRowsFirst: zodQuery([
-        zodParseNumber(z.int().min(0).max(1)),
-      ]).prefault(null),
+      NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
+        null,
+      ),
       RowsToReturn: zodQuery([
         zodParseBigInt(MSSQL_BIGINT_SCHEMA.min(1n)),
       ]).prefault(null),

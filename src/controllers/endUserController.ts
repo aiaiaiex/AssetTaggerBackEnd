@@ -10,7 +10,7 @@ import {
   USP_READ_ENDUSER,
   USP_UPDATE_ENDUSER,
 } from "../constants/StoredProceduresConstants";
-import { MSSQL_INT_SCHEMA } from "../constants/ZodConstants";
+import { MSSQL_BIT_SCHEMA, MSSQL_INT_SCHEMA } from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
@@ -109,9 +109,9 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
         z.iso.datetime(),
         z.iso.date(),
       ]).prefault(null),
-      NewestRowsFirst: zodQuery([
-        zodParseNumber(z.int().min(0).max(1)),
-      ]).prefault(null),
+      NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
+        null,
+      ),
       RowsToReturn: zodQuery([
         zodParseNumber(MSSQL_INT_SCHEMA.min(1)),
       ]).prefault(null),
