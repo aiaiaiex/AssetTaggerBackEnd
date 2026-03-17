@@ -45,10 +45,12 @@ const AuthenticationConfigSchema = z.object({
     "assetTaggerAccessToken", // Empty string defaults to assetTaggerAccessToken.
   ),
   cookieOptions: CookieOptionsConfigSchema,
-  expiresIn: zodParseNumber(z.int().min(1), 1).transform((input) => {
-    // input (hours) * 60 minutes * 60 seconds.
-    return input * 60 * 60; // Empty string defaults to 1 hour.
-  }),
+  expiresIn: zodParseNumber(z.int().min(1), 1)
+    .transform((input) => {
+      // input (hours) * 60 minutes * 60 seconds.
+      return input * 60 * 60; // Empty string defaults to 1 hour.
+    })
+    .pipe(z.int()),
   ipInPayload: z.stringbool({
     case: "sensitive",
     falsy: ["false", ""], // Empty string defaults to false.
