@@ -5,9 +5,11 @@ import {
   NO_WHITESPACE_SCHEMA,
 } from "../constants/ZodConstants";
 import { zodExclude } from "../utils/zodUtils";
+import { EmployeeSchema } from "./Employee";
+import { EndUserRoleSchema } from "./EndUserRole";
 
 export const EndUserSchema = z.object({
-  EmployeeID: z.uuid({ version: "v4" }),
+  EmployeeID: EmployeeSchema.shape.EmployeeID,
   EndUserID: z.uuid({ version: "v4" }),
   EndUserName: zodExclude(
     NO_WHITESPACE_SCHEMA.min(1).max(850),
@@ -15,7 +17,7 @@ export const EndUserSchema = z.object({
   ),
   EndUserPassword: z.string().optional(), // Optional because it is not in the database.
   EndUserRegisterDate: z.date(),
-  EndUserRoleID: z.uuid({ version: "v4" }),
+  EndUserRoleID: EndUserRoleSchema.shape.EndUserRoleID,
 });
 
 export type EndUser = z.infer<typeof EndUserSchema>;
