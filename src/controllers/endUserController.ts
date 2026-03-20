@@ -165,8 +165,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     })
     .safeExtend({
       FromEndUserRegisterDate: zodQuery([
-        z.iso.datetime(),
-        z.iso.date(),
+        z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
       NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
         null,
@@ -178,8 +177,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
         null,
       ),
       ToEndUserRegisterDate: zodQuery([
-        z.iso.datetime(),
-        z.iso.date(),
+        z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
     })
     .safeParse(req.query);
@@ -220,8 +218,16 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     .input("EndUserName", sql.NVarChar(4000), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
-    .input("FromEndUserRegisterDate", sql.DateTime, FromEndUserRegisterDate)
-    .input("ToEndUserRegisterDate", sql.DateTime, ToEndUserRegisterDate)
+    .input(
+      "FromEndUserRegisterDate",
+      sql.DateTimeOffset(3),
+      FromEndUserRegisterDate,
+    )
+    .input(
+      "ToEndUserRegisterDate",
+      sql.DateTimeOffset(3),
+      ToEndUserRegisterDate,
+    )
     .input("RowsToSkip", sql.Int, RowsToSkip)
     .input("RowsToReturn", sql.Int, RowsToReturn)
     .input("NewestRowsFirst", sql.Bit, NewestRowsFirst)

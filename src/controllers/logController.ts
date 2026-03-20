@@ -39,8 +39,16 @@ export const usp_CreateLog = async (
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("LogEndUserIP", sql.NVarChar(4000), LogEndUserIP)
-    .input("LogStoredProcedureStart", sql.DateTime, LogStoredProcedureStart)
-    .input("LogStoredProcedureEnd", sql.DateTime, LogStoredProcedureEnd)
+    .input(
+      "LogStoredProcedureStart",
+      sql.DateTimeOffset(3),
+      LogStoredProcedureStart,
+    )
+    .input(
+      "LogStoredProcedureEnd",
+      sql.DateTimeOffset(3),
+      LogStoredProcedureEnd,
+    )
     .input("LogStoredProcedureSuccess", sql.Bit, LogStoredProcedureSuccess)
     .input("LogStoredProcedureName", sql.NVarChar(4000), LogStoredProcedureName)
     .input(
@@ -143,15 +151,13 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     })
     .safeExtend({
       FromLogStoredProcedureEnd: zodQuery([
-        z.iso.datetime(),
-        z.iso.date(),
+        z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
       FromLogStoredProcedureMilliseconds: zodQuery([
         LogSchema.shape.LogStoredProcedureMilliseconds,
       ]).prefault(null),
       FromLogStoredProcedureStart: zodQuery([
-        z.iso.datetime(),
-        z.iso.date(),
+        z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
       NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
         null,
@@ -163,15 +169,13 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         zodParseBigInt(MSSQL_BIGINT_SCHEMA.min(0n)),
       ]).prefault(null),
       ToLogStoredProcedureEnd: zodQuery([
-        z.iso.datetime(),
-        z.iso.date(),
+        z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
       ToLogStoredProcedureMilliseconds: zodQuery([
         LogSchema.shape.LogStoredProcedureMilliseconds,
       ]).prefault(null),
       ToLogStoredProcedureStart: zodQuery([
-        z.iso.datetime(),
-        z.iso.date(),
+        z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
     })
     .safeParse(req.query);
@@ -246,12 +250,24 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     )
     .input(
       "FromLogStoredProcedureStart",
-      sql.DateTime,
+      sql.DateTimeOffset(3),
       FromLogStoredProcedureStart,
     )
-    .input("ToLogStoredProcedureStart", sql.DateTime, ToLogStoredProcedureStart)
-    .input("FromLogStoredProcedureEnd", sql.DateTime, FromLogStoredProcedureEnd)
-    .input("ToLogStoredProcedureEnd", sql.DateTime, ToLogStoredProcedureEnd)
+    .input(
+      "ToLogStoredProcedureStart",
+      sql.DateTimeOffset(3),
+      ToLogStoredProcedureStart,
+    )
+    .input(
+      "FromLogStoredProcedureEnd",
+      sql.DateTimeOffset(3),
+      FromLogStoredProcedureEnd,
+    )
+    .input(
+      "ToLogStoredProcedureEnd",
+      sql.DateTimeOffset(3),
+      ToLogStoredProcedureEnd,
+    )
     .input(
       "FromLogStoredProcedureMilliseconds",
       sql.Int,
