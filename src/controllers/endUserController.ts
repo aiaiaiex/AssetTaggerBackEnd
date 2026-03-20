@@ -10,7 +10,10 @@ import {
   USP_READ_ENDUSER,
   USP_UPDATE_ENDUSER,
 } from "../constants/StoredProcedureConstants";
-import { MSSQL_BIT_SCHEMA, MSSQL_INT_SCHEMA } from "../constants/ZodConstants";
+import {
+  MSSQL_BIT_SCHEMA,
+  MSSQL_INT_SCHEMA,
+} from "../constants/CheckConstraintConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { Log } from "../models/Log";

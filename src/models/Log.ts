@@ -6,7 +6,7 @@ import {
   MSSQL_BIT_SCHEMA,
   MSSQL_INT_SCHEMA,
   NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA,
-} from "../constants/ZodConstants";
+} from "../constants/CheckConstraintConstants";
 import { zodExclude, zodXOR } from "../utils/zodUtils";
 import { EndUserSchema } from "./EndUser";
 

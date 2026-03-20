@@ -3,7 +3,7 @@ import z from "zod";
 import {
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA,
-} from "../constants/ZodConstants";
+} from "../constants/CheckConstraintConstants";
 import { zodExclude } from "../utils/zodUtils";
 
 export const CompanySchema = z.object({

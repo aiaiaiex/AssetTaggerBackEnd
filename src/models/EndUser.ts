@@ -3,7 +3,7 @@ import z from "zod";
 import {
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   NO_WHITESPACE_SCHEMA,
-} from "../constants/ZodConstants";
+} from "../constants/CheckConstraintConstants";
 import { zodExclude } from "../utils/zodUtils";
 import { EmployeeSchema } from "./Employee";
 import { EndUserRoleSchema } from "./EndUserRole";

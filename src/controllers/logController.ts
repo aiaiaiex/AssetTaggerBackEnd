@@ -18,7 +18,7 @@ import {
   BOOLEAN_TO_MSSQL_BIT_SCHEMA,
   MSSQL_BIGINT_SCHEMA,
   MSSQL_BIT_SCHEMA,
-} from "../constants/ZodConstants";
+} from "../constants/CheckConstraintConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
