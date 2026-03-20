@@ -154,7 +154,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
       FromLogStoredProcedureMilliseconds: zodQuery([
-        LogSchema.shape.LogStoredProcedureMilliseconds,
+        zodParseBigInt(LogSchema.shape.LogStoredProcedureMilliseconds),
       ]).prefault(null),
       FromLogStoredProcedureStart: zodQuery([
         z.iso.datetime({ offset: true, precision: 3 }),
@@ -172,7 +172,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
       ToLogStoredProcedureMilliseconds: zodQuery([
-        LogSchema.shape.LogStoredProcedureMilliseconds,
+        zodParseBigInt(LogSchema.shape.LogStoredProcedureMilliseconds),
       ]).prefault(null),
       ToLogStoredProcedureStart: zodQuery([
         z.iso.datetime({ offset: true, precision: 3 }),
@@ -286,6 +286,9 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
+        LogStoredProcedureMilliseconds: zodParseBigInt(
+          LogSchema.shape.LogStoredProcedureMilliseconds,
+        ),
         LogStoredProcedureSuccess: BOOLEAN_TO_TSQL_BIT_SCHEMA,
       })
         .array()

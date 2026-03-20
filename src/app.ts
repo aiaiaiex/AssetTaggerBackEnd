@@ -7,8 +7,11 @@ import acknowledgeFaviconRequest from "./middlewares/acknowledgeFaviconRequest";
 import handleError from "./middlewares/handleError";
 import logRequest from "./middlewares/logRequest";
 import routes from "./routes/routes";
+import { bigIntReplacer } from "./utils/jsonUtils";
 
 const app = express();
+
+app.set("json replacer", bigIntReplacer);
 
 app.use([logRequest, acknowledgeFaviconRequest, json(), cookieParser()]);
 
