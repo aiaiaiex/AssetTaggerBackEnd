@@ -15,9 +15,9 @@ import {
   USP_READ_LOG,
 } from "../constants/StoredProcedureConstants";
 import {
-  BOOLEAN_TO_MSSQL_BIT_SCHEMA,
-  MSSQL_BIGINT_SCHEMA,
-  MSSQL_BIT_SCHEMA,
+  BOOLEAN_TO_TSQL_BIT_SCHEMA,
+  TSQL_BIGINT_SCHEMA,
+  TSQL_BIT_SCHEMA,
 } from "../constants/TSQLDataTypeConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
@@ -85,7 +85,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: BOOLEAN_TO_MSSQL_BIT_SCHEMA,
+        LogStoredProcedureSuccess: BOOLEAN_TO_TSQL_BIT_SCHEMA,
       })
         .array()
         .max(1)
@@ -159,14 +159,14 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
       FromLogStoredProcedureStart: zodQuery([
         z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
-      NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
+      NewestRowsFirst: zodQuery([zodParseNumber(TSQL_BIT_SCHEMA)]).prefault(
         null,
       ),
       RowsToReturn: zodQuery([
-        zodParseBigInt(MSSQL_BIGINT_SCHEMA.min(1n)),
+        zodParseBigInt(TSQL_BIGINT_SCHEMA.min(1n)),
       ]).prefault(null),
       RowsToSkip: zodQuery([
-        zodParseBigInt(MSSQL_BIGINT_SCHEMA.min(0n)),
+        zodParseBigInt(TSQL_BIGINT_SCHEMA.min(0n)),
       ]).prefault(null),
       ToLogStoredProcedureEnd: zodQuery([
         z.iso.datetime({ offset: true, precision: 3 }),
@@ -286,7 +286,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: BOOLEAN_TO_MSSQL_BIT_SCHEMA,
+        LogStoredProcedureSuccess: BOOLEAN_TO_TSQL_BIT_SCHEMA,
       })
         .array()
         .safeParse(recordset);
@@ -348,7 +348,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: BOOLEAN_TO_MSSQL_BIT_SCHEMA,
+        LogStoredProcedureSuccess: BOOLEAN_TO_TSQL_BIT_SCHEMA,
       })
         .array()
         .max(1)

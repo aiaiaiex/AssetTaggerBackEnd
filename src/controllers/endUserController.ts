@@ -11,8 +11,8 @@ import {
   USP_UPDATE_ENDUSER,
 } from "../constants/StoredProcedureConstants";
 import {
-  MSSQL_BIT_SCHEMA,
-  MSSQL_INT_SCHEMA,
+  TSQL_BIT_SCHEMA,
+  TSQL_INT_SCHEMA,
 } from "../constants/TSQLDataTypeConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
@@ -170,13 +170,13 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
       FromEndUserRegisterDate: zodQuery([
         z.iso.datetime({ offset: true, precision: 3 }),
       ]).prefault(null),
-      NewestRowsFirst: zodQuery([zodParseNumber(MSSQL_BIT_SCHEMA)]).prefault(
+      NewestRowsFirst: zodQuery([zodParseNumber(TSQL_BIT_SCHEMA)]).prefault(
         null,
       ),
-      RowsToReturn: zodQuery([
-        zodParseNumber(MSSQL_INT_SCHEMA.min(1)),
-      ]).prefault(null),
-      RowsToSkip: zodQuery([zodParseNumber(MSSQL_INT_SCHEMA.min(0))]).prefault(
+      RowsToReturn: zodQuery([zodParseNumber(TSQL_INT_SCHEMA.min(1))]).prefault(
+        null,
+      ),
+      RowsToSkip: zodQuery([zodParseNumber(TSQL_INT_SCHEMA.min(0))]).prefault(
         null,
       ),
       ToEndUserRegisterDate: zodQuery([
