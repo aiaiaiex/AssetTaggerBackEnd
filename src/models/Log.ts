@@ -1,12 +1,14 @@
 import z from "zod";
 
-import { storedProcedureConstants } from "../constants/StoredProcedureConstants";
 import {
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
-  MSSQL_BIT_SCHEMA,
-  MSSQL_INT_SCHEMA,
   NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA,
 } from "../constants/CheckConstraintConstants";
+import { storedProcedureConstants } from "../constants/StoredProcedureConstants";
+import {
+  MSSQL_BIT_SCHEMA,
+  MSSQL_INT_SCHEMA,
+} from "../constants/TSQLDataTypeConstants";
 import { zodExclude, zodXOR } from "../utils/zodUtils";
 import { EndUserSchema } from "./EndUser";
 

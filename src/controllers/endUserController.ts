@@ -13,7 +13,7 @@ import {
 import {
   MSSQL_BIT_SCHEMA,
   MSSQL_INT_SCHEMA,
-} from "../constants/CheckConstraintConstants";
+} from "../constants/TSQLDataTypeConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";
 import { Log } from "../models/Log";

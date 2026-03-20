@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { MSSQL_INT_SCHEMA } from "../constants/CheckConstraintConstants";
+import { MSSQL_INT_SCHEMA } from "../constants/TSQLDataTypeConstants";
 import { ProductSchema } from "./Product";
 
 export const ProductSetSchema = z.object({
