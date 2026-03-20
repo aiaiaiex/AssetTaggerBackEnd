@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { storedProceduresConstants } from "../constants/StoredProceduresConstants";
+import { storedProcedureConstants } from "../constants/StoredProcedureConstants";
 import {
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   MSSQL_BIT_SCHEMA,
@@ -16,7 +16,7 @@ export const LogSchema = z.object({
   LogID: z.uuid({ version: "v4" }),
   LogStoredProcedureEnd: z.date(),
   LogStoredProcedureMilliseconds: MSSQL_INT_SCHEMA.min(0),
-  LogStoredProcedureName: z.enum(storedProceduresConstants),
+  LogStoredProcedureName: z.enum(storedProcedureConstants),
   LogStoredProcedureParameters: zodExclude(
     NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA.min(1),
     EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,

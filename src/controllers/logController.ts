@@ -13,7 +13,7 @@ import {
   USP_CREATE_LOG,
   USP_DELETE_LOG,
   USP_READ_LOG,
-} from "../constants/StoredProceduresConstants";
+} from "../constants/StoredProcedureConstants";
 import {
   BOOLEAN_TO_MSSQL_BIT_SCHEMA,
   MSSQL_BIGINT_SCHEMA,

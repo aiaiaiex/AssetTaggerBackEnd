@@ -5,7 +5,7 @@ import sql from "mssql";
 import z from "zod";
 
 import authenticationConfig from "../configs/authenticationConfig";
-import { USP_CREATE_AUTHENTICATION } from "../constants/StoredProceduresConstants";
+import { USP_CREATE_AUTHENTICATION } from "../constants/StoredProcedureConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { Authentication } from "../models/Authentication";
 import { EndUser, EndUserSchema } from "../models/EndUser";

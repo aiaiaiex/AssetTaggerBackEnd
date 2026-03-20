@@ -9,7 +9,7 @@ import {
   USP_DELETE_ENDUSER,
   USP_READ_ENDUSER,
   USP_UPDATE_ENDUSER,
-} from "../constants/StoredProceduresConstants";
+} from "../constants/StoredProcedureConstants";
 import { MSSQL_BIT_SCHEMA, MSSQL_INT_SCHEMA } from "../constants/ZodConstants";
 import { ExpressError } from "../middlewares/handleError";
 import { EndUser, EndUserSchema } from "../models/EndUser";

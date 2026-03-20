@@ -1,6 +1,6 @@
 import z from "zod";
 
-const StoredProceduresConstants = z.object({
+const StoredProcedureConstantsSchema = z.object({
   USP_CREATE_ASSET: z.literal("usp_CreateAsset"),
   USP_CREATE_ASSETFIX: z.literal("usp_CreateAssetFix"),
   USP_CREATE_ASSETISSUE: z.literal("usp_CreateAssetIssue"),
@@ -75,121 +75,138 @@ const StoredProceduresConstants = z.object({
   USP_UPDATE_VENDOR: z.literal("usp_UpdateVendor"),
 });
 
-type StoredProceduresConstants = z.infer<typeof StoredProceduresConstants>;
+type StoredProcedureConstants = z.infer<typeof StoredProcedureConstantsSchema>;
 
-export const storedProceduresConstants: StoredProceduresConstants = {
-  USP_CREATE_ASSET: StoredProceduresConstants.shape.USP_CREATE_ASSET.value,
+export const storedProcedureConstants: StoredProcedureConstants = {
+  USP_CREATE_ASSET: StoredProcedureConstantsSchema.shape.USP_CREATE_ASSET.value,
   USP_CREATE_ASSETFIX:
-    StoredProceduresConstants.shape.USP_CREATE_ASSETFIX.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_ASSETFIX.value,
   USP_CREATE_ASSETISSUE:
-    StoredProceduresConstants.shape.USP_CREATE_ASSETISSUE.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_ASSETISSUE.value,
   USP_CREATE_ASSETTRANSFER:
-    StoredProceduresConstants.shape.USP_CREATE_ASSETTRANSFER.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_ASSETTRANSFER.value,
   USP_CREATE_AUTHENTICATION:
-    StoredProceduresConstants.shape.USP_CREATE_AUTHENTICATION.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_AUTHENTICATION.value,
   USP_CREATE_BUILDING:
-    StoredProceduresConstants.shape.USP_CREATE_BUILDING.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_BUILDING.value,
   USP_CREATE_CATEGORY:
-    StoredProceduresConstants.shape.USP_CREATE_CATEGORY.value,
-  USP_CREATE_COMPANY: StoredProceduresConstants.shape.USP_CREATE_COMPANY.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_CATEGORY.value,
+  USP_CREATE_COMPANY:
+    StoredProcedureConstantsSchema.shape.USP_CREATE_COMPANY.value,
   USP_CREATE_DEPARTMENT:
-    StoredProceduresConstants.shape.USP_CREATE_DEPARTMENT.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_DEPARTMENT.value,
   USP_CREATE_EMPLOYEE:
-    StoredProceduresConstants.shape.USP_CREATE_EMPLOYEE.value,
-  USP_CREATE_ENDUSER: StoredProceduresConstants.shape.USP_CREATE_ENDUSER.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_EMPLOYEE.value,
+  USP_CREATE_ENDUSER:
+    StoredProcedureConstantsSchema.shape.USP_CREATE_ENDUSER.value,
   USP_CREATE_ENDUSERROLE:
-    StoredProceduresConstants.shape.USP_CREATE_ENDUSERROLE.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_ENDUSERROLE.value,
   USP_CREATE_LOCATION:
-    StoredProceduresConstants.shape.USP_CREATE_LOCATION.value,
-  USP_CREATE_LOG: StoredProceduresConstants.shape.USP_CREATE_LOG.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_LOCATION.value,
+  USP_CREATE_LOG: StoredProcedureConstantsSchema.shape.USP_CREATE_LOG.value,
   USP_CREATE_MANUFACTURER:
-    StoredProceduresConstants.shape.USP_CREATE_MANUFACTURER.value,
-  USP_CREATE_PRODUCT: StoredProceduresConstants.shape.USP_CREATE_PRODUCT.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_MANUFACTURER.value,
+  USP_CREATE_PRODUCT:
+    StoredProcedureConstantsSchema.shape.USP_CREATE_PRODUCT.value,
   USP_CREATE_PRODUCTSET:
-    StoredProceduresConstants.shape.USP_CREATE_PRODUCTSET.value,
-  USP_CREATE_ROLE: StoredProceduresConstants.shape.USP_CREATE_ROLE.value,
-  USP_CREATE_VENDOR: StoredProceduresConstants.shape.USP_CREATE_VENDOR.value,
-  USP_DELETE_ASSET: StoredProceduresConstants.shape.USP_DELETE_ASSET.value,
+    StoredProcedureConstantsSchema.shape.USP_CREATE_PRODUCTSET.value,
+  USP_CREATE_ROLE: StoredProcedureConstantsSchema.shape.USP_CREATE_ROLE.value,
+  USP_CREATE_VENDOR:
+    StoredProcedureConstantsSchema.shape.USP_CREATE_VENDOR.value,
+  USP_DELETE_ASSET: StoredProcedureConstantsSchema.shape.USP_DELETE_ASSET.value,
   USP_DELETE_ASSETFIX:
-    StoredProceduresConstants.shape.USP_DELETE_ASSETFIX.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_ASSETFIX.value,
   USP_DELETE_ASSETISSUE:
-    StoredProceduresConstants.shape.USP_DELETE_ASSETISSUE.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_ASSETISSUE.value,
   USP_DELETE_ASSETTRANSFER:
-    StoredProceduresConstants.shape.USP_DELETE_ASSETTRANSFER.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_ASSETTRANSFER.value,
   USP_DELETE_BUILDING:
-    StoredProceduresConstants.shape.USP_DELETE_BUILDING.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_BUILDING.value,
   USP_DELETE_CATEGORY:
-    StoredProceduresConstants.shape.USP_DELETE_CATEGORY.value,
-  USP_DELETE_COMPANY: StoredProceduresConstants.shape.USP_DELETE_COMPANY.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_CATEGORY.value,
+  USP_DELETE_COMPANY:
+    StoredProcedureConstantsSchema.shape.USP_DELETE_COMPANY.value,
   USP_DELETE_DEPARTMENT:
-    StoredProceduresConstants.shape.USP_DELETE_DEPARTMENT.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_DEPARTMENT.value,
   USP_DELETE_EMPLOYEE:
-    StoredProceduresConstants.shape.USP_DELETE_EMPLOYEE.value,
-  USP_DELETE_ENDUSER: StoredProceduresConstants.shape.USP_DELETE_ENDUSER.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_EMPLOYEE.value,
+  USP_DELETE_ENDUSER:
+    StoredProcedureConstantsSchema.shape.USP_DELETE_ENDUSER.value,
   USP_DELETE_ENDUSERROLE:
-    StoredProceduresConstants.shape.USP_DELETE_ENDUSERROLE.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_ENDUSERROLE.value,
   USP_DELETE_LOCATION:
-    StoredProceduresConstants.shape.USP_DELETE_LOCATION.value,
-  USP_DELETE_LOG: StoredProceduresConstants.shape.USP_DELETE_LOG.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_LOCATION.value,
+  USP_DELETE_LOG: StoredProcedureConstantsSchema.shape.USP_DELETE_LOG.value,
   USP_DELETE_MANUFACTURER:
-    StoredProceduresConstants.shape.USP_DELETE_MANUFACTURER.value,
-  USP_DELETE_PRODUCT: StoredProceduresConstants.shape.USP_DELETE_PRODUCT.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_MANUFACTURER.value,
+  USP_DELETE_PRODUCT:
+    StoredProcedureConstantsSchema.shape.USP_DELETE_PRODUCT.value,
   USP_DELETE_PRODUCTSET:
-    StoredProceduresConstants.shape.USP_DELETE_PRODUCTSET.value,
-  USP_DELETE_ROLE: StoredProceduresConstants.shape.USP_DELETE_ROLE.value,
-  USP_DELETE_VENDOR: StoredProceduresConstants.shape.USP_DELETE_VENDOR.value,
-  USP_READ_ASSET: StoredProceduresConstants.shape.USP_READ_ASSET.value,
-  USP_READ_ASSETFIX: StoredProceduresConstants.shape.USP_READ_ASSETFIX.value,
+    StoredProcedureConstantsSchema.shape.USP_DELETE_PRODUCTSET.value,
+  USP_DELETE_ROLE: StoredProcedureConstantsSchema.shape.USP_DELETE_ROLE.value,
+  USP_DELETE_VENDOR:
+    StoredProcedureConstantsSchema.shape.USP_DELETE_VENDOR.value,
+  USP_READ_ASSET: StoredProcedureConstantsSchema.shape.USP_READ_ASSET.value,
+  USP_READ_ASSETFIX:
+    StoredProcedureConstantsSchema.shape.USP_READ_ASSETFIX.value,
   USP_READ_ASSETISSUE:
-    StoredProceduresConstants.shape.USP_READ_ASSETISSUE.value,
+    StoredProcedureConstantsSchema.shape.USP_READ_ASSETISSUE.value,
   USP_READ_ASSETTRANSFER:
-    StoredProceduresConstants.shape.USP_READ_ASSETTRANSFER.value,
-  USP_READ_BUILDING: StoredProceduresConstants.shape.USP_READ_BUILDING.value,
-  USP_READ_CATEGORY: StoredProceduresConstants.shape.USP_READ_CATEGORY.value,
-  USP_READ_COMPANY: StoredProceduresConstants.shape.USP_READ_COMPANY.value,
+    StoredProcedureConstantsSchema.shape.USP_READ_ASSETTRANSFER.value,
+  USP_READ_BUILDING:
+    StoredProcedureConstantsSchema.shape.USP_READ_BUILDING.value,
+  USP_READ_CATEGORY:
+    StoredProcedureConstantsSchema.shape.USP_READ_CATEGORY.value,
+  USP_READ_COMPANY: StoredProcedureConstantsSchema.shape.USP_READ_COMPANY.value,
   USP_READ_DEPARTMENT:
-    StoredProceduresConstants.shape.USP_READ_DEPARTMENT.value,
-  USP_READ_EMPLOYEE: StoredProceduresConstants.shape.USP_READ_EMPLOYEE.value,
-  USP_READ_ENDUSER: StoredProceduresConstants.shape.USP_READ_ENDUSER.value,
+    StoredProcedureConstantsSchema.shape.USP_READ_DEPARTMENT.value,
+  USP_READ_EMPLOYEE:
+    StoredProcedureConstantsSchema.shape.USP_READ_EMPLOYEE.value,
+  USP_READ_ENDUSER: StoredProcedureConstantsSchema.shape.USP_READ_ENDUSER.value,
   USP_READ_ENDUSERROLE:
-    StoredProceduresConstants.shape.USP_READ_ENDUSERROLE.value,
-  USP_READ_LOCATION: StoredProceduresConstants.shape.USP_READ_LOCATION.value,
-  USP_READ_LOG: StoredProceduresConstants.shape.USP_READ_LOG.value,
+    StoredProcedureConstantsSchema.shape.USP_READ_ENDUSERROLE.value,
+  USP_READ_LOCATION:
+    StoredProcedureConstantsSchema.shape.USP_READ_LOCATION.value,
+  USP_READ_LOG: StoredProcedureConstantsSchema.shape.USP_READ_LOG.value,
   USP_READ_MANUFACTURER:
-    StoredProceduresConstants.shape.USP_READ_MANUFACTURER.value,
-  USP_READ_PRODUCT: StoredProceduresConstants.shape.USP_READ_PRODUCT.value,
+    StoredProcedureConstantsSchema.shape.USP_READ_MANUFACTURER.value,
+  USP_READ_PRODUCT: StoredProcedureConstantsSchema.shape.USP_READ_PRODUCT.value,
   USP_READ_PRODUCTSET:
-    StoredProceduresConstants.shape.USP_READ_PRODUCTSET.value,
-  USP_READ_ROLE: StoredProceduresConstants.shape.USP_READ_ROLE.value,
-  USP_READ_VENDOR: StoredProceduresConstants.shape.USP_READ_VENDOR.value,
-  USP_UPDATE_ASSET: StoredProceduresConstants.shape.USP_UPDATE_ASSET.value,
+    StoredProcedureConstantsSchema.shape.USP_READ_PRODUCTSET.value,
+  USP_READ_ROLE: StoredProcedureConstantsSchema.shape.USP_READ_ROLE.value,
+  USP_READ_VENDOR: StoredProcedureConstantsSchema.shape.USP_READ_VENDOR.value,
+  USP_UPDATE_ASSET: StoredProcedureConstantsSchema.shape.USP_UPDATE_ASSET.value,
   USP_UPDATE_ASSETFIX:
-    StoredProceduresConstants.shape.USP_UPDATE_ASSETFIX.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_ASSETFIX.value,
   USP_UPDATE_ASSETISSUE:
-    StoredProceduresConstants.shape.USP_UPDATE_ASSETISSUE.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_ASSETISSUE.value,
   USP_UPDATE_ASSETTRANSFER:
-    StoredProceduresConstants.shape.USP_UPDATE_ASSETTRANSFER.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_ASSETTRANSFER.value,
   USP_UPDATE_BUILDING:
-    StoredProceduresConstants.shape.USP_UPDATE_BUILDING.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_BUILDING.value,
   USP_UPDATE_CATEGORY:
-    StoredProceduresConstants.shape.USP_UPDATE_CATEGORY.value,
-  USP_UPDATE_COMPANY: StoredProceduresConstants.shape.USP_UPDATE_COMPANY.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_CATEGORY.value,
+  USP_UPDATE_COMPANY:
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_COMPANY.value,
   USP_UPDATE_DEPARTMENT:
-    StoredProceduresConstants.shape.USP_UPDATE_DEPARTMENT.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_DEPARTMENT.value,
   USP_UPDATE_EMPLOYEE:
-    StoredProceduresConstants.shape.USP_UPDATE_EMPLOYEE.value,
-  USP_UPDATE_ENDUSER: StoredProceduresConstants.shape.USP_UPDATE_ENDUSER.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_EMPLOYEE.value,
+  USP_UPDATE_ENDUSER:
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_ENDUSER.value,
   USP_UPDATE_ENDUSERROLE:
-    StoredProceduresConstants.shape.USP_UPDATE_ENDUSERROLE.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_ENDUSERROLE.value,
   USP_UPDATE_LOCATION:
-    StoredProceduresConstants.shape.USP_UPDATE_LOCATION.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_LOCATION.value,
   USP_UPDATE_MANUFACTURER:
-    StoredProceduresConstants.shape.USP_UPDATE_MANUFACTURER.value,
-  USP_UPDATE_PRODUCT: StoredProceduresConstants.shape.USP_UPDATE_PRODUCT.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_MANUFACTURER.value,
+  USP_UPDATE_PRODUCT:
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_PRODUCT.value,
   USP_UPDATE_PRODUCTSET:
-    StoredProceduresConstants.shape.USP_UPDATE_PRODUCTSET.value,
-  USP_UPDATE_ROLE: StoredProceduresConstants.shape.USP_UPDATE_ROLE.value,
-  USP_UPDATE_VENDOR: StoredProceduresConstants.shape.USP_UPDATE_VENDOR.value,
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_PRODUCTSET.value,
+  USP_UPDATE_ROLE: StoredProcedureConstantsSchema.shape.USP_UPDATE_ROLE.value,
+  USP_UPDATE_VENDOR:
+    StoredProcedureConstantsSchema.shape.USP_UPDATE_VENDOR.value,
 } as const;
 
 export const {
@@ -265,4 +282,4 @@ export const {
   USP_UPDATE_PRODUCTSET,
   USP_UPDATE_ROLE,
   USP_UPDATE_VENDOR,
-}: StoredProceduresConstants = storedProceduresConstants;
+}: StoredProcedureConstants = storedProcedureConstants;
