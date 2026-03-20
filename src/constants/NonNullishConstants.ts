@@ -11,7 +11,7 @@ export const NonNullishConstantsSchema = z.object({
   ),
 });
 
-export type NonNullishConstants = z.infer<typeof NonNullishConstantsSchema>;
+type NonNullishConstants = z.infer<typeof NonNullishConstantsSchema>;
 
 export const {
   NON_NULLISH_DATETIMEOFFSET,

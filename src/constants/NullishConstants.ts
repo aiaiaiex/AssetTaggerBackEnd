@@ -9,7 +9,7 @@ export const NullishConstantsSchema = z.object({
   NULLISH_UNIQUEIDENTIFIER: z.literal("00000000-0000-0000-0000-000000000000"),
 });
 
-export type NullishConstants = z.infer<typeof NullishConstantsSchema>;
+type NullishConstants = z.infer<typeof NullishConstantsSchema>;
 
 export const {
   NULLISH_DATETIMEOFFSET,
