@@ -207,7 +207,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     new Date(FromLogStoredProcedureStart) > new Date(ToLogStoredProcedureStart)
   ) {
     throw new ExpressError(
-      "FromLogStoredProcedureStart cannot be later than ToLogStoredProcedureStart!",
+      "FromLogStoredProcedureStart cannot be older than ToLogStoredProcedureStart!",
       400,
     );
   }
@@ -217,7 +217,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     new Date(FromLogStoredProcedureEnd) > new Date(ToLogStoredProcedureEnd)
   ) {
     throw new ExpressError(
-      "FromLogStoredProcedureEnd cannot be later than ToLogStoredProcedureEnd!",
+      "FromLogStoredProcedureEnd cannot be older than ToLogStoredProcedureEnd!",
       400,
     );
   }

@@ -206,7 +206,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     new Date(FromEndUserRegisterDate) > new Date(ToEndUserRegisterDate)
   ) {
     throw new ExpressError(
-      "FromEndUserRegisterDate cannot be later than ToEndUserRegisterDate!",
+      "FromEndUserRegisterDate cannot be older than ToEndUserRegisterDate!",
       400,
     );
   }
