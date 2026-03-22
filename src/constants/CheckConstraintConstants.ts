@@ -2,12 +2,14 @@ import z from "zod";
 
 import { zodXOR } from "../utils/zodUtils";
 import {
+  NON_NULLISH_DECIMAL,
   NON_NULLISH_INT,
   NON_NULLISH_NCHAR,
   NON_NULLISH_NVARCHAR,
   NON_NULLISH_UNIQUEIDENTIFIER,
 } from "./NonNullishConstants";
 import {
+  NULLISH_DECIMAL,
   NULLISH_INT,
   NULLISH_NCHAR,
   NULLISH_NVARCHAR,
@@ -52,6 +54,14 @@ export const EXCLUDED_INT_SCHEMA = zodXOR([
 ]).meta({
   description: `matches integers lesser than or equal to ${NULLISH_INT.toString()} or integers greater than or equal to ${NON_NULLISH_INT.toString()}`,
   title: "EXCLUDED_INT_SCHEMA",
+});
+
+export const EXCLUDED_DECIMAL_SCHEMA = zodXOR([
+  z.number().lte(NULLISH_DECIMAL),
+  z.number().gte(NON_NULLISH_DECIMAL),
+]).meta({
+  description: `matches numbers lesser than or equal to ${NULLISH_DECIMAL.toString()} or numbers greater than or equal to ${NON_NULLISH_DECIMAL.toString()}`,
+  title: "EXCLUDED_DECIMAL_SCHEMA",
 });
 
 export const NO_WHITESPACE_SCHEMA = z
