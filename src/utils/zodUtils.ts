@@ -89,6 +89,18 @@ export function zodParseBigInt<T extends z4.$ZodType<bigint>>(
     .pipe(zodSchema);
 }
 
+export function zodParseDate<T extends z4.$ZodType<unknown, Date>>(
+  zodSchema: T,
+) {
+  // Only convert ISO strings with milliseconds and timezone offsets.
+  return z.iso
+    .datetime({ offset: true, precision: 3 })
+    .transform((isoString) => {
+      return new Date(isoString);
+    })
+    .pipe(zodSchema);
+}
+
 export function zodParseNumber<T extends z4.$ZodType<number>>(
   zodSchema: T,
   emptyStringValue: unknown = NaN,
