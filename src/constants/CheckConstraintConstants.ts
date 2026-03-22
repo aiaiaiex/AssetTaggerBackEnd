@@ -1,11 +1,14 @@
 import z from "zod";
 
+import { zodXOR } from "../utils/zodUtils";
 import {
+  NON_NULLISH_INT,
   NON_NULLISH_NCHAR,
   NON_NULLISH_NVARCHAR,
   NON_NULLISH_UNIQUEIDENTIFIER,
 } from "./NonNullishConstants";
 import {
+  NULLISH_INT,
   NULLISH_NCHAR,
   NULLISH_NVARCHAR,
   NULLISH_UNIQUEIDENTIFIER,
@@ -42,6 +45,14 @@ export const EXCLUDED_UNIQUEIDENTIFIER_SCHEMA = z
     description: `matches the following unique identifiers ['${NULLISH_UNIQUEIDENTIFIER}', '${NON_NULLISH_UNIQUEIDENTIFIER}']`,
     title: "EXCLUDED_UNIQUEIDENTIFIER_SCHEMA",
   });
+
+export const EXCLUDED_INT_SCHEMA = zodXOR([
+  z.int().lte(NULLISH_INT),
+  z.int().gte(NON_NULLISH_INT),
+]).meta({
+  description: `matches integers lesser than or equal to ${NULLISH_INT.toString()} or integers greater than or equal to ${NON_NULLISH_INT.toString()}`,
+  title: "EXCLUDED_INT_SCHEMA",
+});
 
 export const NO_WHITESPACE_SCHEMA = z
   .stringFormat("no-whitespace", NO_WHITESPACE, {
