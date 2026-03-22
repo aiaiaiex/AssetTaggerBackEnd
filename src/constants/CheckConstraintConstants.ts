@@ -2,6 +2,7 @@ import z from "zod";
 
 import { zodXOR } from "../utils/zodUtils";
 import {
+  NON_NULLISH_DATETIMEOFFSET,
   NON_NULLISH_DECIMAL,
   NON_NULLISH_INT,
   NON_NULLISH_NCHAR,
@@ -9,6 +10,7 @@ import {
   NON_NULLISH_UNIQUEIDENTIFIER,
 } from "./NonNullishConstants";
 import {
+  NULLISH_DATETIMEOFFSET,
   NULLISH_DECIMAL,
   NULLISH_INT,
   NULLISH_NCHAR,
@@ -62,6 +64,18 @@ export const EXCLUDED_DECIMAL_SCHEMA = zodXOR([
 ]).meta({
   description: `matches numbers lesser than or equal to ${NULLISH_DECIMAL.toString()} or numbers greater than or equal to ${NON_NULLISH_DECIMAL.toString()}`,
   title: "EXCLUDED_DECIMAL_SCHEMA",
+});
+
+export const EXCLUDED_DATETIMEOFFSET_SCHEMA = zodXOR([
+  z.date().refine((date) => {
+    return date.getTime() <= NULLISH_DATETIMEOFFSET.getTime();
+  }),
+  z.date().refine((date) => {
+    return date.getTime() >= NON_NULLISH_DATETIMEOFFSET.getTime();
+  }),
+]).meta({
+  description: `matches dates older than or equal to ${NULLISH_DATETIMEOFFSET.toISOString()} or dates newer than or equal to ${NON_NULLISH_DATETIMEOFFSET.toISOString()}`,
+  title: "EXCLUDED_DATETIMEOFFSET_SCHEMA",
 });
 
 export const NO_WHITESPACE_SCHEMA = z
