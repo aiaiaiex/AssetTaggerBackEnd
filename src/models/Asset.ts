@@ -29,7 +29,7 @@ export const AssetSchema = z.object({
     TSQL_DECIMAL_SCHEMA,
     EXCLUDED_DECIMAL_SCHEMA,
   ).nullable(),
-  AssetDocumentationURL: NORMALIZED_WEB_URL_SCHEMA.nullable(),
+  AssetDocumentationURL: NORMALIZED_WEB_URL_SCHEMA.max(4000).nullable(),
   AssetID: zodExclude(
     z.uuid({ version: "v4" }),
     EXCLUDED_UNIQUEIDENTIFIER_SCHEMA,

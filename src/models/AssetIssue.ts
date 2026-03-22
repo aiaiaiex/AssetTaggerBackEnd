@@ -22,7 +22,7 @@ export const AssetIssueSchema = z.object({
     NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA.min(1),
     EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   ).nullable(),
-  AssetIssueDocumentationURL: NORMALIZED_WEB_URL_SCHEMA.nullable(),
+  AssetIssueDocumentationURL: NORMALIZED_WEB_URL_SCHEMA.max(4000).nullable(),
   AssetIssueID: zodExclude(
     z.uuid({ version: "v4" }),
     EXCLUDED_UNIQUEIDENTIFIER_SCHEMA,

@@ -15,7 +15,7 @@ import { ManufacturerSchema } from "./Manufacturer";
 export const ProductSchema = z.object({
   CategoryID: CategorySchema.shape.CategoryID,
   ManufacturerID: ManufacturerSchema.shape.ManufacturerID.nullable(),
-  ProductDocumentationURL: NORMALIZED_WEB_URL_SCHEMA.nullable(),
+  ProductDocumentationURL: NORMALIZED_WEB_URL_SCHEMA.max(4000).nullable(),
   ProductID: zodExclude(
     z.uuid({ version: "v4" }),
     EXCLUDED_UNIQUEIDENTIFIER_SCHEMA,
