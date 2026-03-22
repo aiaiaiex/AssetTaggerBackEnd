@@ -54,9 +54,12 @@ export const AssetSchema = z.object({
     TSQL_DATETIMEOFFSET_SCHEMA,
     EXCLUDED_DATETIMEOFFSET_SCHEMA,
   ),
-  AssetUsefulLife: zodExclude(TSQL_INT_SCHEMA, EXCLUDED_INT_SCHEMA).nullable(),
+  AssetUsefulLife: zodExclude(
+    TSQL_INT_SCHEMA.min(0),
+    EXCLUDED_INT_SCHEMA,
+  ).nullable(),
   AssetWarrantyDuration: zodExclude(
-    TSQL_INT_SCHEMA,
+    TSQL_INT_SCHEMA.min(0),
     EXCLUDED_INT_SCHEMA,
   ).nullable(),
   AssetWarrantyExpirationDate: zodExclude(

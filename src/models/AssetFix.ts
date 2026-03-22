@@ -21,7 +21,7 @@ import { EmployeeSchema } from "./Employee";
 
 export const AssetFixSchema = z.object({
   AssetFixCost: zodExclude(
-    TSQL_DECIMAL_SCHEMA,
+    TSQL_DECIMAL_SCHEMA.min(0),
     EXCLUDED_DECIMAL_SCHEMA,
   ).nullable(),
   AssetFixDateDays: zodExclude(
