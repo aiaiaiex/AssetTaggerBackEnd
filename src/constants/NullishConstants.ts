@@ -1,6 +1,7 @@
 import z from "zod";
 
 export const NullishConstantsSchema = z.object({
+  NULLISH_BIGINT: z.literal(-9223372036854775808n),
   NULLISH_DATETIMEOFFSET_ISO_STRING: z.literal("1900-01-01T00:00:00.000Z"),
   NULLISH_DECIMAL: z.literal(-99999999999.9999),
   NULLISH_INT: z.literal(-2147483648),
@@ -12,6 +13,7 @@ export const NullishConstantsSchema = z.object({
 type NullishConstants = z.infer<typeof NullishConstantsSchema>;
 
 export const {
+  NULLISH_BIGINT,
   NULLISH_DATETIMEOFFSET_ISO_STRING,
   NULLISH_DECIMAL,
   NULLISH_INT,
@@ -19,6 +21,7 @@ export const {
   NULLISH_NVARCHAR,
   NULLISH_UNIQUEIDENTIFIER,
 }: NullishConstants = {
+  NULLISH_BIGINT: NullishConstantsSchema.shape.NULLISH_BIGINT.value,
   NULLISH_DATETIMEOFFSET_ISO_STRING:
     NullishConstantsSchema.shape.NULLISH_DATETIMEOFFSET_ISO_STRING.value,
   NULLISH_DECIMAL: NullishConstantsSchema.shape.NULLISH_DECIMAL.value,
