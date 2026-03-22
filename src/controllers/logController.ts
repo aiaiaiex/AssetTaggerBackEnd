@@ -15,7 +15,6 @@ import {
   USP_READ_LOG,
 } from "../constants/StoredProcedureConstants";
 import {
-  BOOLEAN_TO_TSQL_BIT_SCHEMA,
   TSQL_BIGINT_SCHEMA,
   TSQL_BIT_SCHEMA,
 } from "../constants/TSQLDataTypeConstants";
@@ -23,6 +22,7 @@ import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 import { bigIntReplacer } from "../utils/jsonUtils";
+import { zodParseBitFromBoolean } from "../utils/zodUtils";
 import { zodParseBigInt, zodParseNumber, zodQuery } from "../utils/zodUtils";
 
 export const usp_CreateLog = async (
@@ -85,7 +85,7 @@ export const readLog = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: BOOLEAN_TO_TSQL_BIT_SCHEMA,
+        LogStoredProcedureSuccess: zodParseBitFromBoolean,
       })
         .array()
         .max(1)
@@ -289,7 +289,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         LogStoredProcedureMilliseconds: zodParseBigInt(
           LogSchema.shape.LogStoredProcedureMilliseconds,
         ),
-        LogStoredProcedureSuccess: BOOLEAN_TO_TSQL_BIT_SCHEMA,
+        LogStoredProcedureSuccess: zodParseBitFromBoolean,
       })
         .array()
         .safeParse(recordset);
@@ -351,7 +351,7 @@ export const deleteLog = async (req: JWTRequest, res: Response) => {
       storedProcedureEnd = new Date();
 
       const parsedRecordset = LogSchema.extend({
-        LogStoredProcedureSuccess: BOOLEAN_TO_TSQL_BIT_SCHEMA,
+        LogStoredProcedureSuccess: zodParseBitFromBoolean,
       })
         .array()
         .max(1)

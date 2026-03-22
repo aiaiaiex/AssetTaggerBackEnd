@@ -2,6 +2,7 @@ import z from "zod";
 import * as z4 from "zod/v4/core";
 
 import { NO_WHITESPACE } from "../constants/RegExpConstants";
+import { TSQL_BIT, TSQL_BIT_SCHEMA } from "../constants/TSQLDataTypeConstants";
 
 export const zodCombineUnionErrorMessages = (iss: {
   errors: z.core.$ZodIssue[][];
@@ -13,6 +14,13 @@ export const zodCombineUnionErrorMessages = (iss: {
     "Invalid input: matches multiple schemas in exclusive union"
   );
 };
+
+export const zodParseBitFromBoolean = z
+  .boolean()
+  .transform((input): TSQL_BIT => {
+    return input ? 1 : 0;
+  })
+  .pipe(TSQL_BIT_SCHEMA);
 
 export const zodParseNull = (emptyStringValue: unknown = "") => {
   return z

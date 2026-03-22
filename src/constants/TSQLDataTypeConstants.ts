@@ -17,11 +17,4 @@ export const TSQL_BIGINT_SCHEMA = z
 // https://learn.microsoft.com/en-us/sql/t-sql/data-types/bit-transact-sql
 export const TSQL_BIT_SCHEMA = z.literal([0, 1]);
 
-type TSQL_BIT = z.infer<typeof TSQL_BIT_SCHEMA>;
-
-export const BOOLEAN_TO_TSQL_BIT_SCHEMA = z
-  .boolean()
-  .transform((input): TSQL_BIT => {
-    return input ? 1 : 0;
-  })
-  .pipe(TSQL_BIT_SCHEMA);
+export type TSQL_BIT = z.infer<typeof TSQL_BIT_SCHEMA>;
