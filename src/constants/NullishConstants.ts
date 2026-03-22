@@ -13,6 +13,7 @@ type NullishConstants = z.infer<typeof NullishConstantsSchema>;
 
 export const {
   NULLISH_DATETIMEOFFSET_ISO_STRING,
+  NULLISH_DECIMAL,
   NULLISH_INT,
   NULLISH_NCHAR,
   NULLISH_NVARCHAR,
