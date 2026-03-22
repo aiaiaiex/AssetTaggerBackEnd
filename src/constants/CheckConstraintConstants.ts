@@ -21,8 +21,7 @@ export const EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA = z
   .toUpperCase() // Make it case-insensitive by converting input to UPPERCASE.
   .pipe(z.enum([NULLISH_NVARCHAR, NON_NULLISH_NVARCHAR, "NULL"])) // Make sure that all strings passed to enum() are UPPERCASE!
   .meta({
-    description:
-      "matches the following case-insensitive strings ['', '!', 'NULL']",
+    description: `matches the following case-insensitive strings ['${NULLISH_NVARCHAR}', '${NON_NULLISH_NVARCHAR}', 'NULL']`,
     title: "EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA",
   });
 
@@ -32,8 +31,7 @@ export const EXCLUDED_CASE_INSENSITIVE_NCHAR_SCHEMA = z
   .toUpperCase() // Make it case-insensitive by converting input to UPPERCASE.
   .pipe(z.enum([NULLISH_NCHAR, NON_NULLISH_NCHAR, "NULL"])) // Make sure that all strings passed to enum() are UPPERCASE!
   .meta({
-    description:
-      "matches the following case-insensitive strings ['', '!', 'NULL']",
+    description: `matches the following case-insensitive strings ['${NULLISH_NCHAR}', '${NON_NULLISH_NCHAR}', 'NULL']`,
     title: "EXCLUDED_CASE_INSENSITIVE_NCHAR_SCHEMA",
   });
 
