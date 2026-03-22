@@ -39,7 +39,7 @@ export const EXCLUDED_UNIQUEIDENTIFIER_SCHEMA = z
   .guid()
   .pipe(z.enum([NULLISH_UNIQUEIDENTIFIER, NON_NULLISH_UNIQUEIDENTIFIER]))
   .meta({
-    description: `matches the following unique identifiers [${NULLISH_UNIQUEIDENTIFIER}, ${NON_NULLISH_UNIQUEIDENTIFIER}]`,
+    description: `matches the following unique identifiers ['${NULLISH_UNIQUEIDENTIFIER}', '${NON_NULLISH_UNIQUEIDENTIFIER}']`,
     title: "EXCLUDED_UNIQUEIDENTIFIER_SCHEMA",
   });
 
