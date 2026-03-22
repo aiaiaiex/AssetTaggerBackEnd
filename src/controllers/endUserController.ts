@@ -47,7 +47,7 @@ export const createEndUser = async (req: JWTRequest, res: Response) => {
   await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
-    .input("EndUserName", sql.NVarChar(4000), EndUserName)
+    .input("EndUserName", sql.NVarChar(850), EndUserName)
     .input(
       "EndUserPassword",
       sql.NVarChar(sql.MAX),
@@ -218,7 +218,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
   await req.app.locals.database
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
-    .input("EndUserName", sql.NVarChar(4000), EndUserName)
+    .input("EndUserName", sql.NVarChar(850), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .input(
@@ -312,7 +312,7 @@ export const updateEndUser = async (req: JWTRequest, res: Response) => {
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("EndUserID", sql.UniqueIdentifier, EndUserID)
-    .input("EndUserName", sql.NVarChar(4000), EndUserName)
+    .input("EndUserName", sql.NVarChar(850), EndUserName)
     .input("EndUserRoleID", sql.UniqueIdentifier, EndUserRoleID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .execute<EndUser>(USP_UPDATE_ENDUSER)
