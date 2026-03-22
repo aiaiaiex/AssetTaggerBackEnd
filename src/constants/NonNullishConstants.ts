@@ -39,3 +39,7 @@ export const NON_NULLISH_DATETIMEOFFSET_SCHEMA = z.date().refine(
   },
   { error: `Invalid input: expected ${NON_NULLISH_DATETIMEOFFSET_ISO_STRING}` },
 );
+
+export const NON_NULLISH_DATETIMEOFFSET = new Date(
+  NON_NULLISH_DATETIMEOFFSET_ISO_STRING,
+);
