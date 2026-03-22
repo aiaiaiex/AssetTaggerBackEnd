@@ -1,7 +1,15 @@
 import z from "zod";
 
-import { NON_NULLISH_NCHAR, NON_NULLISH_NVARCHAR } from "./NonNullishConstants";
-import { NULLISH_NCHAR, NULLISH_NVARCHAR } from "./NullishConstants";
+import {
+  NON_NULLISH_NCHAR,
+  NON_NULLISH_NVARCHAR,
+  NON_NULLISH_UNIQUEIDENTIFIER,
+} from "./NonNullishConstants";
+import {
+  NULLISH_NCHAR,
+  NULLISH_NVARCHAR,
+  NULLISH_UNIQUEIDENTIFIER,
+} from "./NullishConstants";
 import {
   NO_LEADING_AND_TRAILING_WHITESPACE,
   NO_WHITESPACE,
@@ -27,6 +35,14 @@ export const EXCLUDED_CASE_INSENSITIVE_NCHAR_SCHEMA = z
     description:
       "matches the following case-insensitive strings ['', '!', 'NULL']",
     title: "EXCLUDED_CASE_INSENSITIVE_NCHAR_SCHEMA",
+  });
+
+export const EXCLUDED_UNIQUEIDENTIFIER_SCHEMA = z
+  .guid()
+  .pipe(z.enum([NULLISH_UNIQUEIDENTIFIER, NON_NULLISH_UNIQUEIDENTIFIER]))
+  .meta({
+    description: `matches the following unique identifiers [${NULLISH_UNIQUEIDENTIFIER}, ${NON_NULLISH_UNIQUEIDENTIFIER}]`,
+    title: "EXCLUDED_UNIQUEIDENTIFIER_SCHEMA",
   });
 
 export const NO_WHITESPACE_SCHEMA = z
