@@ -5,6 +5,7 @@ import {
   EXCLUDED_DATETIMEOFFSET_SCHEMA,
   EXCLUDED_UNIQUEIDENTIFIER_SCHEMA,
   NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA,
+  NORMALIZED_WEB_URL_SCHEMA,
 } from "../constants/CheckConstraintConstants";
 import { TSQL_DATETIMEOFFSET_SCHEMA } from "../constants/TSQLDataTypeConstants";
 import { zodExclude } from "../utils/zodUtils";
@@ -14,9 +15,7 @@ import { ManufacturerSchema } from "./Manufacturer";
 export const ProductSchema = z.object({
   CategoryID: CategorySchema.shape.CategoryID,
   ManufacturerID: ManufacturerSchema.shape.ManufacturerID.nullable(),
-  ProductDocumentationURL: z
-    .url({ hostname: z.regexes.domain, normalize: true, protocol: /^https?$/ })
-    .nullable(),
+  ProductDocumentationURL: NORMALIZED_WEB_URL_SCHEMA.nullable(),
   ProductID: zodExclude(
     z.uuid({ version: "v4" }),
     EXCLUDED_UNIQUEIDENTIFIER_SCHEMA,
