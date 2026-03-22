@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const NullishConstantsSchema = z.object({
-  NULLISH_DATETIMEOFFSET: z.literal("1900-01-01T00:00:00.000Z"),
+  NULLISH_DATETIMEOFFSET_ISO_STRING: z.literal("1900-01-01T00:00:00.000Z"),
   NULLISH_DECIMAL: z.literal(-99999999999.9999),
   NULLISH_INT: z.literal(-2147483648),
   NULLISH_NCHAR: z.literal(""),
@@ -12,14 +12,14 @@ export const NullishConstantsSchema = z.object({
 type NullishConstants = z.infer<typeof NullishConstantsSchema>;
 
 export const {
-  NULLISH_DATETIMEOFFSET,
+  NULLISH_DATETIMEOFFSET_ISO_STRING,
   NULLISH_INT,
   NULLISH_NCHAR,
   NULLISH_NVARCHAR,
   NULLISH_UNIQUEIDENTIFIER,
 }: NullishConstants = {
-  NULLISH_DATETIMEOFFSET:
-    NullishConstantsSchema.shape.NULLISH_DATETIMEOFFSET.value,
+  NULLISH_DATETIMEOFFSET_ISO_STRING:
+    NullishConstantsSchema.shape.NULLISH_DATETIMEOFFSET_ISO_STRING.value,
   NULLISH_DECIMAL: NullishConstantsSchema.shape.NULLISH_DECIMAL.value,
   NULLISH_INT: NullishConstantsSchema.shape.NULLISH_INT.value,
   NULLISH_NCHAR: NullishConstantsSchema.shape.NULLISH_NCHAR.value,
@@ -30,7 +30,7 @@ export const {
 
 export const NULLISH_DATETIMEOFFSET_SCHEMA = z.date().refine(
   (date) => {
-    return date.toISOString() === NULLISH_DATETIMEOFFSET;
+    return date.toISOString() === NULLISH_DATETIMEOFFSET_ISO_STRING;
   },
-  { error: `Invalid input: expected ${NULLISH_DATETIMEOFFSET}` },
+  { error: `Invalid input: expected ${NULLISH_DATETIMEOFFSET_ISO_STRING}` },
 );
