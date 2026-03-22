@@ -22,7 +22,7 @@ import { ExpressError } from "../middlewares/handleError";
 import { Log, LogSchema } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 import { bigIntReplacer } from "../utils/jsonUtils";
-import { zodParseBitFromBoolean } from "../utils/zodUtils";
+import { zodParseBitFromBoolean, zodParseDate } from "../utils/zodUtils";
 import { zodParseBigInt, zodParseNumber, zodQuery } from "../utils/zodUtils";
 
 export const usp_CreateLog = async (
@@ -151,13 +151,13 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
     })
     .safeExtend({
       FromLogStoredProcedureEnd: zodQuery([
-        z.iso.datetime({ offset: true, precision: 3 }),
+        zodParseDate(LogSchema.shape.LogStoredProcedureEnd),
       ]).prefault(null),
       FromLogStoredProcedureMilliseconds: zodQuery([
         zodParseBigInt(LogSchema.shape.LogStoredProcedureMilliseconds),
       ]).prefault(null),
       FromLogStoredProcedureStart: zodQuery([
-        z.iso.datetime({ offset: true, precision: 3 }),
+        zodParseDate(LogSchema.shape.LogStoredProcedureStart),
       ]).prefault(null),
       NewestRowsFirst: zodQuery([zodParseNumber(TSQL_BIT_SCHEMA)]).prefault(
         null,
@@ -169,13 +169,13 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         zodParseBigInt(TSQL_BIGINT_SCHEMA.min(0n)),
       ]).prefault(null),
       ToLogStoredProcedureEnd: zodQuery([
-        z.iso.datetime({ offset: true, precision: 3 }),
+        zodParseDate(LogSchema.shape.LogStoredProcedureEnd),
       ]).prefault(null),
       ToLogStoredProcedureMilliseconds: zodQuery([
         zodParseBigInt(LogSchema.shape.LogStoredProcedureMilliseconds),
       ]).prefault(null),
       ToLogStoredProcedureStart: zodQuery([
-        z.iso.datetime({ offset: true, precision: 3 }),
+        zodParseDate(LogSchema.shape.LogStoredProcedureStart),
       ]).prefault(null),
     })
     .safeParse(req.query);

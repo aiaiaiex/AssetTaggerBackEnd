@@ -19,7 +19,7 @@ import { EndUser, EndUserSchema } from "../models/EndUser";
 import { Log } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
 import { objectOmitKeys } from "../utils/objectUtils";
-import { zodParseNumber, zodQuery } from "../utils/zodUtils";
+import { zodParseDate, zodParseNumber, zodQuery } from "../utils/zodUtils";
 import { usp_CreateLog } from "./logController";
 
 const createEndUserRedactedKeys = new Set(["EndUserPassword"]);
@@ -168,7 +168,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
     })
     .safeExtend({
       FromEndUserRegisterDate: zodQuery([
-        z.iso.datetime({ offset: true, precision: 3 }),
+        zodParseDate(EndUserSchema.shape.EndUserRegisterDate),
       ]).prefault(null),
       NewestRowsFirst: zodQuery([zodParseNumber(TSQL_BIT_SCHEMA)]).prefault(
         null,
@@ -180,7 +180,7 @@ export const readEndUsers = async (req: JWTRequest, res: Response) => {
         null,
       ),
       ToEndUserRegisterDate: zodQuery([
-        z.iso.datetime({ offset: true, precision: 3 }),
+        zodParseDate(EndUserSchema.shape.EndUserRegisterDate),
       ]).prefault(null),
     })
     .safeParse(req.query);
