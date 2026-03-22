@@ -2,6 +2,7 @@ import z from "zod";
 
 import { zodXOR } from "../utils/zodUtils";
 import {
+  NON_NULLISH_BIGINT,
   NON_NULLISH_DATETIMEOFFSET,
   NON_NULLISH_DECIMAL,
   NON_NULLISH_INT,
@@ -10,6 +11,7 @@ import {
   NON_NULLISH_UNIQUEIDENTIFIER,
 } from "./NonNullishConstants";
 import {
+  NULLISH_BIGINT,
   NULLISH_DATETIMEOFFSET,
   NULLISH_DECIMAL,
   NULLISH_INT,
@@ -56,6 +58,14 @@ export const EXCLUDED_INT_SCHEMA = zodXOR([
 ]).meta({
   description: `matches integers lesser than or equal to ${NULLISH_INT.toString()} or integers greater than or equal to ${NON_NULLISH_INT.toString()}`,
   title: "EXCLUDED_INT_SCHEMA",
+});
+
+export const EXCLUDED_BIGINT_SCHEMA = zodXOR([
+  z.bigint().lte(NULLISH_BIGINT),
+  z.bigint().gte(NON_NULLISH_BIGINT),
+]).meta({
+  description: `matches integers lesser than or equal to ${NULLISH_BIGINT.toString()} or integers greater than or equal to ${NON_NULLISH_BIGINT.toString()}`,
+  title: "EXCLUDED_BIGINT_SCHEMA",
 });
 
 export const EXCLUDED_DECIMAL_SCHEMA = zodXOR([
