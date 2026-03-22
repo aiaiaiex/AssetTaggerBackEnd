@@ -12,6 +12,11 @@ export const TSQL_BIGINT_SCHEMA = z
   .min(-9223372036854775808n)
   .max(9223372036854775807n);
 
+export const TSQL_DECIMAL_SCHEMA = z
+  .number()
+  .min(-99999999999.9999)
+  .max(99999999999.9999);
+
 // 0 or 1.
 // See more:
 // https://learn.microsoft.com/en-us/sql/t-sql/data-types/bit-transact-sql
