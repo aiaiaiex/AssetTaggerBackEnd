@@ -1,6 +1,7 @@
 import z from "zod";
 
 import {
+  EXCLUDED_BIGINT_SCHEMA,
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   EXCLUDED_DATETIMEOFFSET_SCHEMA,
   EXCLUDED_DECIMAL_SCHEMA,
@@ -9,6 +10,7 @@ import {
   NORMALIZED_WEB_URL_SCHEMA,
 } from "../constants/CheckConstraintConstants";
 import {
+  TSQL_BIGINT_SCHEMA,
   TSQL_BIT_SCHEMA,
   TSQL_DATETIMEOFFSET_SCHEMA,
   TSQL_DECIMAL_SCHEMA,
@@ -21,6 +23,10 @@ export const AssetFixSchema = z.object({
   AssetFixCost: zodExclude(
     TSQL_DECIMAL_SCHEMA,
     EXCLUDED_DECIMAL_SCHEMA,
+  ).nullable(),
+  AssetFixDateDays: zodExclude(
+    TSQL_BIGINT_SCHEMA.min(0n),
+    EXCLUDED_BIGINT_SCHEMA,
   ).nullable(),
   AssetFixDateEnd: zodExclude(
     TSQL_DATETIMEOFFSET_SCHEMA,
