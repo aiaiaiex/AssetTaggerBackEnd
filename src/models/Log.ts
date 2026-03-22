@@ -1,6 +1,7 @@
 import z from "zod";
 
 import {
+  EXCLUDED_BIGINT_SCHEMA,
   EXCLUDED_CASE_INSENSITIVE_NVARCHAR_SCHEMA,
   EXCLUDED_DATETIMEOFFSET_SCHEMA,
   EXCLUDED_UNIQUEIDENTIFIER_SCHEMA,
@@ -26,7 +27,10 @@ export const LogSchema = z.object({
     TSQL_DATETIMEOFFSET_SCHEMA,
     EXCLUDED_DATETIMEOFFSET_SCHEMA,
   ),
-  LogStoredProcedureMilliseconds: TSQL_BIGINT_SCHEMA.min(0n),
+  LogStoredProcedureMilliseconds: zodExclude(
+    TSQL_BIGINT_SCHEMA.min(0n),
+    EXCLUDED_BIGINT_SCHEMA,
+  ),
   LogStoredProcedureName: z.enum(storedProcedureConstants),
   LogStoredProcedureParameters: zodExclude(
     NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA.min(1),
