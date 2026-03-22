@@ -130,7 +130,7 @@ export const readCategory = async (req: JWTRequest, res: Response) => {
     });
 };
 
-export const readCategorys = async (req: JWTRequest, res: Response) => {
+export const readCategories = async (req: JWTRequest, res: Response) => {
   const { CallingEndUserID } = expressJWTGetPayload(req.auth);
 
   const parsedQuery = CategorySchema.omit({
