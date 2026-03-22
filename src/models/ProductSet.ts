@@ -1,12 +1,20 @@
 import z from "zod";
 
-import { TSQL_INT_SCHEMA } from "../constants/TSQLDataTypeConstants";
+import { EXCLUDED_DATETIMEOFFSET_SCHEMA } from "../constants/CheckConstraintConstants";
+import {
+  TSQL_DATETIMEOFFSET_SCHEMA,
+  TSQL_INT_SCHEMA,
+} from "../constants/TSQLDataTypeConstants";
+import { zodExclude } from "../utils/zodUtils";
 import { ProductSchema } from "./Product";
 
 export const ProductSetSchema = z.object({
   ParentProductID: ProductSchema.shape.ProductID,
   ProductID: ProductSchema.shape.ProductID,
-  ProductInsertDate: z.date(),
+  ProductInsertDate: zodExclude(
+    TSQL_DATETIMEOFFSET_SCHEMA,
+    EXCLUDED_DATETIMEOFFSET_SCHEMA,
+  ),
   ProductSetProductQuantity: TSQL_INT_SCHEMA.min(1),
 });
 
