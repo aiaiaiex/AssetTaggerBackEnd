@@ -100,3 +100,10 @@ export const NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA = z
     description: "matches strings without leading and trailing whitespace",
     title: "NO_LEADING_AND_TRAILING_WHITESPACE_SCHEMA",
   });
+
+// This schema returns a NORMALIZED input during a successful parse.
+export const NORMALIZED_WEB_URL_SCHEMA = z.url({
+  hostname: z.regexes.domain,
+  normalize: true,
+  protocol: /^https?$/,
+});
