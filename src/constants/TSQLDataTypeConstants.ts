@@ -18,3 +18,8 @@ export const TSQL_BIGINT_SCHEMA = z
 export const TSQL_BIT_SCHEMA = z.literal([0, 1]);
 
 export type TSQL_BIT = z.infer<typeof TSQL_BIT_SCHEMA>;
+
+export const TSQL_DATETIMEOFFSET_SCHEMA = z
+  .date()
+  .min(new Date("0001-01-01T00:00:00.000Z"))
+  .max(new Date("9999-12-31T23:59:59.999Z"));
