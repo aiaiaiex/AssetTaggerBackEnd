@@ -4,7 +4,6 @@ const StoredProcedureConstantsSchema = z.object({
   USP_CREATE_ASSET: z.literal("usp_CreateAsset"),
   USP_CREATE_ASSETFIX: z.literal("usp_CreateAssetFix"),
   USP_CREATE_ASSETISSUE: z.literal("usp_CreateAssetIssue"),
-  USP_CREATE_ASSETTRANSFER: z.literal("usp_CreateAssetTransfer"),
   USP_CREATE_AUTHENTICATION: z.literal("usp_CreateAuthentication"),
   USP_CREATE_BUILDING: z.literal("usp_CreateBuilding"),
   USP_CREATE_CATEGORY: z.literal("usp_CreateCategory"),
@@ -23,7 +22,6 @@ const StoredProcedureConstantsSchema = z.object({
   USP_DELETE_ASSET: z.literal("usp_DeleteAsset"),
   USP_DELETE_ASSETFIX: z.literal("usp_DeleteAssetFix"),
   USP_DELETE_ASSETISSUE: z.literal("usp_DeleteAssetIssue"),
-  USP_DELETE_ASSETTRANSFER: z.literal("usp_DeleteAssetTransfer"),
   USP_DELETE_BUILDING: z.literal("usp_DeleteBuilding"),
   USP_DELETE_CATEGORY: z.literal("usp_DeleteCategory"),
   USP_DELETE_COMPANY: z.literal("usp_DeleteCompany"),
@@ -41,7 +39,6 @@ const StoredProcedureConstantsSchema = z.object({
   USP_READ_ASSET: z.literal("usp_ReadAsset"),
   USP_READ_ASSETFIX: z.literal("usp_ReadAssetFix"),
   USP_READ_ASSETISSUE: z.literal("usp_ReadAssetIssue"),
-  USP_READ_ASSETTRANSFER: z.literal("usp_ReadAssetTransfer"),
   USP_READ_BUILDING: z.literal("usp_ReadBuilding"),
   USP_READ_CATEGORY: z.literal("usp_ReadCategory"),
   USP_READ_COMPANY: z.literal("usp_ReadCompany"),
@@ -59,7 +56,6 @@ const StoredProcedureConstantsSchema = z.object({
   USP_UPDATE_ASSET: z.literal("usp_UpdateAsset"),
   USP_UPDATE_ASSETFIX: z.literal("usp_UpdateAssetFix"),
   USP_UPDATE_ASSETISSUE: z.literal("usp_UpdateAssetIssue"),
-  USP_UPDATE_ASSETTRANSFER: z.literal("usp_UpdateAssetTransfer"),
   USP_UPDATE_BUILDING: z.literal("usp_UpdateBuilding"),
   USP_UPDATE_CATEGORY: z.literal("usp_UpdateCategory"),
   USP_UPDATE_COMPANY: z.literal("usp_UpdateCompany"),
@@ -83,8 +79,6 @@ export const storedProcedureConstants: StoredProcedureConstants = {
     StoredProcedureConstantsSchema.shape.USP_CREATE_ASSETFIX.value,
   USP_CREATE_ASSETISSUE:
     StoredProcedureConstantsSchema.shape.USP_CREATE_ASSETISSUE.value,
-  USP_CREATE_ASSETTRANSFER:
-    StoredProcedureConstantsSchema.shape.USP_CREATE_ASSETTRANSFER.value,
   USP_CREATE_AUTHENTICATION:
     StoredProcedureConstantsSchema.shape.USP_CREATE_AUTHENTICATION.value,
   USP_CREATE_BUILDING:
@@ -118,8 +112,6 @@ export const storedProcedureConstants: StoredProcedureConstants = {
     StoredProcedureConstantsSchema.shape.USP_DELETE_ASSETFIX.value,
   USP_DELETE_ASSETISSUE:
     StoredProcedureConstantsSchema.shape.USP_DELETE_ASSETISSUE.value,
-  USP_DELETE_ASSETTRANSFER:
-    StoredProcedureConstantsSchema.shape.USP_DELETE_ASSETTRANSFER.value,
   USP_DELETE_BUILDING:
     StoredProcedureConstantsSchema.shape.USP_DELETE_BUILDING.value,
   USP_DELETE_CATEGORY:
@@ -151,8 +143,6 @@ export const storedProcedureConstants: StoredProcedureConstants = {
     StoredProcedureConstantsSchema.shape.USP_READ_ASSETFIX.value,
   USP_READ_ASSETISSUE:
     StoredProcedureConstantsSchema.shape.USP_READ_ASSETISSUE.value,
-  USP_READ_ASSETTRANSFER:
-    StoredProcedureConstantsSchema.shape.USP_READ_ASSETTRANSFER.value,
   USP_READ_BUILDING:
     StoredProcedureConstantsSchema.shape.USP_READ_BUILDING.value,
   USP_READ_CATEGORY:
@@ -180,8 +170,6 @@ export const storedProcedureConstants: StoredProcedureConstants = {
     StoredProcedureConstantsSchema.shape.USP_UPDATE_ASSETFIX.value,
   USP_UPDATE_ASSETISSUE:
     StoredProcedureConstantsSchema.shape.USP_UPDATE_ASSETISSUE.value,
-  USP_UPDATE_ASSETTRANSFER:
-    StoredProcedureConstantsSchema.shape.USP_UPDATE_ASSETTRANSFER.value,
   USP_UPDATE_BUILDING:
     StoredProcedureConstantsSchema.shape.USP_UPDATE_BUILDING.value,
   USP_UPDATE_CATEGORY:
@@ -213,7 +201,6 @@ export const {
   USP_CREATE_ASSET,
   USP_CREATE_ASSETFIX,
   USP_CREATE_ASSETISSUE,
-  USP_CREATE_ASSETTRANSFER,
   USP_CREATE_AUTHENTICATION,
   USP_CREATE_BUILDING,
   USP_CREATE_CATEGORY,
@@ -232,7 +219,6 @@ export const {
   USP_DELETE_ASSET,
   USP_DELETE_ASSETFIX,
   USP_DELETE_ASSETISSUE,
-  USP_DELETE_ASSETTRANSFER,
   USP_DELETE_BUILDING,
   USP_DELETE_CATEGORY,
   USP_DELETE_COMPANY,
@@ -250,7 +236,6 @@ export const {
   USP_READ_ASSET,
   USP_READ_ASSETFIX,
   USP_READ_ASSETISSUE,
-  USP_READ_ASSETTRANSFER,
   USP_READ_BUILDING,
   USP_READ_CATEGORY,
   USP_READ_COMPANY,
@@ -268,7 +253,6 @@ export const {
   USP_UPDATE_ASSET,
   USP_UPDATE_ASSETFIX,
   USP_UPDATE_ASSETISSUE,
-  USP_UPDATE_ASSETTRANSFER,
   USP_UPDATE_BUILDING,
   USP_UPDATE_CATEGORY,
   USP_UPDATE_COMPANY,
