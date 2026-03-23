@@ -51,22 +51,17 @@ export const createAsset = async (req: JWTRequest, res: Response) => {
   })
     .extend({
       AssetDocumentationURL:
-        AssetSchema.shape.AssetDocumentationURL.optional().prefault(null),
-      AssetPurchaseDate:
-        AssetSchema.shape.AssetPurchaseDate.optional().prefault(null),
-      AssetPurchasePrice:
-        AssetSchema.shape.AssetPurchasePrice.optional().prefault(null),
-      AssetSalvageValue:
-        AssetSchema.shape.AssetSalvageValue.optional().prefault(null),
-      AssetSerialNumber:
-        AssetSchema.shape.AssetSerialNumber.optional().prefault(null),
-      AssetUsefulLife:
-        AssetSchema.shape.AssetUsefulLife.optional().prefault(null),
+        AssetSchema.shape.AssetDocumentationURL.prefault(null),
+      AssetPurchaseDate: AssetSchema.shape.AssetPurchaseDate.prefault(null),
+      AssetPurchasePrice: AssetSchema.shape.AssetPurchasePrice.prefault(null),
+      AssetSalvageValue: AssetSchema.shape.AssetSalvageValue.prefault(null),
+      AssetSerialNumber: AssetSchema.shape.AssetSerialNumber.prefault(null),
+      AssetUsefulLife: AssetSchema.shape.AssetUsefulLife.prefault(null),
       AssetWarrantyDuration:
-        AssetSchema.shape.AssetWarrantyDuration.optional().prefault(null),
+        AssetSchema.shape.AssetWarrantyDuration.prefault(null),
       AssetWarrantyUnitOfMeasure:
-        AssetSchema.shape.AssetWarrantyUnitOfMeasure.optional().prefault(null),
-      VendorID: AssetSchema.shape.VendorID.optional().prefault(null),
+        AssetSchema.shape.AssetWarrantyUnitOfMeasure.prefault(null),
+      VendorID: AssetSchema.shape.VendorID.prefault(null),
     })
     .safeParse(req.body);
 

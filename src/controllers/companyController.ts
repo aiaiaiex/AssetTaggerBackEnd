@@ -38,8 +38,7 @@ export const createCompany = async (req: JWTRequest, res: Response) => {
     CompanyInsertDate: true,
   })
     .extend({
-      ParentCompanyID:
-        CompanySchema.shape.ParentCompanyID.optional().prefault(null),
+      ParentCompanyID: CompanySchema.shape.ParentCompanyID.prefault(null),
     })
     .safeParse(req.body);
 

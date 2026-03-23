@@ -40,11 +40,9 @@ export const createAssetIssue = async (req: JWTRequest, res: Response) => {
       AssetIssueDate:
         AssetIssueSchema.shape.AssetIssueDate.nullish().prefault(null),
       AssetIssueDescription:
-        AssetIssueSchema.shape.AssetIssueDescription.optional().prefault(null),
+        AssetIssueSchema.shape.AssetIssueDescription.prefault(null),
       AssetIssueDocumentationURL:
-        AssetIssueSchema.shape.AssetIssueDocumentationURL.optional().prefault(
-          null,
-        ),
+        AssetIssueSchema.shape.AssetIssueDocumentationURL.prefault(null),
     })
     .safeParse(req.body);
 

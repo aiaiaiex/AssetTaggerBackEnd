@@ -39,13 +39,11 @@ export const createProduct = async (req: JWTRequest, res: Response) => {
     ProductInsertDate: true,
   })
     .extend({
-      ManufacturerID:
-        ProductSchema.shape.ManufacturerID.optional().prefault(null),
+      ManufacturerID: ProductSchema.shape.ManufacturerID.prefault(null),
       ProductDocumentationURL:
-        ProductSchema.shape.ProductDocumentationURL.optional().prefault(null),
-      ProductModelNumber:
-        ProductSchema.shape.ProductModelNumber.optional().prefault(null),
-      ProductName: ProductSchema.shape.ProductName.optional().prefault(null),
+        ProductSchema.shape.ProductDocumentationURL.prefault(null),
+      ProductModelNumber: ProductSchema.shape.ProductModelNumber.prefault(null),
+      ProductName: ProductSchema.shape.ProductName.prefault(null),
     })
     .safeParse(req.body);
 

@@ -28,7 +28,7 @@ export const createProductSet = async (req: JWTRequest, res: Response) => {
   })
     .extend({
       ProductSetProductQuantity:
-        ProductSetSchema.shape.ProductSetProductQuantity.optional().prefault(1),
+        ProductSetSchema.shape.ProductSetProductQuantity.prefault(1),
     })
     .safeParse(req.body);
 

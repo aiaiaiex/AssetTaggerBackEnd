@@ -28,116 +28,75 @@ export const createEndUserRole = async (req: JWTRequest, res: Response) => {
     EndUserRoleID: true,
   })
     .extend({
-      CreateAsset: EndUserRoleSchema.shape.CreateAsset.optional().prefault(0),
-      CreateAssetFix:
-        EndUserRoleSchema.shape.CreateAssetFix.optional().prefault(0),
-      CreateAssetIssue:
-        EndUserRoleSchema.shape.CreateAssetIssue.optional().prefault(0),
-      CreateBuilding:
-        EndUserRoleSchema.shape.CreateBuilding.optional().prefault(0),
-      CreateCategory:
-        EndUserRoleSchema.shape.CreateCategory.optional().prefault(0),
-      CreateCompany:
-        EndUserRoleSchema.shape.CreateCompany.optional().prefault(0),
-      CreateDepartment:
-        EndUserRoleSchema.shape.CreateDepartment.optional().prefault(0),
-      CreateEmployee:
-        EndUserRoleSchema.shape.CreateEmployee.optional().prefault(0),
-      CreateEndUser:
-        EndUserRoleSchema.shape.CreateEndUser.optional().prefault(0),
-      CreateEndUserRole:
-        EndUserRoleSchema.shape.CreateEndUserRole.optional().prefault(0),
-      CreateLocation:
-        EndUserRoleSchema.shape.CreateLocation.optional().prefault(0),
+      CreateAsset: EndUserRoleSchema.shape.CreateAsset.prefault(0),
+      CreateAssetFix: EndUserRoleSchema.shape.CreateAssetFix.prefault(0),
+      CreateAssetIssue: EndUserRoleSchema.shape.CreateAssetIssue.prefault(0),
+      CreateBuilding: EndUserRoleSchema.shape.CreateBuilding.prefault(0),
+      CreateCategory: EndUserRoleSchema.shape.CreateCategory.prefault(0),
+      CreateCompany: EndUserRoleSchema.shape.CreateCompany.prefault(0),
+      CreateDepartment: EndUserRoleSchema.shape.CreateDepartment.prefault(0),
+      CreateEmployee: EndUserRoleSchema.shape.CreateEmployee.prefault(0),
+      CreateEndUser: EndUserRoleSchema.shape.CreateEndUser.prefault(0),
+      CreateEndUserRole: EndUserRoleSchema.shape.CreateEndUserRole.prefault(0),
+      CreateLocation: EndUserRoleSchema.shape.CreateLocation.prefault(0),
       CreateManufacturer:
-        EndUserRoleSchema.shape.CreateManufacturer.optional().prefault(0),
-      CreateProduct:
-        EndUserRoleSchema.shape.CreateProduct.optional().prefault(0),
-      CreateProductSet:
-        EndUserRoleSchema.shape.CreateProductSet.optional().prefault(0),
-      CreateRole: EndUserRoleSchema.shape.CreateRole.optional().prefault(0),
-      CreateVendor: EndUserRoleSchema.shape.CreateVendor.optional().prefault(0),
-      DeleteAsset: EndUserRoleSchema.shape.DeleteAsset.optional().prefault(0),
-      DeleteAssetFix:
-        EndUserRoleSchema.shape.DeleteAssetFix.optional().prefault(0),
-      DeleteAssetIssue:
-        EndUserRoleSchema.shape.DeleteAssetIssue.optional().prefault(0),
-      DeleteBuilding:
-        EndUserRoleSchema.shape.DeleteBuilding.optional().prefault(0),
-      DeleteCategory:
-        EndUserRoleSchema.shape.DeleteCategory.optional().prefault(0),
-      DeleteCompany:
-        EndUserRoleSchema.shape.DeleteCompany.optional().prefault(0),
-      DeleteDepartment:
-        EndUserRoleSchema.shape.DeleteDepartment.optional().prefault(0),
-      DeleteEmployee:
-        EndUserRoleSchema.shape.DeleteEmployee.optional().prefault(0),
-      DeleteEndUser:
-        EndUserRoleSchema.shape.DeleteEndUser.optional().prefault(0),
-      DeleteEndUserRole:
-        EndUserRoleSchema.shape.DeleteEndUserRole.optional().prefault(0),
-      DeleteLocation:
-        EndUserRoleSchema.shape.DeleteLocation.optional().prefault(0),
-      DeleteLog: EndUserRoleSchema.shape.DeleteLog.optional().prefault(0),
+        EndUserRoleSchema.shape.CreateManufacturer.prefault(0),
+      CreateProduct: EndUserRoleSchema.shape.CreateProduct.prefault(0),
+      CreateProductSet: EndUserRoleSchema.shape.CreateProductSet.prefault(0),
+      CreateRole: EndUserRoleSchema.shape.CreateRole.prefault(0),
+      CreateVendor: EndUserRoleSchema.shape.CreateVendor.prefault(0),
+      DeleteAsset: EndUserRoleSchema.shape.DeleteAsset.prefault(0),
+      DeleteAssetFix: EndUserRoleSchema.shape.DeleteAssetFix.prefault(0),
+      DeleteAssetIssue: EndUserRoleSchema.shape.DeleteAssetIssue.prefault(0),
+      DeleteBuilding: EndUserRoleSchema.shape.DeleteBuilding.prefault(0),
+      DeleteCategory: EndUserRoleSchema.shape.DeleteCategory.prefault(0),
+      DeleteCompany: EndUserRoleSchema.shape.DeleteCompany.prefault(0),
+      DeleteDepartment: EndUserRoleSchema.shape.DeleteDepartment.prefault(0),
+      DeleteEmployee: EndUserRoleSchema.shape.DeleteEmployee.prefault(0),
+      DeleteEndUser: EndUserRoleSchema.shape.DeleteEndUser.prefault(0),
+      DeleteEndUserRole: EndUserRoleSchema.shape.DeleteEndUserRole.prefault(0),
+      DeleteLocation: EndUserRoleSchema.shape.DeleteLocation.prefault(0),
+      DeleteLog: EndUserRoleSchema.shape.DeleteLog.prefault(0),
       DeleteManufacturer:
-        EndUserRoleSchema.shape.DeleteManufacturer.optional().prefault(0),
-      DeleteProduct:
-        EndUserRoleSchema.shape.DeleteProduct.optional().prefault(0),
-      DeleteProductSet:
-        EndUserRoleSchema.shape.DeleteProductSet.optional().prefault(0),
-      DeleteRole: EndUserRoleSchema.shape.DeleteRole.optional().prefault(0),
-      DeleteVendor: EndUserRoleSchema.shape.DeleteVendor.optional().prefault(0),
-      ReadAsset: EndUserRoleSchema.shape.ReadAsset.optional().prefault(0),
-      ReadAssetFix: EndUserRoleSchema.shape.ReadAssetFix.optional().prefault(0),
-      ReadAssetIssue:
-        EndUserRoleSchema.shape.ReadAssetIssue.optional().prefault(0),
-      ReadBuilding: EndUserRoleSchema.shape.ReadBuilding.optional().prefault(0),
-      ReadCategory: EndUserRoleSchema.shape.ReadCategory.optional().prefault(0),
-      ReadCompany: EndUserRoleSchema.shape.ReadCompany.optional().prefault(0),
-      ReadDepartment:
-        EndUserRoleSchema.shape.ReadDepartment.optional().prefault(0),
-      ReadEmployee: EndUserRoleSchema.shape.ReadEmployee.optional().prefault(0),
-      ReadEndUser: EndUserRoleSchema.shape.ReadEndUser.optional().prefault(0),
-      ReadEndUserRole:
-        EndUserRoleSchema.shape.ReadEndUserRole.optional().prefault(0),
-      ReadLocation: EndUserRoleSchema.shape.ReadLocation.optional().prefault(0),
-      ReadLog: EndUserRoleSchema.shape.ReadLog.optional().prefault(0),
-      ReadManufacturer:
-        EndUserRoleSchema.shape.ReadManufacturer.optional().prefault(0),
-      ReadProduct: EndUserRoleSchema.shape.ReadProduct.optional().prefault(0),
-      ReadProductSet:
-        EndUserRoleSchema.shape.ReadProductSet.optional().prefault(0),
-      ReadRole: EndUserRoleSchema.shape.ReadRole.optional().prefault(0),
-      ReadVendor: EndUserRoleSchema.shape.ReadVendor.optional().prefault(0),
-      UpdateAsset: EndUserRoleSchema.shape.UpdateAsset.optional().prefault(0),
-      UpdateAssetFix:
-        EndUserRoleSchema.shape.UpdateAssetFix.optional().prefault(0),
-      UpdateAssetIssue:
-        EndUserRoleSchema.shape.UpdateAssetIssue.optional().prefault(0),
-      UpdateBuilding:
-        EndUserRoleSchema.shape.UpdateBuilding.optional().prefault(0),
-      UpdateCategory:
-        EndUserRoleSchema.shape.UpdateCategory.optional().prefault(0),
-      UpdateCompany:
-        EndUserRoleSchema.shape.UpdateCompany.optional().prefault(0),
-      UpdateDepartment:
-        EndUserRoleSchema.shape.UpdateDepartment.optional().prefault(0),
-      UpdateEmployee:
-        EndUserRoleSchema.shape.UpdateEmployee.optional().prefault(0),
-      UpdateEndUser:
-        EndUserRoleSchema.shape.UpdateEndUser.optional().prefault(0),
-      UpdateEndUserRole:
-        EndUserRoleSchema.shape.UpdateEndUserRole.optional().prefault(0),
-      UpdateLocation:
-        EndUserRoleSchema.shape.UpdateLocation.optional().prefault(0),
+        EndUserRoleSchema.shape.DeleteManufacturer.prefault(0),
+      DeleteProduct: EndUserRoleSchema.shape.DeleteProduct.prefault(0),
+      DeleteProductSet: EndUserRoleSchema.shape.DeleteProductSet.prefault(0),
+      DeleteRole: EndUserRoleSchema.shape.DeleteRole.prefault(0),
+      DeleteVendor: EndUserRoleSchema.shape.DeleteVendor.prefault(0),
+      ReadAsset: EndUserRoleSchema.shape.ReadAsset.prefault(0),
+      ReadAssetFix: EndUserRoleSchema.shape.ReadAssetFix.prefault(0),
+      ReadAssetIssue: EndUserRoleSchema.shape.ReadAssetIssue.prefault(0),
+      ReadBuilding: EndUserRoleSchema.shape.ReadBuilding.prefault(0),
+      ReadCategory: EndUserRoleSchema.shape.ReadCategory.prefault(0),
+      ReadCompany: EndUserRoleSchema.shape.ReadCompany.prefault(0),
+      ReadDepartment: EndUserRoleSchema.shape.ReadDepartment.prefault(0),
+      ReadEmployee: EndUserRoleSchema.shape.ReadEmployee.prefault(0),
+      ReadEndUser: EndUserRoleSchema.shape.ReadEndUser.prefault(0),
+      ReadEndUserRole: EndUserRoleSchema.shape.ReadEndUserRole.prefault(0),
+      ReadLocation: EndUserRoleSchema.shape.ReadLocation.prefault(0),
+      ReadLog: EndUserRoleSchema.shape.ReadLog.prefault(0),
+      ReadManufacturer: EndUserRoleSchema.shape.ReadManufacturer.prefault(0),
+      ReadProduct: EndUserRoleSchema.shape.ReadProduct.prefault(0),
+      ReadProductSet: EndUserRoleSchema.shape.ReadProductSet.prefault(0),
+      ReadRole: EndUserRoleSchema.shape.ReadRole.prefault(0),
+      ReadVendor: EndUserRoleSchema.shape.ReadVendor.prefault(0),
+      UpdateAsset: EndUserRoleSchema.shape.UpdateAsset.prefault(0),
+      UpdateAssetFix: EndUserRoleSchema.shape.UpdateAssetFix.prefault(0),
+      UpdateAssetIssue: EndUserRoleSchema.shape.UpdateAssetIssue.prefault(0),
+      UpdateBuilding: EndUserRoleSchema.shape.UpdateBuilding.prefault(0),
+      UpdateCategory: EndUserRoleSchema.shape.UpdateCategory.prefault(0),
+      UpdateCompany: EndUserRoleSchema.shape.UpdateCompany.prefault(0),
+      UpdateDepartment: EndUserRoleSchema.shape.UpdateDepartment.prefault(0),
+      UpdateEmployee: EndUserRoleSchema.shape.UpdateEmployee.prefault(0),
+      UpdateEndUser: EndUserRoleSchema.shape.UpdateEndUser.prefault(0),
+      UpdateEndUserRole: EndUserRoleSchema.shape.UpdateEndUserRole.prefault(0),
+      UpdateLocation: EndUserRoleSchema.shape.UpdateLocation.prefault(0),
       UpdateManufacturer:
-        EndUserRoleSchema.shape.UpdateManufacturer.optional().prefault(0),
-      UpdateProduct:
-        EndUserRoleSchema.shape.UpdateProduct.optional().prefault(0),
-      UpdateProductSet:
-        EndUserRoleSchema.shape.UpdateProductSet.optional().prefault(0),
-      UpdateRole: EndUserRoleSchema.shape.UpdateRole.optional().prefault(0),
-      UpdateVendor: EndUserRoleSchema.shape.UpdateVendor.optional().prefault(0),
+        EndUserRoleSchema.shape.UpdateManufacturer.prefault(0),
+      UpdateProduct: EndUserRoleSchema.shape.UpdateProduct.prefault(0),
+      UpdateProductSet: EndUserRoleSchema.shape.UpdateProductSet.prefault(0),
+      UpdateRole: EndUserRoleSchema.shape.UpdateRole.prefault(0),
+      UpdateVendor: EndUserRoleSchema.shape.UpdateVendor.prefault(0),
     })
     .safeParse(req.body);
 
