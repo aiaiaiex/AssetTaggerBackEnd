@@ -29,6 +29,7 @@ import { ExpressError } from "../middlewares/handleError";
 import { AssetFix, AssetFixSchema } from "../models/AssetFix";
 import { Log } from "../models/Log";
 import { expressJWTGetPayload } from "../utils/expressJWTUtils";
+import { bigIntReplacer } from "../utils/jsonUtils";
 import {
   zodParseBigInt,
   zodParseDate,
@@ -343,7 +344,10 @@ export const readAssetFixes = async (req: JWTRequest, res: Response) => {
         storedProcedureEnd,
         storedProcedureSuccess,
         USP_READ_ASSETFIX,
-        JSON.stringify({ CallingEndUserID, ...parsedQuery.data }),
+        JSON.stringify(
+          { CallingEndUserID, ...parsedQuery.data },
+          bigIntReplacer,
+        ),
       );
     });
 };
