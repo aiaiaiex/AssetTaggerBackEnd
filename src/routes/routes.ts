@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { expressJWTGetMiddleware } from "../utils/expressJWTUtils";
+import assetRoutes from "./assetRoutes";
 import authenticationRoutes from "./authenticationRoutes";
 import buildingRoutes from "./buildingRoutes";
 import categoryRoutes from "./categoryRoutes";
@@ -22,6 +23,7 @@ const routes = Router();
 
 routes.use("/", rootRoutes);
 routes.use("/authentication", authenticationRoutes);
+routes.use("/asset", expressJWTGetMiddleware(), assetRoutes);
 routes.use("/log", expressJWTGetMiddleware(), logRoutes);
 routes.use("/enduser", expressJWTGetMiddleware(), endUserRoutes);
 routes.use("/location", expressJWTGetMiddleware(), locationRoutes);
