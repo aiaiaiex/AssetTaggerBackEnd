@@ -11,7 +11,7 @@ import { ProductSchema } from "./Product";
 export const ProductSetSchema = z.object({
   ParentProductID: ProductSchema.shape.ProductID,
   ProductID: ProductSchema.shape.ProductID,
-  ProductInsertDate: zodExclude(
+  ProductSetInsertDate: zodExclude(
     TSQL_DATETIMEOFFSET_SCHEMA,
     EXCLUDED_DATETIMEOFFSET_SCHEMA,
   ),
