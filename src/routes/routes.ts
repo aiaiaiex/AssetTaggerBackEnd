@@ -22,8 +22,8 @@ const routes = Router();
 
 routes.use("/", rootRoutes);
 routes.use("/authentication", authenticationRoutes);
-routes.use("/enduser", expressJWTGetMiddleware(), endUserRoutes);
 routes.use("/log", expressJWTGetMiddleware(), logRoutes);
+routes.use("/enduser", expressJWTGetMiddleware(), endUserRoutes);
 routes.use("/location", expressJWTGetMiddleware(), locationRoutes);
 routes.use("/productset", expressJWTGetMiddleware(), productSetRoutes);
 routes.use("/building", expressJWTGetMiddleware(), buildingRoutes);
