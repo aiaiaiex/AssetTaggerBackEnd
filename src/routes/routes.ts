@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { expressJWTGetMiddleware } from "../utils/expressJWTUtils";
 import authenticationRoutes from "./authenticationRoutes";
+import endUserRoleRoutes from "./endUserRoleRoutes";
 import endUserRoutes from "./endUserRoutes";
 import logRoutes from "./logRoutes";
 import manufacturerRoutes from "./manufacturerRoutes";
@@ -15,6 +16,7 @@ routes.use("/", rootRoutes);
 routes.use("/authentication", authenticationRoutes);
 routes.use("/enduser", expressJWTGetMiddleware(), endUserRoutes);
 routes.use("/log", expressJWTGetMiddleware(), logRoutes);
+routes.use("/enduserrole", expressJWTGetMiddleware(), endUserRoleRoutes);
 routes.use("/manufacturer", expressJWTGetMiddleware(), manufacturerRoutes);
 routes.use("/role", expressJWTGetMiddleware(), roleRoutes);
 routes.use("/vendor", expressJWTGetMiddleware(), vendorRoutes);
