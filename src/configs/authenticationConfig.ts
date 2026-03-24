@@ -24,9 +24,9 @@ const CookieOptionsConfigSchema = z.object({
     z.stringbool({
       case: "sensitive",
       falsy: ["false"],
-      truthy: ["true", ""], // Empty string defaults to true.
+      truthy: ["true"],
     }),
-    z.enum(["lax", "strict", "none"]),
+    zodSubstituteEmptyString(z.enum(["lax", "strict", "none"]), "none"), // Empty string defaults to none.
   ]),
   secure: z.stringbool({
     case: "sensitive",
