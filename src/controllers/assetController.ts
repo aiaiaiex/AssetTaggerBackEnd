@@ -46,7 +46,6 @@ export const createAsset = async (req: JWTRequest, res: Response) => {
     AssetAnnualDepreciationExpense: true,
     AssetCurrentBookValue: true,
     AssetID: true,
-    AssetTagDate: true,
     AssetWarrantyExpirationDate: true,
   })
     .extend({
@@ -60,6 +59,9 @@ export const createAsset = async (req: JWTRequest, res: Response) => {
       AssetPurchasePrice: AssetSchema.shape.AssetPurchasePrice.prefault(null),
       AssetSalvageValue: AssetSchema.shape.AssetSalvageValue.prefault(null),
       AssetSerialNumber: AssetSchema.shape.AssetSerialNumber.prefault(null),
+      AssetTagDate: zodParseDate(AssetSchema.shape.AssetTagDate)
+        .nullable()
+        .prefault(null),
       AssetUsefulLife: AssetSchema.shape.AssetUsefulLife.prefault(null),
       AssetWarrantyDuration:
         AssetSchema.shape.AssetWarrantyDuration.prefault(null),
@@ -79,6 +81,7 @@ export const createAsset = async (req: JWTRequest, res: Response) => {
     AssetPurchasePrice,
     AssetSalvageValue,
     AssetSerialNumber,
+    AssetTagDate,
     AssetUsefulLife,
     AssetWarrantyDuration,
     AssetWarrantyUnitOfMeasure,
@@ -99,6 +102,7 @@ export const createAsset = async (req: JWTRequest, res: Response) => {
     .input("LocationID", sql.UniqueIdentifier, LocationID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .input("VendorID", sql.UniqueIdentifier, VendorID)
+    .input("AssetTagDate", sql.DateTimeOffset(3), AssetTagDate)
     .input("AssetPurchaseDate", sql.DateTimeOffset(3), AssetPurchaseDate)
     .input("AssetPurchasePrice", sql.Decimal(15, 4), AssetPurchasePrice)
     .input("AssetSerialNumber", sql.NVarChar(842), AssetSerialNumber)
@@ -487,7 +491,6 @@ export const updateAsset = async (req: JWTRequest, res: Response) => {
     AssetAnnualDepreciationExpense: true,
     AssetCurrentBookValue: true,
     AssetID: true,
-    AssetTagDate: true,
     AssetWarrantyExpirationDate: true,
   })
     .extend({
@@ -513,6 +516,9 @@ export const updateAsset = async (req: JWTRequest, res: Response) => {
         AssetSchema.shape.AssetSerialNumber,
         NullishConstantsSchema.shape.NULLISH_NVARCHAR,
       ]).prefault(NULLISH_NVARCHAR),
+      AssetTagDate: zodParseDate(AssetSchema.shape.AssetTagDate)
+        .nullable()
+        .prefault(null),
       AssetWarrantyDuration: zodXOR([
         AssetSchema.shape.AssetWarrantyDuration,
         NullishConstantsSchema.shape.NULLISH_INT,
@@ -541,6 +547,7 @@ export const updateAsset = async (req: JWTRequest, res: Response) => {
     AssetPurchasePrice,
     AssetSalvageValue,
     AssetSerialNumber,
+    AssetTagDate,
     AssetUsefulLife,
     AssetWarrantyDuration,
     AssetWarrantyUnitOfMeasure,
@@ -562,6 +569,7 @@ export const updateAsset = async (req: JWTRequest, res: Response) => {
     .input("LocationID", sql.UniqueIdentifier, LocationID)
     .input("EmployeeID", sql.UniqueIdentifier, EmployeeID)
     .input("VendorID", sql.UniqueIdentifier, VendorID)
+    .input("AssetTagDate", sql.DateTimeOffset(3), AssetPurchaseDate)
     .input("AssetPurchaseDate", sql.DateTimeOffset(3), AssetPurchaseDate)
     .input("AssetPurchasePrice", sql.Decimal(15, 4), AssetPurchasePrice)
     .input("AssetSerialNumber", sql.NVarChar(842), AssetSerialNumber)
