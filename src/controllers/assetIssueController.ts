@@ -37,8 +37,9 @@ export const createAssetIssue = async (req: JWTRequest, res: Response) => {
     AssetIssueID: true,
   })
     .extend({
-      AssetIssueDate:
-        AssetIssueSchema.shape.AssetIssueDate.nullish().prefault(null),
+      AssetIssueDate: zodParseDate(AssetIssueSchema.shape.AssetIssueDate)
+        .nullish()
+        .prefault(null),
       AssetIssueDescription:
         AssetIssueSchema.shape.AssetIssueDescription.prefault(null),
       AssetIssueDocumentationURL:
@@ -303,8 +304,9 @@ export const updateAssetIssue = async (req: JWTRequest, res: Response) => {
   })
     .extend({
       AssetID: AssetIssueSchema.shape.AssetID.nullable().prefault(null),
-      AssetIssueDate:
-        AssetIssueSchema.shape.AssetIssueDate.nullable().prefault(null),
+      AssetIssueDate: zodParseDate(AssetIssueSchema.shape.AssetIssueDate)
+        .nullable()
+        .prefault(null),
       AssetIssueDescription: zodXOR([
         AssetIssueSchema.shape.AssetIssueDescription,
         NullishConstantsSchema.shape.NULLISH_NVARCHAR,

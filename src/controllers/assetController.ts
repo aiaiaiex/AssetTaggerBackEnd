@@ -52,7 +52,11 @@ export const createAsset = async (req: JWTRequest, res: Response) => {
     .extend({
       AssetDocumentationURL:
         AssetSchema.shape.AssetDocumentationURL.prefault(null),
-      AssetPurchaseDate: AssetSchema.shape.AssetPurchaseDate.prefault(null),
+      AssetPurchaseDate: zodParseDate(
+        AssetSchema.shape.AssetPurchaseDate.unwrap(),
+      )
+        .nullable()
+        .prefault(null),
       AssetPurchasePrice: AssetSchema.shape.AssetPurchasePrice.prefault(null),
       AssetSalvageValue: AssetSchema.shape.AssetSalvageValue.prefault(null),
       AssetSerialNumber: AssetSchema.shape.AssetSerialNumber.prefault(null),
@@ -492,9 +496,11 @@ export const updateAsset = async (req: JWTRequest, res: Response) => {
         NullishConstantsSchema.shape.NULLISH_NVARCHAR,
       ]).prefault(NULLISH_NVARCHAR),
       AssetPurchaseDate: zodXOR([
-        AssetSchema.shape.AssetPurchaseDate,
+        zodParseDate(AssetSchema.shape.AssetPurchaseDate.unwrap()),
         NULLISH_DATETIMEOFFSET_SCHEMA,
-      ]).prefault(NULLISH_DATETIMEOFFSET),
+      ])
+        .nullable()
+        .prefault(NULLISH_DATETIMEOFFSET),
       AssetPurchasePrice: zodXOR([
         AssetSchema.shape.AssetPurchasePrice,
         NullishConstantsSchema.shape.NULLISH_DECIMAL,

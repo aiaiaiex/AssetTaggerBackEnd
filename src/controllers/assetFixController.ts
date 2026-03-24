@@ -48,9 +48,14 @@ export const createAssetFix = async (req: JWTRequest, res: Response) => {
   })
     .extend({
       AssetFixCost: AssetFixSchema.shape.AssetFixCost.prefault(null),
-      AssetFixDateEnd: AssetFixSchema.shape.AssetFixDateEnd.prefault(null),
-      AssetFixDateStart:
-        AssetFixSchema.shape.AssetFixDateStart.nullable().prefault(null),
+      AssetFixDateEnd: zodParseDate(
+        AssetFixSchema.shape.AssetFixDateEnd.unwrap(),
+      )
+        .nullable()
+        .prefault(null),
+      AssetFixDateStart: zodParseDate(AssetFixSchema.shape.AssetFixDateStart)
+        .nullable()
+        .prefault(null),
       AssetFixDescription:
         AssetFixSchema.shape.AssetFixDescription.prefault(null),
       AssetFixDocumentationURL:
@@ -375,11 +380,14 @@ export const updateAssetFix = async (req: JWTRequest, res: Response) => {
         NullishConstantsSchema.shape.NULLISH_DECIMAL,
       ]).prefault(NULLISH_DECIMAL),
       AssetFixDateEnd: zodXOR([
-        AssetFixSchema.shape.AssetFixDateEnd,
+        zodParseDate(AssetFixSchema.shape.AssetFixDateEnd.unwrap()),
         NULLISH_DATETIMEOFFSET_SCHEMA,
-      ]).prefault(NULLISH_DATETIMEOFFSET),
-      AssetFixDateStart:
-        AssetFixSchema.shape.AssetFixDateStart.nullable().prefault(null),
+      ])
+        .nullable()
+        .prefault(NULLISH_DATETIMEOFFSET),
+      AssetFixDateStart: zodParseDate(AssetFixSchema.shape.AssetFixDateStart)
+        .nullable()
+        .prefault(null),
       AssetFixDescription: zodXOR([
         AssetFixSchema.shape.AssetFixDescription,
         NullishConstantsSchema.shape.NULLISH_NVARCHAR,
