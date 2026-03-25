@@ -1,6 +1,8 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { json } from "express";
+import fs from "fs";
+import https from "https";
 
 import serverConfig from "./configs/serverConfig";
 import pool from "./database";
@@ -34,9 +36,25 @@ pool
   .then((pool) => {
     app.locals.database = pool;
 
-    app.listen(serverConfig.port, () => {
+    type ExpressApp = typeof app;
+    let server: ExpressApp | https.Server = app;
+
+    if (
+      serverConfig.httpsServerOptions.cert.length > 0 &&
+      serverConfig.httpsServerOptions.key.length > 0
+    ) {
+      server = https.createServer(
+        {
+          cert: fs.readFileSync(serverConfig.httpsServerOptions.cert),
+          key: fs.readFileSync(serverConfig.httpsServerOptions.key),
+        },
+        app,
+      );
+    }
+
+    server.listen(serverConfig.port, () => {
       console.log(
-        `Server listening on http://localhost:${serverConfig.port.toFixed(0)}`,
+        `Server listening on ${server instanceof https.Server ? "https" : "http"}://localhost:${serverConfig.port.toFixed(0)}`,
       );
     });
   })
