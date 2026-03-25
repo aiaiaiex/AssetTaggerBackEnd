@@ -40,5 +40,3 @@ const serverConfig: ServerConfig = ServerConfigSchema.parse({
 });
 
 export default serverConfig;
-
-console.log(serverConfig);
