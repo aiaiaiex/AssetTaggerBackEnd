@@ -8,7 +8,7 @@ import {
 
 // See more:
 // https://expressjs.com/en/5x/api.html#res.cookie
-const CookieOptionsConfigSchema = z.object({
+const CookieOptionsSchema = z.object({
   httpOnly: z.stringbool({
     case: "sensitive",
     falsy: ["false"],
@@ -44,7 +44,7 @@ const AuthenticationConfigSchema = z.object({
     z.string().min(1),
     "assetTaggerAccessToken", // Empty string defaults to assetTaggerAccessToken.
   ),
-  cookieOptions: CookieOptionsConfigSchema,
+  cookieOptions: CookieOptionsSchema,
   expiresIn: zodParseNumber(z.int().min(1), 1)
     .transform((input) => {
       // input (hours) * 60 minutes * 60 seconds.
