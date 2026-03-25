@@ -34,9 +34,11 @@ const serverConfig: ServerConfig = ServerConfigSchema.parse({
     methods: ["POST", "GET", "PATCH", "DELETE"],
     optionsSuccessStatus: 204,
     origin: process.env.CORS_ORIGIN,
-    preflightContinue: true,
+    preflightContinue: false,
   },
   port: process.env.SERVER_PORT,
 });
 
 export default serverConfig;
+
+console.log(serverConfig);
