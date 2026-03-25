@@ -16,8 +16,14 @@ const CorsOptionsSchema = z.object({
   preflightContinue: z.boolean(),
 });
 
+const HTTPSServerOptionsSchema = z.object({
+  cert: z.string(),
+  key: z.string(),
+});
+
 const ServerConfigSchema = z.object({
   corsOptions: CorsOptionsSchema,
+  httpsServerOptions: HTTPSServerOptionsSchema,
   // 0 <= port <= 65535
   // See more:
   // https://datatracker.ietf.org/doc/html/rfc6335#section-6
@@ -35,6 +41,10 @@ const serverConfig: ServerConfig = ServerConfigSchema.parse({
     optionsSuccessStatus: 204,
     origin: process.env.CORS_ORIGIN,
     preflightContinue: false,
+  },
+  httpsServerOptions: {
+    cert: process.env.SERVER_SSL_CERTIFICATE_PATH,
+    key: process.env.SERVER_SSL_CERTIFICATE_PRIVATE_KEY_PATH,
   },
   port: process.env.SERVER_PORT,
 });
