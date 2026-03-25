@@ -1,4 +1,5 @@
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import express, { json } from "express";
 
 import serverConfig from "./configs/serverConfig";
@@ -13,7 +14,13 @@ const app = express();
 
 app.set("json replacer", bigIntReplacer);
 
-app.use([logRequest, acknowledgeFaviconRequest, json(), cookieParser()]);
+app.use([
+  logRequest,
+  cors(serverConfig.corsOptions),
+  acknowledgeFaviconRequest,
+  json(),
+  cookieParser(),
+]);
 
 app.use("/api", routes);
 
