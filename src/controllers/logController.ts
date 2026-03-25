@@ -146,7 +146,7 @@ export const readLogs = async (req: JWTRequest, res: Response) => {
         LogSchema.shape.LogStoredProcedureParameters,
       ]).prefault(null),
       LogStoredProcedureSuccess: zodQuery([
-        LogSchema.shape.LogStoredProcedureSuccess,
+        zodParseNumber(LogSchema.shape.LogStoredProcedureSuccess),
       ]).prefault(null),
     })
     .safeExtend({
