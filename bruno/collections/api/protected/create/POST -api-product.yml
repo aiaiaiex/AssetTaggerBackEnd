@@ -1,0 +1,30 @@
+info:
+  name: POST /api/product
+  type: http
+  seq: 9
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/product"
+  body:
+    type: json
+    data: |-
+      {
+        "ProductName": "TemporaryProductName",
+        "ProductModelNumber": "TemporaryProductModelNumber",
+        "ProductDocumentationURL": "https://drive.google.com",
+        "ManufacturerID": "{{ManufacturerID}}",
+        "CategoryID": "{{CategoryID}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("ProductID", res("ProductID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
