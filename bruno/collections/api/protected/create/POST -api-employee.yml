@@ -1,0 +1,29 @@
+info:
+  name: POST /api/employee
+  type: http
+  seq: 10
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/employee"
+  body:
+    type: json
+    data: |-
+      {
+        "EmployeeFullName": "TemporaryEmployeeFullName",
+        "RoleID": "{{RoleID}}",
+        "CompanyID": "{{CompanyID}}",
+        "DepartmentID": "{{DepartmentID}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("EmployeeID", res("EmployeeID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
