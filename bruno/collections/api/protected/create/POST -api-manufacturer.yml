@@ -1,0 +1,26 @@
+info:
+  name: POST /api/manufacturer
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/manufacturer"
+  body:
+    type: json
+    data: |-
+      {
+        "ManufacturerName": "TemporaryManufacturerName"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("ManufacturerID", res("ManufacturerID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
