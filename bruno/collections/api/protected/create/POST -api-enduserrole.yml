@@ -1,0 +1,92 @@
+info:
+  name: POST /api/enduserrole
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/enduserrole"
+  body:
+    type: json
+    data: |-
+      {
+        "EndUserRoleName": "TemporaryEndUserRoleName",
+        "CreateAsset": 1,
+        "CreateAssetFix": 1,
+        "CreateAssetIssue": 1,
+        "CreateBuilding": 1,
+        "CreateCategory": 1,
+        "CreateCompany": 1,
+        "CreateDepartment": 1,
+        "CreateEmployee": 1,
+        "CreateEndUser": 1,
+        "CreateEndUserRole": 1,
+        "CreateLocation": 1,
+        "CreateManufacturer": 1,
+        "CreateProduct": 1,
+        "CreateProductSet": 1,
+        "CreateRole": 1,
+        "CreateVendor": 1,
+        "DeleteAsset": 1,
+        "DeleteAssetFix": 1,
+        "DeleteAssetIssue": 1,
+        "DeleteBuilding": 1,
+        "DeleteCategory": 1,
+        "DeleteCompany": 1,
+        "DeleteDepartment": 1,
+        "DeleteEmployee": 1,
+        "DeleteEndUser": 1,
+        "DeleteEndUserRole": 1,
+        "DeleteLocation": 1,
+        "DeleteLog": 1,
+        "DeleteManufacturer": 1,
+        "DeleteProduct": 1,
+        "DeleteProductSet": 1,
+        "DeleteRole": 1,
+        "DeleteVendor": 1,
+        "ReadAsset": 1,
+        "ReadAssetFix": 1,
+        "ReadAssetIssue": 1,
+        "ReadBuilding": 1,
+        "ReadCategory": 1,
+        "ReadCompany": 1,
+        "ReadDepartment": 1,
+        "ReadEmployee": 1,
+        "ReadEndUser": 1,
+        "ReadEndUserRole": 1,
+        "ReadLocation": 1,
+        "ReadLog": 1,
+        "ReadManufacturer": 1,
+        "ReadProduct": 1,
+        "ReadProductSet": 1,
+        "ReadRole": 1,
+        "ReadVendor": 1,
+        "UpdateAsset": 1,
+        "UpdateAssetFix": 1,
+        "UpdateAssetIssue": 1,
+        "UpdateBuilding": 1,
+        "UpdateCategory": 1,
+        "UpdateCompany": 1,
+        "UpdateDepartment": 1,
+        "UpdateEmployee": 1,
+        "UpdateEndUser": 1,
+        "UpdateEndUserRole": 1,
+        "UpdateLocation": 1,
+        "UpdateManufacturer": 1,
+        "UpdateProduct": 1,
+        "UpdateProductSet": 1,
+        "UpdateRole": 1,
+        "UpdateVendor": 1
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("EndUserRoleID", res("EndUserRoleID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
