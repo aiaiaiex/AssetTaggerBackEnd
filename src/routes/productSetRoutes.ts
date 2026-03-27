@@ -12,8 +12,8 @@ const productSetRoutes = Router();
 
 productSetRoutes.post("/", createProductSet);
 productSetRoutes.get("/", readProductSets);
-productSetRoutes.get("/:ParentProductID/:ProductID", readProductSet);
-productSetRoutes.patch("/:ParentProductID/:ProductID", updateProductSet);
-productSetRoutes.delete("/:ParentProductID/:ProductID", deleteProductSet);
+productSetRoutes.get("/:ParentProductID{/:ProductID}", readProductSet);
+productSetRoutes.patch("/:ParentProductID{/:ProductID}", updateProductSet);
+productSetRoutes.delete("/:ParentProductID{/:ProductID}", deleteProductSet);
 
 export default productSetRoutes;
