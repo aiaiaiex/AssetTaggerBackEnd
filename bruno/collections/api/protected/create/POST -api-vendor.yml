@@ -1,0 +1,27 @@
+info:
+  name: POST /api/vendor
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/vendor"
+  body:
+    type: json
+    data: |-
+      {
+        "VendorName": "TemporaryVendorName",
+        "VendorAddress": "TemporaryVendorAddress"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("VendorID", res("VendorID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
