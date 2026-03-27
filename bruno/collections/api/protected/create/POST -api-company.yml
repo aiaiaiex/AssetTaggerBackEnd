@@ -1,0 +1,29 @@
+info:
+  name: POST /api/company
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/company"
+  body:
+    type: json
+    data: |-
+      {
+        "CompanyName": "TemporaryCompanyName",
+        "CompanyAddress": "TemporaryCompanyAddress",
+        "CompanyCode": "00002",
+        "ParentCompanyID": "{{ParentCompanyID}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("CompanyID", res("CompanyID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
