@@ -202,8 +202,12 @@ export const readProductSets = async (req: JWTRequest, res: Response) => {
     .request()
     .input("CallingEndUserID", sql.UniqueIdentifier, CallingEndUserID)
     .input("ProductID", sql.UniqueIdentifier, ProductID)
-    .input("FromProductSetInsertDate", sql.Int, FromProductSetProductQuantity)
-    .input("ToProductSetInsertDate", sql.Int, ToProductSetProductQuantity)
+    .input(
+      "FromProductSetProductQuantity",
+      sql.Int,
+      FromProductSetProductQuantity,
+    )
+    .input("ToProductSetProductQuantity", sql.Int, ToProductSetProductQuantity)
     .input(
       "FromProductSetInsertDate",
       sql.DateTimeOffset(3),
