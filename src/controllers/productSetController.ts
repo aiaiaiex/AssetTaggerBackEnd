@@ -119,7 +119,7 @@ export const readProductSet = async (req: JWTRequest, res: Response) => {
         throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
       }
 
-      res.json(parsedRecordset.data[0]);
+      res.json(parsedRecordset.data);
     })
     .catch((error: unknown) => {
       storedProcedureEnd = storedProcedureEnd ?? new Date();
@@ -315,7 +315,7 @@ export const updateProductSet = async (req: JWTRequest, res: Response) => {
         throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
       }
 
-      res.json(parsedRecordset.data[0]);
+      res.json(parsedRecordset.data);
     })
     .catch((error: unknown) => {
       storedProcedureEnd = storedProcedureEnd ?? new Date();
@@ -380,7 +380,7 @@ export const deleteProductSet = async (req: JWTRequest, res: Response) => {
         throw new ExpressError(z.prettifyError(parsedRecordset.error), 500);
       }
 
-      res.json(parsedRecordset.data[0]);
+      res.json(parsedRecordset.data);
     })
     .catch((error: unknown) => {
       storedProcedureEnd = storedProcedureEnd ?? new Date();
