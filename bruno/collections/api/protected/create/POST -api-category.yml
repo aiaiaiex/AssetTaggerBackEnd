@@ -1,0 +1,26 @@
+info:
+  name: POST /api/category
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/category"
+  body:
+    type: json
+    data: |-
+      {
+        "CategoryName": "TemporaryCategoryName"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("CategoryID", res("CategoryID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
