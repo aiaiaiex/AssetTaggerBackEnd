@@ -1,0 +1,26 @@
+info:
+  name: POST /api/department
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/department"
+  body:
+    type: json
+    data: |-
+      {
+        "DepartmentName": "TemporaryDepartmentName"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("DepartmentID", res("DepartmentID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
