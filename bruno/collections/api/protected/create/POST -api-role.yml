@@ -1,0 +1,26 @@
+info:
+  name: POST /api/role
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseURL}}/api/role"
+  body:
+    type: json
+    data: |-
+      {
+        "RoleName": "TemporaryRoleName"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: bru.setVar("RoleID", res("RoleID"));
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
