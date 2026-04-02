@@ -10,8 +10,8 @@ http:
     type: json
     data: |-
       {
-        "EndUserName": "{{process.env.END_USER_NAME}}",
-        "EndUserPassword": "{{process.env.END_USER_PASSWORD}}",
+        "EndUserName": "TemporaryEndUserName",
+        "EndUserPassword": "TemporaryEndUserPassword",
         "EndUserRoleID": "{{EndUserRoleID}}",
         "EmployeeID": "{{EmployeeID}}"
       }

@@ -10,7 +10,7 @@ http:
     type: json
     data: |-
       {
-        "EndUserName": "{{process.env.END_USER_NAME}}{{process.env.UPDATE_SUFFIX}}"
+        "EndUserName": "TemporaryEndUserName{{process.env.UPDATE_SUFFIX}}"
       }
   auth: inherit
 
