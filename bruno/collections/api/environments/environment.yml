@@ -1,7 +1,7 @@
 name: environment
 variables:
   - name: baseURL
-    value: http://{{process.env.SERVER_HOSTNAME}}:{{process.env.SERVER_PORT}}
+    value: "{{process.env.SERVER_PROTOCOL}}://{{process.env.SERVER_HOSTNAME}}:{{process.env.SERVER_PORT}}"
   - name: NULLISH_UNIQUEIDENTIFIER
     value: 00000000-0000-0000-0000-000000000000
   - name: NULLISH_NVARCHAR
